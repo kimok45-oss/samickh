@@ -22,6 +22,7 @@ const T = {
     heroHead2: "전문 제조",
     heroSub: "초소형에서 초대형에 이르기까지, 고객이 원하는 용도대로 개발·제작합니다.",
     heroFact: "보어 Ø40 – Ø800 · 행정 2,000mm · 1987년부터",
+    heroCaption: "유압·공압 실린더 — 삼익유공압",
     ctaProducts: "제품 보기",
     ctaQuote: "견적요청",
     s2Head: "실린더 10계열",
@@ -50,6 +51,7 @@ const T = {
     heroHead2: "Cylinder Manufacturer",
     heroSub: "From the smallest to the largest — developed and built to the customer's exact use.",
     heroFact: "Bore Ø40 – Ø800 · Stroke 2,000mm · Since 1987",
+    heroCaption: "Hydraulic & pneumatic cylinders — SAMICK H&P",
     ctaProducts: "View Products",
     ctaQuote: "Request a Quote",
     s2Head: "10 Cylinder Series",
@@ -78,89 +80,30 @@ const T = {
 // S4: 연혁 14건 중 제작/개발/등록(공급) 실적만 — 원문 문구 기준 키워드
 const RECORD_RE = /제작|개발|등록|공급/;
 
-/** 히어로 비주얼 — 삼익 실린더 제품 일러스트(실제 제품 도장=레드, 원본 사진 실측).
- *  측면 뷰: 레드 튜브 + 그라파이트 커버 + 타이로드 + 크롬 로드. 로드는 로드 1회 인출 모션(행정 암시). */
-function HeroCylinder() {
+/** 히어로 비주얼 — 실린더 실물 사진.
+ *  HERO_IMG 경로의 사진을 프레임 플레이트로 렌더한다(광택 CG 대신 실물 — "유치함" 제거).
+ *  ⚠ 교체법: Envato 등에서 받은 유압실린더 사진을 public/uploads/hero/cylinder.jpg 로 저장하면
+ *     아래 HERO_IMG 를 그 경로로 바꾸기만 하면 된다(현재는 회수한 실물 제품 사진 임시 사용). */
+const HERO_IMG = "/uploads/hero/cylinder-interim.jpg"; // TODO: Envato 유압실린더 사진 받으면 이 경로만 교체
+function HeroVisual({ src, caption }: { src: string; caption: string }) {
   return (
-    <svg viewBox="0 0 780 320" fill="none" aria-hidden className="hero-cyl h-auto w-full">
-      <defs>
-        {/* 레드 도장 보디 — 상단광/중간/하단음영으로 원통 볼륨 */}
-        <linearGradient id="hcBody" x1="0" y1="86" x2="0" y2="226" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#d75a3c" />
-          <stop offset="0.18" stopColor="#c03a1d" />
-          <stop offset="0.5" stopColor="#9f1b0a" />
-          <stop offset="0.85" stopColor="#701305" />
-          <stop offset="1" stopColor="#5c0f04" />
-        </linearGradient>
-        {/* 그라파이트 커버 */}
-        <linearGradient id="hcCap" x1="0" y1="74" x2="0" y2="238" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#6a7076" />
-          <stop offset="0.5" stopColor="#3c4147" />
-          <stop offset="1" stopColor="#23262a" />
-        </linearGradient>
-        {/* 크롬 로드 */}
-        <linearGradient id="hcRod" x1="0" y1="136" x2="0" y2="176" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="0.35" stopColor="#e6eaec" />
-          <stop offset="0.7" stopColor="#9aa2a9" />
-          <stop offset="1" stopColor="#c9ced2" />
-        </linearGradient>
-        <linearGradient id="hcTie" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#565c62" />
-          <stop offset="1" stopColor="#2c3034" />
-        </linearGradient>
-      </defs>
-
-      {/* 바닥 그림자 */}
-      <ellipse cx="390" cy="272" rx="330" ry="16" fill="#1b1e21" opacity="0.10" />
-
-      {/* 타이로드(상·하, 커버 사이) + 너트 */}
-      <rect x="96" y="82" width="424" height="7" rx="3.5" fill="url(#hcTie)" />
-      <rect x="96" y="223" width="424" height="7" rx="3.5" fill="url(#hcTie)" />
-      <rect x="76" y="78" width="22" height="15" rx="2" fill="#33383d" />
-      <rect x="76" y="219" width="22" height="15" rx="2" fill="#33383d" />
-      <rect x="518" y="78" width="22" height="15" rx="2" fill="#33383d" />
-      <rect x="518" y="219" width="22" height="15" rx="2" fill="#33383d" />
-
-      {/* 헤드 커버(좌) */}
-      <rect x="88" y="74" width="46" height="164" rx="5" fill="url(#hcCap)" />
-      <rect x="92" y="80" width="6" height="152" rx="3" fill="#ffffff" opacity="0.10" />
-      {/* 포트 보스(헤드측 상단) */}
-      <rect x="100" y="56" width="26" height="20" rx="3" fill="#3c4147" />
-      <rect x="106" y="50" width="14" height="8" rx="2" fill="#2c3034" />
-
-      {/* 레드 튜브 */}
-      <rect x="134" y="86" width="356" height="140" fill="url(#hcBody)" />
-      {/* 상단 스펙큘러 시트 */}
-      <rect x="140" y="94" width="344" height="16" rx="8" fill="#ffffff" opacity="0.22" />
-      {/* 제품 라벨(실물 사진의 흰 스티커) */}
-      <rect x="330" y="128" width="92" height="34" rx="2" fill="#f6f7f5" opacity="0.96" />
-      <rect x="338" y="138" width="58" height="4" rx="2" fill="#9aa1a8" />
-      <rect x="338" y="148" width="42" height="4" rx="2" fill="#c3c8cc" />
-
-      {/* 로드 커버(우) */}
-      <rect x="490" y="74" width="50" height="164" rx="5" fill="url(#hcCap)" />
-      <rect x="494" y="80" width="6" height="152" rx="3" fill="#ffffff" opacity="0.10" />
-      {/* 포트 보스(로드측 상단) */}
-      <rect x="500" y="56" width="26" height="20" rx="3" fill="#3c4147" />
-      <rect x="506" y="50" width="14" height="8" rx="2" fill="#2c3034" />
-
-      {/* 크롬 로드(1회 인출 모션) + 나사부 */}
-      <g className="hero-rod">
-        <rect x="540" y="136" width="176" height="40" fill="url(#hcRod)" />
-        <rect x="540" y="141" width="176" height="6" rx="3" fill="#ffffff" opacity="0.85" />
-        {/* 나사부 */}
-        <rect x="716" y="141" width="34" height="30" fill="#b9bfc4" />
-        <rect x="716" y="145" width="34" height="4" rx="2" fill="#ffffff" opacity="0.6" />
-        {[722, 729, 736, 743].map((x) => (
-          <line key={x} x1={x} y1="141" x2={x} y2="171" stroke="#8f979e" strokeWidth="2" />
-        ))}
-        <rect x="750" y="147" width="8" height="18" rx="2" fill="#9aa1a8" />
-      </g>
-
-      {/* 쿠션밸브(레드 포인트 — 그래픽 전용) */}
-      <circle cx="513" cy="212" r="5" fill="#b23517" stroke="#701305" strokeWidth="1.5" />
-    </svg>
+    <figure className="relative">
+      {/* 도면지 톤 프레임 플레이트 */}
+      <div className="overflow-hidden border border-line bg-bg-raised shadow-[0_20px_50px_-24px_rgba(20,22,25,0.35)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt="삼익유공압 유압·공압 실린더"
+          width={600}
+          height={450}
+          className="aspect-[4/3] w-full object-cover"
+        />
+      </div>
+      {/* 코너 크롭 마크(엔지니어링 도판 느낌 — 레드 그래픽 전용) */}
+      <span aria-hidden className="absolute -left-1.5 -top-1.5 h-4 w-4 border-l-2 border-t-2 border-red-live" />
+      <span aria-hidden className="absolute -bottom-1.5 -right-1.5 h-4 w-4 border-b-2 border-r-2 border-red-live" />
+      <figcaption className="mt-2 font-mono text-[10.5px] tracking-[0.08em] text-ink-faint">{caption}</figcaption>
+    </figure>
   );
 }
 
@@ -222,7 +165,7 @@ export default async function HomePage() {
           </div>
         </div>
         <Reveal className="hidden md:block">
-          <HeroCylinder />
+          <HeroVisual src={HERO_IMG} caption={t.heroCaption} />
         </Reveal>
       </section>
 

@@ -161,12 +161,3 @@ html.lang-in .lang-fade { opacity: 1; transform: none; transition: opacity 0.3s 
   .acc[open] > summary .acc-plus { transition: none; }
 }
 
-/* ── 히어로 실린더 — 로드 1회 인출(행정 암시, 무한 반복 아님) ── */
-.hero-cyl .hero-rod { animation: hero-rod-extend 1.4s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 0.3s; }
-@keyframes hero-rod-extend {
-  from { transform: translateX(-120px); }
-  to { transform: translateX(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-cyl .hero-rod { animation: none; }
-}
