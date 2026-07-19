@@ -94,9 +94,9 @@ function HeroVisual({ src, caption }: { src: string; caption: string }) {
         <img
           src={src}
           alt="삼익유공압 유압·공압 실린더"
-          width={600}
-          height={450}
-          className="aspect-[4/3] w-full object-cover"
+          width={1148}
+          height={460}
+          className="aspect-[5/2] w-full object-cover"
         />
       </div>
       {/* 코너 크롭 마크(엔지니어링 도판 느낌 — 레드 그래픽 전용) */}
