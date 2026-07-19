@@ -7,6 +7,7 @@ import { getContents } from "@/lib/content";
 import { fmtDate } from "@/lib/date";
 import { Reveal } from "@/components/motion/motion-primitives";
 import SeriesLedger from "@/components/home/SeriesLedger";
+import HeroCarousel from "@/components/home/HeroCarousel";
 import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -80,32 +81,14 @@ const T = {
 // S4: 연혁 14건 중 제작/개발/등록(공급) 실적만 — 원문 문구 기준 키워드
 const RECORD_RE = /제작|개발|등록|공급/;
 
-/** 히어로 비주얼 — 실린더 실물 사진.
- *  HERO_IMG 경로의 사진을 프레임 플레이트로 렌더한다(광택 CG 대신 실물 — "유치함" 제거).
- *  ⚠ 교체법: Envato 등에서 받은 유압실린더 사진을 public/uploads/hero/cylinder.jpg 로 저장하면
- *     아래 HERO_IMG 를 그 경로로 바꾸기만 하면 된다(현재는 회수한 실물 제품 사진 임시 사용). */
-const HERO_IMG = "/uploads/hero/cylinder-interim.jpg"; // TODO: Envato 유압실린더 사진 받으면 이 경로만 교체
-function HeroVisual({ src, caption }: { src: string; caption: string }) {
-  return (
-    <figure className="relative">
-      {/* 도면지 톤 프레임 플레이트 */}
-      <div className="overflow-hidden border border-line bg-bg-raised shadow-[0_20px_50px_-24px_rgba(20,22,25,0.35)]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt="삼익유공압 유압·공압 실린더"
-          width={1148}
-          height={460}
-          className="aspect-[5/2] w-full object-cover"
-        />
-      </div>
-      {/* 코너 크롭 마크(엔지니어링 도판 느낌 — 레드 그래픽 전용) */}
-      <span aria-hidden className="absolute -left-1.5 -top-1.5 h-4 w-4 border-l-2 border-t-2 border-red-live" />
-      <span aria-hidden className="absolute -bottom-1.5 -right-1.5 h-4 w-4 border-b-2 border-r-2 border-red-live" />
-      <figcaption className="mt-2 font-mono text-[10.5px] tracking-[0.08em] text-ink-faint">{caption}</figcaption>
-    </figure>
-  );
-}
+// 히어로 슬라이드 사진 — 여러 실린더 사진을 크로스페이드로 순환(HeroCarousel).
+// ⚠ 교체: DSLR/Envato 고해상 사진을 public/uploads/hero/ 에 넣고 아래 배열 src만 바꾸면 된다.
+//    (현재는 회수한 실물 제품 사진 보정본 임시 사용 — 저해상이라 최종 교체 권장)
+const HERO_SLIDES = [
+  { src: "/uploads/hero/cyl-1.jpg", cap: { ko: "표준 유압실린더 — 삼익유공압", en: "Standard hydraulic cylinder — SAMICK H&P" } },
+  { src: "/uploads/hero/cyl-2.jpg", cap: { ko: "유압실린더 출하 검사", en: "Hydraulic cylinder — shipping inspection" } },
+  { src: "/uploads/hero/cyl-3.jpg", cap: { ko: "대형 램형 유압실린더", en: "Large ram-type hydraulic cylinder" } },
+] as const;
 
 export default async function HomePage() {
   const lang = await getLang();
@@ -165,7 +148,7 @@ export default async function HomePage() {
           </div>
         </div>
         <Reveal className="hidden md:block">
-          <HeroVisual src={HERO_IMG} caption={t.heroCaption} />
+          <HeroCarousel slides={HERO_SLIDES.map((sl) => ({ src: sl.src, caption: sl.cap[lang] }))} />
         </Reveal>
       </section>
 
