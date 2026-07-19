@@ -1,0 +1,61 @@
+{
+  "name": "samickh",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=24.0.0 <25.0.0"
+  },
+  "scripts": {
+    "dev": "next dev -p 5700",
+    "build": "next build",
+    "start": "next start -p 5700",
+    "typecheck": "tsgo --noEmit",
+    "typecheck:tsc": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma db push --force-reset && pnpm db:seed",
+    "postinstall": "prisma generate"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "sharp"
+    ],
+    "overrides": {
+      "postcss@<8.5.10": ">=8.5.10"
+    }
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "better-sqlite3": "^12.10.0",
+    "isomorphic-dompurify": "^3.18.0",
+    "lenis": "^1.3.23",
+    "lucide-react": "^1.21.0",
+    "motion": "^12.40.0",
+    "next": "16.2.9",
+    "nodemailer": "^9.0.3",
+    "pretendard": "^1.3.9",
+    "prisma": "^7.8.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^3.8.1",
+    "sharp": "^0.35.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.13.2",
+    "@types/nodemailer": "^8.0.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript/native-preview": "7.0.0-dev.20260613.1",
+    "tailwindcss": "^4.3.1",
+    "tsx": "^4.22.4",
+    "typescript": "^5"
+  }
+}

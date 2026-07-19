@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   한국어 Next.js 사이트 기본 설계 (Korean web base)
+   prisma7-next16-scaffold — 새 프로젝트 시작 시 `app/globals.css`의
+   `@import "tailwindcss";` **바로 아래**에 이 블록을 둔다.
+   출처: 한신그룹·이지스자산운용 라이브 실측(2026-06) + 한국어 웹 정석 보강.
+   전제: Tailwind v4. 폰트는 layout.base.tsx의 next/font가 --font-pretendard 주입.
+   ========================================================================= */
+
+@theme {
+  /* ── 유체 타이포 스케일 ──────────────────────────────────────────────
+     화면 폭에 따라 글자 크기가 미디어쿼리 없이 부드럽게 보간(360~1440px).
+     clamp(최소, 선호=뷰포트비례, 최대). Tailwind의 text-* 유틸이 이 값을 쓴다. */
+  --text-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-sm:   clamp(0.875rem, 0.84rem + 0.18vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-lg:   clamp(1.125rem, 1.06rem + 0.32vw, 1.25rem);
+  --text-xl:   clamp(1.25rem, 1.16rem + 0.45vw, 1.5rem);
+  --text-2xl:  clamp(1.5rem, 1.34rem + 0.8vw, 2rem);
+  --text-3xl:  clamp(1.875rem, 1.6rem + 1.35vw, 2.75rem);
+  --text-4xl:  clamp(2.25rem, 1.85rem + 2vw, 3.5rem);
+  --text-5xl:  clamp(2.75rem, 2.1rem + 3.2vw, 4.5rem);
+  --text-6xl:  clamp(3.25rem, 2.3rem + 4.75vw, 6rem);
+
+  /* ── 폰트 스택 ───────────────────────────────────────────────────────
+     layout.tsx의 next/font(local)가 --font-pretendard를 주입한다.
+     주입 전에도 OS 한글 폰트로 폴백되도록 시스템 한글 폰트를 뒤에 둔다. */
+  --font-sans: "Pretendard Variable", "Pretendard", -apple-system,
+    BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  /* 형번·치수·헤드라인용 모노 — 라틴 전용이라 한글은 Pretendard 폴백 필수 */
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", "Pretendard Variable",
+    "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+
+  /* ── samickh 라이트 팔레트 (오너 전환 지시 2026-07-19 — 원본 CI가 흰 바탕용:
+     레드 심볼+차콜 로고타입. 레드는 조작·CTA 전용, 본문 텍스트 사용 금지.) ──
+     대비 실측: ink-faint #565d64 = 최저 표면(bg-panel #eceeed) 위 5.7:1 */
+  --color-bg: #f4f5f3; /* 도면지 화이트(연속면) */
+  --color-bg-raised: #ffffff; /* 카드/플레이트 */
+  --color-bg-panel: #eceeed; /* 도구 패널 */
+  --color-line: #d9dcd8; /* 헤어라인 */
+  --color-line-soft: #e3e5e2;
+  --color-ink: #1b1e21; /* 본문(15.3:1) */
+  --color-ink-dim: #4a5157; /* 보조(7.4:1) */
+  --color-ink-faint: #565d64; /* 라벨 최저 허용(5.7:1) */
+  --color-red: #9f1b0a; /* CI 딥 레드 — CTA 배경(백문자 8.0:1) */
+  --color-red-live: #b23517; /* 호버·핸들(백문자 6.2:1) */
+  --color-chrome: #8f979e; /* 크롬 로드 라인 */
+  --color-paper: #ffffff; /* 스펙표 플레이트 */
+}
+
+@layer base {
+  :root {
+    /* iOS 가로모드에서 폰트가 제멋대로 커지는 것 방지 */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html {
+    /* 한글은 기본 자간이 좀 떠 보인다 → 살짝 좁혀 또렷하게 */
+    letter-spacing: -0.01em;
+    /* 글자 가장자리 렌더링 부드럽게(맥/사파리) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    /* 한글 단어가 줄 끝에서 "안녕하세→요"처럼 쪼개지지 않게 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* 헤드라인: 두 줄 이상일 때 위아래 길이 균형 + 큰 글자는 자간 더 좁게 */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+  }
+
+  /* 본문 단락: 마지막 줄에 단어 하나만 외톨이로 떨어지는 것 방지 */
+  p { text-wrap: pretty; }
+
+  /* 모바일 input 폰트가 16px 미만이면 iOS가 포커스 시 화면을 확대 → 방지 */
+  input, select, textarea { font-size: max(16px, 1rem); }
+
+  /* 모바일에서 링크/버튼 누를 때 뜨는 파란 사각형 제거 */
+  a, button { -webkit-tap-highlight-color: transparent; }
+}
+
+@layer utilities {
+  /* 숫자 자릿수 세로 정렬 — 매출·연도·재무표(IR) 숫자가 흔들리지 않음 */
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  /* 모바일 주소창에도 첫 화면이 안 잘리는 높이 — 100vh 대신 */
+  .min-h-dvh { min-height: 100vh; min-height: 100dvh; }
+  .h-dvh     { height: 100vh;     height: 100dvh; }
+
+  /* 노치/홈바 안전영역 패딩 */
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* =========================================================================
+   ▼ B(디자인 계층) 컴포넌트 CSS — @theme 블록은 수정하지 않는다(계약).
+   ========================================================================= */
+
+/* ── 언어 전환 페이드(LangToggle 배선) — html.lang-out/.lang-in 클래스 소비 ── */
+.lang-fade { opacity: 1; }
+html.lang-out .lang-fade { opacity: 0; transform: translateY(4px); transition: opacity 0.24s ease, transform 0.24s ease; }
+html.lang-in .lang-fade { opacity: 1; transform: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+
+/* ── location-map 부품 변수 배선 — 부품 폴백(파랑)을 브랜드 토큰으로 교체 ──
+   레드는 길찾기 버튼(=CTA 배경)에만 쓰인다: 색 문법 준수. */
+:root {
+  --color-accent: var(--color-red);
+  --color-accent-ink: var(--color-ink-dim);
+  --color-ink-2: var(--color-ink-dim);
+  --color-muted: var(--color-ink-faint);
+  --color-paper-2: var(--color-bg-panel);
+}
+
+/* ── 주문방법 스테이션 ── */
+.cyl-handle { cursor: grab; touch-action: none; outline: none; }
+.cyl-handle:active { cursor: grabbing; }
+.stroke-range { accent-color: var(--color-red-live); } /* 레드 = 조작 핸들 전용 */
+
+/* 접이식(details) 공통 — 고급 옵션·제품 아코디언 */
+.acc > summary { list-style: none; }
+.acc > summary::-webkit-details-marker { display: none; }
+.acc[open] > summary .acc-plus { transform: rotate(45deg); }
+
+/* ── 구식 게시판 HTML 플레이트(.legacy-plate — bg-paper 위 도면지 톤) ──
+   2008년 iBuilder 표(bgcolor·cellspacing 격자)를 원형 유지한 채 팔레트만 정리한다. */
+.legacy-plate { color: #24272a; font-size: 12.5px; line-height: 1.5; }
+.legacy-plate table { margin-inline: auto; border-collapse: separate; }
+.legacy-plate td, .legacy-plate th {
+  background-color: #fbfcfa;
+  padding: 5px 8px;
+  font-variant-numeric: tabular-nums;
+}
+/* cellspacing=1 + 배경색 표 = 격자선 — 격자 배경을 헤어라인 톤으로 */
+.legacy-plate table[bgcolor] { background-color: #c9cdc6; }
+/* 구 헤더 셀(연두 계열)을 중립 도면지 톤으로 */
+.legacy-plate td[bgcolor="#daf5d3"], .legacy-plate td[bgcolor="#c2e5b9"], .legacy-plate td[bgcolor="#d4e8cf"],
+.legacy-plate td[bgcolor="#DAF5D3"], .legacy-plate td[bgcolor="#C2E5B9"], .legacy-plate td[bgcolor="#D4E8CF"],
+.legacy-plate tr[bgcolor="#daf5d3"] > td, .legacy-plate .bg_01 {
+  background-color: #e8ebe5;
+  font-weight: 600;
+}
+.legacy-plate .conA { width: 100%; }
+.legacy-plate .conA td { border-bottom: 1px solid #d5d9d2; }
+.legacy-plate font { color: inherit; }
+.legacy-plate img { display: inline-block; max-width: none; margin: 4px; }
+.legacy-plate p { text-wrap: auto; }
+
+/* ── 모션 감소 선호 사용자: 페이드/회전 트랜지션 억제 ── */
+@media (prefers-reduced-motion: reduce) {
+  .lang-fade, html.lang-out .lang-fade, html.lang-in .lang-fade { transition: none; transform: none; }
+  .acc[open] > summary .acc-plus { transition: none; }
+}
+
+/* ── 히어로 실린더 — 로드 1회 인출(행정 암시, 무한 반복 아님) ── */
+.hero-cyl .hero-rod { animation: hero-rod-extend 1.4s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 0.3s; }
+@keyframes hero-rod-extend {
+  from { transform: translateX(-120px); }
+  to { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cyl .hero-rod { animation: none; }
+}

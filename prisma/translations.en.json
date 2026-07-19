@@ -1,0 +1,424 @@
+{
+ "posts": {
+  "notice-2": {
+   "title": "Welcome to the SAMICK H&P website.",
+   "body": "<P>Together with our relocation to the new plant, the website we have been preparing is now open.</P>\n<P>We look forward to your continued interest.</P>"
+  },
+  "notice-3": {
+   "title": "Catalogs have been uploaded.",
+   "body": "<P>Standard hydraulic cylinders</P>\n<P>Pneumatic cylinders (small bore, large bore)</P>\n<P>The catalogs have been uploaded.</P>\n<P>Please refer to them when designing.</P>"
+  },
+  "notice-4": {
+   "title": "CAD DATA UPLOAD notice",
+   "body": "<P>We are uploading part of our data, including pneumatic cylinders and standard hydraulic cylinders.</P>\n<P>Library-format files are provided as compressed archives — please refer to them.</P>"
+  },
+  "tech-4": {
+   "title": "Standard hydraulic cylinder catalog",
+   "body": "Standard hydraulic cylinder catalog"
+  },
+  "tech-5": {
+   "title": "Pneumatic cylinder catalog",
+   "body": "Pneumatic cylinder catalog"
+  },
+  "tech-6": {
+   "title": "Hydraulic and pneumatic drawing symbols",
+   "body": "Hydraulic and pneumatic drawing symbols (Korean Industrial Standards)"
+  },
+  "tech-7": {
+   "title": "Surface-hardened steels and heat-treatment hardness"
+  },
+  "tech-8": {
+   "title": "Steel-mill MILL TYPE cylinder catalog",
+   "body": "PDF file."
+  },
+  "tech-11": {
+   "title": "High-pressure steel-mill hydraulic cylinder (SS210H Series)",
+   "body": "High-pressure steel-mill hydraulic cylinder (SS210H Series)"
+  },
+  "tech-13": {
+   "title": "POSCO Pohang billet wire rod AIR CYLINDER",
+   "body": "Pneumatic Cylinder CWC(DA),FA,335.6DxDx457.2ST,10kg/cm2<div>Pneumatic Cylinder CWC(DA),FA,335.6DxDx215.9ST,10kg/cm2</div><div>Pneumatic Cylinder CWC(DA),FA,152.4Dx482.6ST,10kg/cm2</div><div>Pneumatic Cylinder CWC(DA),FA,203.2Dx482.6ST,10kg/cm2</div>"
+  },
+  "cad-2": {
+   "title": "Pneumatic cylinder",
+   "body": "Pneumatic cylinder (SS10A)"
+  },
+  "cad-3": {
+   "title": "Standard hydraulic cylinder",
+   "body": "Standard hydraulic cylinder"
+  },
+  "cad-4": {
+   "title": "POSCO Pohang billet AIR CYLINDER",
+   "body": "Pneumatic Cylinder CWC(DA),FA,335.6DxDx215.9ST,10kg/cm2, P/N:2240499/L-TEC, WITH PROBE(P/N:2240497) &amp; CONNECTION(P/N:2229889), FOR BTM HOT SCARFERING M/C"
+  },
+  "pinfo-3": {
+   "title": "Hydraulic Cylinder",
+   "body": "<div align='center'><img src='/uploads/orig/board/data/board3/3/SA401278.jpg' width='544' style='max-width:100%' class='view_border'></div>Customer: GtoI Corporation<BR>Item: HFA 125-90-660ST<BR>Destination: Philippines"
+  },
+  "pinfo-4": {
+   "title": "CONTENTS FOR SAIMCK CYLINDER",
+   "body": "CONTENTS FOR SAIMCK CYLINDER"
+  },
+  "news-4": {
+   "title": "Gwangyang Works sets world-leading casting speed on No. 3 continuous caster",
+   "body": "<P>The No. 3 continuous caster at POSCO Gwangyang Works' No. 2 continuous casting plant recently achieved a world-leading casting speed, once again proving the excellence of POSCO's steelmaking technology.</P>\n<P>A continuous caster is a facility that cools and solidifies molten steel into intermediate materials such as slabs; caster productivity is closely tied to Gwangyang Works' crude steel output. The record achieved this time is 2.7 m per minute based on a 250 mm slab thickness — a production increase of more than 35% over existing casters. Converted to a 220 mm slab thickness, the casting speed is 3.1 m per minute, surpassing the world record of 3.0 m for the same thickness set by Japan's JFE Steel. In addition, 270 tons of molten steel can now be fully cast within 27 minutes, so the refining stage of the preceding steelmaking process is also expected to accelerate.</P>\n<P>Steelmaking department and research institute staff carried out rationalization work last November to raise facility efficiency, building an efficient production line incorporating POSCO's own technologies: optimized roll arrangement along the pass line, secured intensive cooling, and multi-function electromagnetic control of molten steel flow in the mold. Gwangyang Works plans to focus on maximum production of high-grade and strategic steels, backed by quality and technology development across upstream and downstream processes, to secure high quality on the No. 3 caster with its annual capacity of more than 3.5 million tons.</P>"
+  },
+  "news-5": {
+   "title": "POSCO ranked best corporate image in Korea",
+   "body": "<P>POSCO was selected by university students as the company with the best corporate image. In a survey of 1,041 university students on brand preference among Korea's top 100 companies conducted by the job portal JobKorea, POSCO ranked first in the 'best corporate image' category.</P>\n<P>The survey covered nine questions — such as 'the company likely to have outstanding management policies' and 'the company whose members are likely of the highest caliber' — over ten days from the 20th of last month, targeting the top 100 companies by 2006 revenue. POSCO was chosen by 145 respondents (13.9%) as the company with the best image, followed by Samsung Electronics (10.7%), CJ (9.2%), SK (8.7%) and Korean Air (4.9%).</P>\n<P>POSCO also placed second after Samsung Electronics in the categories 'company that contributed most to national economic development' (14.7%) and 'company likely to have a good working environment' (11.5%), and ranked at the top across all survey items, confirming students' recognition of its role in Korea's economic growth and its cultivation of employee capability.</P>"
+  },
+  "news-6": {
+   "title": "Large companies must not ignore realistic supply pricing",
+   "body": "<P>Small and medium-sized manufacturers are being pushed into deficit management by soaring raw material prices; the foundry industry plans to halt deliveries on the 7th unless large customers act.</P>\n<P>SMEs face the worst of conditions. Years of surging raw material prices have pushed them beyond deteriorating profitability to the point of stopping their plants. With high oil prices and a falling exchange rate already eroding margins, raw material costs are now dragging them into deficit. SMEs cannot reflect increases in materials, labor and prices in their product prices, so the situation is expected to worsen. In particular, large companies have ignored SMEs' demands for realistic supply prices or even pressed for price cuts, angering smaller firms; some industries are moving toward halting deliveries to large customers.</P>\n<P>On February 29, the day before President Lee Myung-bak's planned first livelihood visit to an SME, foundry-industry CEOs gathered in Yeouido, Seoul, for the regular general meeting of the Korea Foundry Cooperative (chairman Suh Byung-moon). After the meeting they put on red headbands reading 'realistic supply prices' and adopted a resolution stating that unless customers take price normalization measures by March 7, they would not rule out returning their business registrations and halting deliveries. They declared the foundry industry faces its most serious management crisis since founding.</P>"
+  },
+  "news-7": {
+   "title": "Gwangyang No. 1 hot rolling plant reaches 100 million tons of hot-rolled coil",
+   "body": "<P>The No. 1 hot rolling plant at Gwangyang Works achieved the milestone of 100 million tons of hot-rolled coil in the shortest time for a single plant, showcasing Gwangyang's technological capability at home and abroad.</P>\n<P>The plant, which began operation in February 1987 with a 2.7-million-ton production system, reached 100 million tons on the 25th of this month — 21 years and 1 month after completion, the fastest in POSCO's history. Converted to length (based on 2.7 mm thickness and 1,170 mm width), 100 million tons of coil is a little over 4 million kilometers — enough to build 100 million one-ton cars, make 9,891 round trips between Seoul and Busan, or wrap around the Earth 101 times.</P>\n<P>Having proven itself the world's top hot rolling plant with 6.1 million tons of output for two consecutive years, the plant has improved product quality through QSS on-the-spot practice, lifelong learning and standardization, raised continuity between processes, and developed technology to shorten coil-to-coil production time. Plant manager Lim Chae-sik said the achievement was the result of employees' tireless efforts to meet growing demand for automotive steel sheet and high-grade steel, and pledged world-class performance in production, quality and cost toward completing a specialized automotive-steel works.</P>"
+  },
+  "news-8": {
+   "title": "Integrated portal POSCOWAY.net opens",
+   "body": "<P>Marking its 40th anniversary, POSCO is opening 'POSCOWAY.net', a portal for sharing the Global POSCO Way management philosophy and a range of management information across the POSCO family.</P>\n<P>Officially operating from April 1, POSCOWAY.net brings POSCO and its invested companies together on the web with the goal of integrated value management, connecting people, information and systems under the Global POSCO Way philosophy. Any employee of the POSCO family can access information ranging from Global POSCO Way materials to CEO messages, company news and industry trends, and freely exchange know-how and ideas.</P>"
+  },
+  "news-9": {
+   "title": "Green light for orders — POSCO E&E (Pocheol Kiyeon)",
+   "body": "<P>▶ Blast-furnace PCI, mini-mill electric arc furnace, roof-top solar power — equipment orders at Pocheol Kiyeon are picking up.</P>\n<P>On April 3 the company won an order for Hyundai Steel's blast-furnace PCI facility. Contracted at 19.63 billion won, it is the largest order in the company's history and is regarded as a foothold for continued participation in Hyundai Steel's facility investment projects. On April 10 a contract was also signed for the rationalization of the mini-mill electric arc furnace at Gwangyang Works, worth 7.54 billion won; the company plans to complete the project successfully and expand into external electric-furnace fabrication.</P>\n<P>In March the company also won a 6.25 billion won order for roof-top solar power generation on the No. 4 cold rolling product warehouse at Gwangyang Works, supplying engineering, procurement and construction as a package. As Korea's first MW-class roof-top installation, it is expected to lead the technology in this field.</P>"
+  }
+ },
+ "products": {
+  "ss70h-ss140h-spec": {
+   "title": "SS70H, SS140H hydraulic cylinder specifications"
+  },
+  "dim-lb": {
+   "title": "Type LB dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-la": {
+   "title": "Type LA dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-sd": {
+   "title": "Type SD dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-tc": {
+   "title": "Type TC dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-ta": {
+   "title": "Type TA dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-cb": {
+   "title": "Type CB dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-ca": {
+   "title": "Type CA dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-fd": {
+   "title": "Type FD dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-fb": {
+   "title": "Type FB dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-fc": {
+   "title": "Type FC dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "dim-fa": {
+   "title": "Type FA dimension table (for 70 kgf/㎠, 140 kgf/㎠)"
+  },
+  "steel-cse-ram": {
+   "title": "Hydraulic Cylinder CSE, FC, TIE ROD, 670DX2650ST, 310Kg/cm2"
+  }
+ },
+ "series": {
+  "ss-standard": {
+   "intro": "Manufactured to KS B 6370 (JIS B 8354), designed for high performance with a simple structure. The cover shape is square, and depending on stroke length there are two fixing methods: tie-rod fixing or tube-flange fixing.",
+   "features": [
+    "Stroke over 2,000 mm (below buckling strength)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "High- or low-speed operation cylinders",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end"
+   ]
+  },
+  "ss-leadswitch": {
+   "intro": "The cylinder tube is stainless steel and the piston is a bronze alloy (BC); the piston packing uses a combination seal. A magnet is inserted in the piston so the stroke can be adjusted simply by the detection of switches mounted on the tie rods. Both covers are square and fixed by tie rods.",
+   "features": [
+    "Stroke over 1,000 mm (below buckling strength)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end"
+   ]
+  },
+  "sl-position": {
+   "intro": "A cylinder designed for position control by simply mounting an LVDT inside; it can be connected directly to a computer or PLC. Repeat position error is small, there is no mechanical backlash at all, and being non-contact its service life is semi-permanent.",
+   "features": [
+    "Stroke over 1,000 mm (below buckling strength)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "High- or low-speed operation cylinders",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end",
+    "Sensor switch"
+   ]
+  },
+  "sm-square-mill": {
+   "intro": "Designed and manufactured to JOHS 110 (Japan hydraulic & pneumatic association standard for steel-mill hydraulic cylinders). Bronze (AlBC3) is weld-deposited on the piston guide to raise bearing-pressure strength, giving excellent durability and reduced sliding friction. Port structure can be taper thread, parallel thread or hydraulic flange. Both covers are square, in a heavy-duty design thicker than the SS140H series; tube-flange fixing is standard, with tie-rod fixing available by service conditions.",
+   "features": [
+    "Stroke over 2,500 mm (below buckling strength)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "High- or low-speed operation cylinders",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end"
+   ]
+  },
+  "sm-round-mill": {
+   "intro": "A heavy-duty cylinder for harsh service such as steel-mill machinery. Head and rod covers are round and fixed by tube flange. Bronze (AlBC3) is weld-deposited on the piston guide to raise bearing-pressure strength, giving excellent durability and reduced sliding friction. Port structure can be taper thread, parallel thread or hydraulic flange.",
+   "features": [
+    "Stroke over 2,500 mm (below buckling strength)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "High- or low-speed operation cylinders",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end"
+   ]
+  },
+  "sh-vehicle": {
+   "intro": "Both head and rod covers are round; the head cover is welded and the rod cover is screw-assembled. The port is welded to the tube in a simple structure, mainly used for vehicles.",
+   "features": [
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end",
+    "Custom manufacturing"
+   ]
+  },
+  "st-telescopic": {
+   "intro": "Installed where a long stroke is required in an axially confined space. Simple in structure, with welded support parts; the port can be located anywhere, so support type and port position must be discussed in advance.",
+   "features": [
+    "Multi-stage double-acting cylinders (multi-function possible)",
+    "Multi-stage constant-velocity cylinders",
+    "Special material or special-purpose packing",
+    "Special rod-end shapes",
+    "Custom manufacturing"
+   ]
+  },
+  "sr-ram": {
+   "intro": "A ram-type cylinder delivering high force for presses and similar equipment. Simple in structure and used vertically, it comes in two designs — with or without a rod stopper. The rod end has a female thread for fixing, and high-pressure or large cylinders can be manufactured.",
+   "features": [
+    "Piston-type ram cylinders",
+    "High-pressure cylinders above 210 kgf/㎠",
+    "Ultra-high-pressure cylinders (up to 700 kgf/㎠)",
+    "Special material or special-purpose packing",
+    "Custom manufacturing"
+   ]
+  },
+  "ss-pneumatic": {
+   "intro": "A pneumatic cylinder with square rod-side and head-side covers, fixed by tie rods. Packing material and shape differ depending on lubricated or non-lubricated service.",
+   "features": [
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end",
+    "Head-side cushion device",
+    "Custom manufacturing"
+   ]
+  },
+  "ss-largebore": {
+   "intro": "A pneumatic cylinder with round rod-side and head-side covers, fixed by multiple tie rods — a heavy-duty pneumatic cylinder with cushion devices on both rod and head sides as standard.",
+   "features": [
+    "Up to Ø200 mm (based on outer tube bore)",
+    "Cushion device",
+    "Special material or special-purpose packing",
+    "Bellows",
+    "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+    "Rod end",
+    "Custom manufacturing"
+   ]
+  }
+ },
+ "history": {
+  "2007-0": "Plant expansion and relocation (852-5 Nae-ri, Guji-myeon, Dalseong-gun, Daegu — 13,223.2 m²)",
+  "2006-1": "Manufactured hydraulic test RAM cylinders for ARABIAN PIPE",
+  "2006-2": "Manufactured SENSOR cylinders for Hyundai Heavy Industries / POSCO cold-rolling DOWN COILER",
+  "2005-3": "Manufactured cylinders for Sewon Cellontech / POSCO HOT LEVELLER",
+  "2004-4": "Manufactured LIFTING cylinders for Rhine-Ho Co. SHIP SECTION CARRIER",
+  "2003-5": "Manufactured curing-press cylinders for Hankook Tire",
+  "2003-6": "Developed hydraulic cylinders for Doosan Infracore machine-tool division",
+  "2001-7": "Selected as a promising SME (Daegu Bank)",
+  "2000-8": "Plant relocation (358-30 Galsan-dong, Dalseo-gu, Daegu)",
+  "1998-9": "Spun off as SAMICK H&P Co., Ltd. (100-76 Galsan-dong, Dalseo-gu, Daegu)",
+  "1997-10": "Manufactured curing-press cylinders for Kumho Tire",
+  "1992-11": "Jointly developed hydraulic cylinders for concrete pump trucks with Daewoo Heavy Industries",
+  "1987-12": "Began manufacturing and selling hydraulic & pneumatic cylinders at Samick THK (formerly Samick Industries)",
+  "1987-13": "Registered as a hydraulic & pneumatic cylinder supplier to POSCO (Grade A)"
+ },
+ "clients": {
+  "POSCO(포항제철)": "POSCO (Pohang Works)",
+  "POSCO(광양제철)": "POSCO (Gwangyang Works)",
+  "POSCO E&C": "POSCO E&C",
+  "POS-M": "POS-M",
+  "POSMEC": "POSMEC",
+  "현대중공업": "Hyundai Heavy Industries",
+  "태창기계공업": "Taechang Machinery",
+  "동방플랜텍": "Dongbang Plantec",
+  "베스트엔": "Best N",
+  "노벨리스코리아": "Novelis Korea",
+  "두산인프라코어": "Doosan Infracore",
+  "금호타이어": "Kumho Tire",
+  "넥센타이어": "Nexen Tire",
+  "한국타이어": "Hankook Tire",
+  "현대성형기": "Hyundai Molding Machine",
+  "라인호": "Rhine-Ho",
+  "두산중장비주식회사": "Doosan Heavy Equipment",
+  "에버다임": "Everdigm",
+  "동양기전": "Dongyang Mechatronics",
+  "보쉬렉스로스코리아": "Bosch Rexroth Korea"
+ },
+ "siteContent": {
+  "greeting_body": "Since our founding in 1998, SAMICK H&P has led the domestic hydraulic and pneumatic cylinder field through continuous research and development, contributing greatly to factory automation. From ultra-small to ultra-large, we develop and manufacture cylinders exactly to the customer's application.\n\nSAMICK H&P cylinders deliver outstanding performance under any conditions. Every cylinder ships only after strict performance testing on the latest test equipment, guaranteeing high safety, durability and reliability. With carefully selected raw materials and a wide range of machining technologies, we devote ourselves to excellent products and never stop researching new production methods.\n\nUnder our management philosophy — quality first, substance in management, trust in transactions, harmony in the organization — every member of SAMICK H&P promises to do their best to be the company customers trust most.",
+  "org_structure": "CEO|Auditor|Technical Sales Team,Design Engineering Team,Production Management Team,Quality Management Team",
+  "company_name": "SAMICK H&P Co., Ltd.",
+  "address": "Block 28 Lot 6, Dalseong 2nd Industrial Complex, 852-5 Nae-ri, Guji-myeon, Dalseong-gun, Daegu, Korea",
+  "slogan_ko": "Change and challenge for the new creation of SAMICK H&P continue.",
+  "philosophy": "Quality first, substance in management, trust in transactions, harmony in the organization"
+ },
+ "specDict": {
+  "표면 경화강과 열처리 경도": "Surface-hardened steels and heat-treatment hardness",
+  "(단위 : ㎜ )": "(unit: mm)",
+  "(단위 : ㎜)": "(unit: mm)",
+  "(단위: ㎜)": "(unit: mm)",
+  "-10℃~80℃ (이 범위 외는별도상담)": "-10°C to 80°C (consult us outside this range)",
+  "1. 상기 스트로크는 한계 표준품으로 제작가능한 스트로크 한계이며,": "1. The above stroke is the limit manufacturable as a standard product;",
+  "2. 롯드의 좌굴은 별도로 계산하여 주십시요( 기술 자료 참조)": "2. Calculate rod buckling separately (see technical data).",
+  "3. 부하관성력에 의해 실린더내에 발생하는 충격압력은 허용내압력보다 작게하여 주십시요.": "3. Keep shock pressure generated in the cylinder by load inertia below the allowable proof pressure.",
+  "이 이상의 스트로크는 별도로 상담하여 주십시요.": "For longer strokes, please consult us separately.",
+  "100 이하": "100 or less",
+  "100 초과 250 이하": "over 100 up to 250",
+  "1000초과 1600 이하": "over 1,000 up to 1,600",
+  "1600 초과하는것": "over 1,600",
+  "250 초과 630 이하": "over 250 up to 630",
+  "630 초과 1000 이하": "over 630 up to 1,000",
+  "1산형, 2산형": "single-peak, double-peak",
+  "210 kgf/㎠ 이상의 고압실린더": "High-pressure cylinders above 210 kgf/㎠",
+  "300㎜/sec 이하": "300 mm/sec or less",
+  "3㎏f/㎠ (0.294MPa) 이하": "3 kgf/㎠ (0.294 MPa) or less",
+  "General Mineral Oil / 일반광물성 작동유": "General mineral oil",
+  "일반 광물성 작동유 (이외의 작동유는 별도상담)": "General mineral oil (consult us for other fluids)",
+  "KS 2급": "KS class 2",
+  "METAL 접합식": "Metal-bonded type",
+  "Ø200mm까지 (바깥튜브 내경기준)": "Up to Ø200 mm (based on outer tube bore)",
+  "고속 또는 저속작동 실린더": "High- or low-speed operation cylinders",
+  "관련 규격": "Related standards",
+  "구 분": "Category",
+  "구분": "Category",
+  "구조에 따라 결정": "Determined by structure",
+  "기타": "Others",
+  "나사 공차": "Thread tolerance",
+  "다단등속도 실린더": "Multi-stage constant-velocity cylinders",
+  "다단복동실린더(다기능도 가능함)": "Multi-stage double-acting cylinders (multi-function possible)",
+  "도장 색상": "Paint color",
+  "로크 너트": "Lock nut",
+  "롯드 및 튜브 특수재질(스테인레스 또는 열처리 등)": "Special rod and tube materials (stainless steel, heat treatment, etc.)",
+  "롯드 앤드": "Rod end",
+  "롯드앤드": "Rod end",
+  "특수 롯드앤드": "Special rod end",
+  "방진카버": "Dust cover",
+  "벨로우즈": "Bellows",
+  "부형식": "Mounting type",
+  "사 양": "Specification",
+  "사양": "Specification",
+  "사용 온도 범위": "Working temperature range",
+  "사용 최대 속도": "Maximum working speed",
+  "사용압력 / Working pressure": "Working pressure",
+  "사용온도범위/ the range of working temperature": "Working temperature range",
+  "센서수량 / Quantity of sensor": "Quantity of sensors",
+  "센서스위치 /Sensor swith": "Sensor switch",
+  "스 트 로 크": "Stroke",
+  "스트로크 1,000mm이상 (단, 좌굴강도 이하)": "Stroke over 1,000 mm (below buckling strength)",
+  "스트로크 2,000mm이상 (단, 좌굴강도 이하)": "Stroke over 2,000 mm (below buckling strength)",
+  "스트로크 2,500mm이상 (단, 좌굴강도 이하)": "Stroke over 2,500 mm (below buckling strength)",
+  "스트로크 한계 / Stroke limitation": "Stroke limitation",
+  "스트로크 한계": "Stroke limitation",
+  "스트로크 허용차": "Stroke tolerance",
+  "실린더 내경 / Cylinder bore": "Cylinder bore",
+  "실린더 내경(㎜)": "Cylinder bore (mm)",
+  "양롯드형": "Double-rod type",
+  "연관부품": "Related parts",
+  "요구사양에 따름": "Per required specification",
+  "적용 작동유": "Working fluid",
+  "적용작동유/ working fluid": "Working fluid",
+  "주)": "Note)",
+  "주문제작": "Custom manufacturing",
+  "지지": "Support",
+  "초고압 실린더(최대 700 kgf/㎠)": "Ultra-high-pressure cylinders (up to 700 kgf/㎠)",
+  "최고 사용 압력": "Maximum working pressure",
+  "최저 작동 압력": "Minimum operating pressure",
+  "커버류 및 지지부품 : 흑색, 튜브 : 연녹색": "Covers and supports: black; tube: light green",
+  "쿠션 방식": "Cushion type",
+  "쿠션 스트로크": "Cushion stroke",
+  "쿠션링 길이": "Cushion ring length",
+  "쿠션장치": "Cushion device",
+  "튜브 내경": "Tube bore",
+  "튜브 내경도금 및 특수도금": "Tube bore plating and special plating",
+  "특수 기능용 밸브 및 밸브 부착형판": "Valves for special functions and valve mounting plates",
+  "특수 쿠션장치": "Special cushion device",
+  "특수 지지사양": "Special mounting specification",
+  "특수재질 또는 특수용도 패킹": "Special material or special-purpose packing",
+  "특수형상 롯드끝단 형태": "Special rod-end shapes",
+  "특수형상의 롯드끝단 형상": "Special rod-end shapes",
+  "표준형": "Standard type",
+  "피스톤 속도 / Piston speed": "Piston speed",
+  "피스톤형 램실린더": "Piston-type ram cylinders",
+  "허 용 차 (A급)": "Tolerance (class A)",
+  "허용 내압력": "Allowable proof pressure",
+  "헤드측 쿠션장치": "Head-side cushion device",
+  "형 식": "Type",
+  "형식": "Type",
+  "B계열로드": "Series B rod",
+  "B계열롯드": "Series B rod",
+  "C계열로드": "Series C rod",
+  "C계열롯드": "Series C rod",
+  "재 질": "Material",
+  "탄 소 (%)": "Carbon (%)",
+  "경화깊이": "Hardening depth",
+  "용 도 및 특 징": "Applications and characteristics",
+  "침 탄 표 면 경 화": "Carburizing surface hardening",
+  "질 화 표 면 경 화": "Nitriding surface hardening",
+  "고주파 표 면 경 화": "Induction surface hardening",
+  "화 염 경 화": "Flame hardening",
+  "쇼 트 피이닝": "Shot peening",
+  "고주파": "Induction",
+  "화염": "Flame",
+  "탄소 함유량 0.25% 이하 분쇄 로울러, 크럿치 이면, 스프라켓 휠 캠, 축, 피스톤, 핀, 기어": "Carbon content 0.25% or less — crushing rollers, clutch backs, sprocket wheel cams, shafts, pistons, pins, gears",
+  "강력 기어 축류 압연": "Heavy-duty gears, shafts, rolling",
+  "Al, Cr : 질화 쉽게 하고 경도 높임": "Al, Cr: ease nitriding and raise hardness",
+  "Mo : 경화 깊이 깊게, 뜨임 취성 방지": "Mo: deepen hardening depth, prevent temper brittleness",
+  "열기관 실린더, 피스톤, 열간 압연 로울러, 핀 치차, 연료 분사 노즐, 다이스, 절삭공구": "Heat-engine cylinders, pistons, hot-rolling rollers, pin gears, fuel injection nozzles, dies, cutting tools",
+  "소형정,축, 핀 스쿠류 기어, 캠": "Small chisels, shafts, pins, screw gears, cams",
+  "대형 크랭크 축, 배드 미끄럼 면, 기어, 캠": "Large crankshafts, bed sliding surfaces, gears, cams",
+  "침 탄": "Carburizing",
+  "질 화": "Nitriding",
+  "표 면": "surface",
+  "경 화": "hardening",
+  "화 염": "Flame",
+  "쇼 트": "Shot",
+  "피이닝": "peening",
+  "가 공": "working",
+  "탄소 함유량 0.25% 이하": "Carbon content 0.25% or less",
+  "분쇄 로울러, 크럿치 이면, 스프라켓 휠": "Crushing rollers, clutch backs, sprocket wheels",
+  "캠, 축, 피스톤, 핀, 기어 SNCM 강력 기어": "Cams, shafts, pistons, pins, gears; SNCM heavy-duty gears",
+  "축류 압연": "shafts, rolling",
+  "열기관 실린더, 피스톤, 열간 압연 로울러, 핀": "Heat-engine cylinders, pistons, hot-rolling rollers, pins",
+  "치차, 연료 분사 노즐, 다이스, 절삭공구": "gears, fuel injection nozzles, dies, cutting tools",
+  "소형정,축, 핀 스쿠류": "Small chisels, shafts, pins, screws",
+  "기어, 캠": "gears, cams",
+  "스프링 (연삭, 쇼트 피이닝, 부루잉 에나멜)": "Springs (grinding, shot peening, bluing enamel)",
+  "대형 크랭크 축, 배드 미끄럼 면": "Large crankshafts, bed sliding surfaces"
+ }
+}

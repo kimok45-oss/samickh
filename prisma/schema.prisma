@@ -1,0 +1,199 @@
+// Prisma 7 스키마 — 삼익유공압(samickh). 모든 콘텐츠는 원본 사이트(samickh.co.kr) 수확본만 시드한다.
+// 정답지: C:\Users\kimok\Desktop\일정\samickh-clone (원문 파일)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  // Prisma 7: 연결 URL은 prisma.config.ts(CLI)와 런타임 어댑터(src/lib/db.ts)에서 지정 (P1012 방지)
+}
+
+// ── 게시판 (원본 board.php: notice·news·board1(tech)·board2(cad)·board3(pinfo)·free·qna) ──
+model Post {
+  id          Int          @id @default(autoincrement())
+  board       String // notice | news | tech | cad | pinfo | free | qna
+  slug        String // 안정 키: 원본 db-no (예: notice-2) — ASCII만
+  title       String
+  titleEn     String?
+  body        String // 정화된 HTML
+  bodyEn      String?
+  origNo      Int? // 원본 게시글 no
+  origDate    DateTime? // 원본 작성일
+  hits        Int          @default(0)
+  published   Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attachments Attachment[]
+
+  @@unique([board, slug])
+  @@index([board, published, origDate])
+}
+
+model Attachment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  fileName  String // 표시용 원본 파일명
+  storeName String // 저장 파일명(난수)
+  mime      String
+  size      Int
+  missing   Boolean  @default(false) // 원본 서버 소실(CAD zip 5건) — 파일 없음 표시용
+  createdAt DateTime @default(now())
+}
+
+// ── 제품(제품소개 게시판 13건: 치수표·사양) ──
+model Product {
+  id        Int            @id @default(autoincrement())
+  slug      String         @unique // 안정 키 ASCII (예: ss70h-spec, dim-la)
+  category  Int // 1 표준 유압실린더 | 2 제철용 강력 실린더 | 3 공압 실린더
+  title     String
+  titleEn   String?
+  body      String // 스펙표 HTML(EUC-KR 디코딩 정화본)
+  bodyEn    String?
+  sortOrder Int            @default(0)
+  published Boolean        @default(true)
+  images    ProductImage[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  path      String
+  alt       String?
+  sortOrder Int     @default(0)
+}
+
+// ── 사업분야 10계열 (content.php 10p) ──
+model Series {
+  id         Int           @id @default(autoincrement())
+  slug       String        @unique
+  name       String // 표준보급형 유압실린더
+  nameEn     String? // MEDIUM DUTY HYDRAULIC CYLINDER (원문 표기)
+  seriesCode String // "SS 70H, SS 140H"
+  kind       String // hydraulic | pneumatic
+  intro      String // 원문 소개 문단
+  introEn    String?
+  specHtml   String // 원문 스펙표 HTML
+  specHtmlEn String?
+  features   String? // 특징/특수사양 리스트(원문)
+  featuresEn String?
+  sortOrder  Int           @default(0)
+  published  Boolean       @default(true)
+  images     SeriesImage[]
+  updatedAt  DateTime      @updatedAt
+}
+
+model SeriesImage {
+  id        Int     @id @default(autoincrement())
+  seriesId  Int
+  series    Series  @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+  path      String
+  alt       String?
+  sortOrder Int     @default(0)
+}
+
+// ── 주문방법(컨피규레이터) 데이터 — 카탈로그 p.11 "실린더 주문방법" 원문 ──
+model BoreRod {
+  id        Int    @id @default(autoincrement())
+  code      String @unique // 호칭경 "040"
+  bore      Float // 튜브내경 mm
+  rodB      Float // B계열 로드경 mm
+  rodC      Float // C계열 로드경 mm
+  sortOrder Int    @default(0)
+}
+
+model Mounting {
+  id        Int     @id @default(autoincrement())
+  code      String  @unique // LA, LB, FA, FC, FB, FD, CA, CB, TA, TC
+  name      String // 축직각방향 푸트형
+  nameEn    String? // Perpendicular foot type
+  sortOrder Int     @default(0)
+}
+
+// ── 연혁 (history.php 15건) ──
+model History {
+  id        Int     @id @default(autoincrement())
+  year      Int
+  text      String
+  textEn    String?
+  sortOrder Int     @default(0)
+}
+
+// ── 주요거래업체 (company_img10 판독 20사) ──
+model Client {
+  id        Int     @id @default(autoincrement())
+  group     String // posco | steel-plant | machine | construction
+  name      String
+  nameEn    String?
+  sortOrder Int     @default(0)
+}
+
+// ── 문의/견적 (원본 estimate.php 견적요청 필드 구성) ──
+model Inquiry {
+  id        Int      @id @default(autoincrement())
+  kind      String // inquiry | quote
+  company   String?
+  name      String
+  phone     String?
+  mobile    String?
+  address   String?
+  email     String?
+  message   String
+  fileName  String? // 업로드 원본명
+  storeName String? // 저장명(공개 디렉터리 밖)
+  ip        String? // 해시 저장
+  createdAt DateTime @default(now())
+}
+
+// ── FAQ (원본에 없음 — 관리자 작성 전까지 공개면 숨김) ──
+model Faq {
+  id         Int     @id @default(autoincrement())
+  question   String
+  questionEn String?
+  answer     String
+  answerEn   String?
+  sortOrder  Int     @default(0)
+  published  Boolean @default(true)
+}
+
+// ── SiteContent key-value CMS (인사말·조직·연락처·주소·좌표·정책 등 공개면 문구) ──
+model SiteContent {
+  id        Int     @id @default(autoincrement())
+  key       String  @unique
+  value     String
+  valueEn   String?
+  group     String  @default("general")
+  label     String  @default("")
+  multiline Boolean @default(false)
+  sortOrder Int     @default(0)
+}
+
+// ── 방문분석 (PII-free) ──
+model PageView {
+  id        Int      @id @default(autoincrement())
+  path      String
+  referrer  String?
+  device    String? // mobile | desktop
+  lang      String?
+  visitorId String? // 일별 솔티드 해시
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+}
+
+// ── 감사 로그 ──
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  entity    String
+  entityId  String?
+  detail    String?
+  createdAt DateTime @default(now())
+}

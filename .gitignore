@@ -1,0 +1,27 @@
+# prisma (생성된 클라이언트 + 로컬 sqlite db)
+/src/generated
+/prisma/*.db
+/prisma/*.db-journal
+
+# env files (secrets) — 값은 커밋 금지, .env.example(키 이름만)만 커밋
+.env*
+!.env.example
+
+# 견적요청 첨부(PII 가능) — 공개 밖 저장소(var/uploads), 절대 커밋 금지
+/var/
+
+# 관리자 런타임 업로드(운영 데이터 — 리포에 포함하지 않음)
+/public/uploads/attach/admin/
+/public/uploads/products/
+/public/uploads/series/
+
+# node / next 빌드 산출물
+/node_modules
+/.next
+/out
+*.tsbuildinfo
+next-env.d.ts
+
+# OS
+.DS_Store
+Thumbs.db
