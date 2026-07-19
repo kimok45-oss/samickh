@@ -7,7 +7,6 @@ import { getContents } from "@/lib/content";
 import { fmtDate } from "@/lib/date";
 import { Reveal } from "@/components/motion/motion-primitives";
 import SeriesLedger from "@/components/home/SeriesLedger";
-import HeroCarousel from "@/components/home/HeroCarousel";
 import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -23,7 +22,7 @@ const T = {
     heroHead2: "전문 제조",
     heroSub: "초소형에서 초대형에 이르기까지, 고객이 원하는 용도대로 개발·제작합니다.",
     heroFact: "보어 Ø40 – Ø800 · 행정 2,000mm · 1987년부터",
-    heroCaption: "유압·공압 실린더 — 삼익유공압",
+    heroCaption: "실린더 내경 13단 Ø40–Ø250 · 특주 Ø800 — 카탈로그 실측", 
     ctaProducts: "제품 보기",
     ctaQuote: "견적요청",
     s2Head: "실린더 10계열",
@@ -52,7 +51,7 @@ const T = {
     heroHead2: "Cylinder Manufacturer",
     heroSub: "From the smallest to the largest — developed and built to the customer's exact use.",
     heroFact: "Bore Ø40 – Ø800 · Stroke 2,000mm · Since 1987",
-    heroCaption: "Hydraulic & pneumatic cylinders — SAMICK H&P",
+    heroCaption: "13 bore sizes Ø40–Ø250 · custom to Ø800 — from the catalog",
     ctaProducts: "View Products",
     ctaQuote: "Request a Quote",
     s2Head: "10 Cylinder Series",
@@ -81,14 +80,60 @@ const T = {
 // S4: 연혁 14건 중 제작/개발/등록(공급) 실적만 — 원문 문구 기준 키워드
 const RECORD_RE = /제작|개발|등록|공급/;
 
-// 히어로 슬라이드 사진 — 여러 실린더 사진을 크로스페이드로 순환(HeroCarousel).
-// ⚠ 교체: DSLR/Envato 고해상 사진을 public/uploads/hero/ 에 넣고 아래 배열 src만 바꾸면 된다.
-//    (현재는 회수한 실물 제품 사진 보정본 임시 사용 — 저해상이라 최종 교체 권장)
-const HERO_SLIDES = [
-  { src: "/uploads/hero/cyl-1.jpg", cap: { ko: "표준 유압실린더 — 삼익유공압", en: "Standard hydraulic cylinder — SAMICK H&P" } },
-  { src: "/uploads/hero/cyl-2.jpg", cap: { ko: "유압실린더 출하 검사", en: "Hydraulic cylinder — shipping inspection" } },
-  { src: "/uploads/hero/cyl-3.jpg", cap: { ko: "대형 램형 유압실린더", en: "Large ram-type hydraulic cylinder" } },
-] as const;
+/** 히어로 비주얼 — 보어 스펙트럼(추상, 데이터 실측).
+ *  실린더 내경 13단(Ø40~Ø250 — 카탈로그 p.11 원문)을 실제 지름 비율의 원으로 그리고,
+ *  특주 대구경(램형 Ø800)은 화면을 넘는 점선 호로 암시 — 원본 슬로건
+ *  "orders from small items to large ones"의 시각화. 장식 아닌 실측 도해. */
+const BORES = [40, 50, 63, 80, 100, 125, 140, 150, 160, 180, 200, 224, 250];
+function BoreSpectrum() {
+  const SC = 0.66; // mm → px
+  const F = 0.58; // 인접 원 중심 간격 계수(겹침 리듬)
+  const BASE = 272; // 기준선 y(원들이 바닥에 접함 — 보어 게이지)
+  let x = 28 + (BORES[0] * SC) / 2;
+  const circles = BORES.map((d, i) => {
+    const r = (d * SC) / 2;
+    if (i > 0) x += F * ((BORES[i - 1] * SC) / 2 + r);
+    return { d, r, cx: x, cy: BASE - r };
+  });
+  const R800 = (800 * SC) / 2;
+  return (
+    <svg viewBox="0 0 780 320" fill="none" aria-hidden className="h-auto w-full">
+      {/* 기준선 */}
+      <line x1="16" y1={BASE} x2="764" y2={BASE} stroke="#c6cbc9" strokeWidth="1" />
+      {/* 보어 13단 — 실제 지름 비율 */}
+      {circles.map((c, i) => (
+        <circle
+          key={c.d}
+          cx={c.cx}
+          cy={c.cy}
+          r={c.r}
+          stroke="#565d64"
+          strokeOpacity={0.35 + 0.55 * (i / (circles.length - 1))}
+          strokeWidth={1.4}
+          pathLength={100}
+          className="bore-draw"
+          style={{ animationDelay: `${0.15 + i * 0.07}s` }}
+        />
+      ))}
+      {/* 특주 Ø800 — 화면을 넘는 점선 호(레드 그래픽 전용) */}
+      <circle
+        cx={828}
+        cy={BASE - R800}
+        r={R800}
+        stroke="#b23517"
+        strokeWidth="1.6"
+        strokeDasharray="7 7"
+        className="bore-fade"
+        style={{ animationDelay: "1.2s" }}
+      />
+      {/* 치수 라벨(모노) */}
+      <text x={circles[0].cx} y={BASE + 22} textAnchor="middle" fontSize="12" fill="#565d64" fontFamily="var(--font-mono)">Ø40</text>
+      <text x={circles[4].cx} y={BASE + 22} textAnchor="middle" fontSize="12" fill="#565d64" fontFamily="var(--font-mono)">Ø100</text>
+      <text x={circles[12].cx} y={BASE + 22} textAnchor="middle" fontSize="12" fill="#565d64" fontFamily="var(--font-mono)">Ø250</text>
+      <text x={706} y={44} fontSize="12" fill="#565d64" fontFamily="var(--font-mono)">Ø800</text>
+    </svg>
+  );
+}
 
 export default async function HomePage() {
   const lang = await getLang();
@@ -148,7 +193,10 @@ export default async function HomePage() {
           </div>
         </div>
         <Reveal className="hidden md:block">
-          <HeroCarousel slides={HERO_SLIDES.map((sl) => ({ src: sl.src, caption: sl.cap[lang] }))} />
+          <figure>
+            <BoreSpectrum />
+            <figcaption className="mt-1 font-mono text-[10.5px] tracking-[0.08em] text-ink-faint">{t.heroCaption}</figcaption>
+          </figure>
         </Reveal>
       </section>
 

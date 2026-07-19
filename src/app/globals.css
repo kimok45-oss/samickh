@@ -161,3 +161,11 @@ html.lang-in .lang-fade { opacity: 1; transform: none; transition: opacity 0.3s 
   .acc[open] > summary .acc-plus { transition: none; }
 }
 
+
+/* ── 보어 스펙트럼 — 원 1회 드로잉(스태거, 무한반복 아님) ── */
+.bore-draw { stroke-dasharray: 100; stroke-dashoffset: 100; animation: bore-draw-in 0.9s ease-out forwards; }
+@keyframes bore-draw-in { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .bore-draw { animation: none; stroke-dashoffset: 0; } }
+.bore-fade { opacity: 0; animation: bore-fade-in 0.8s ease-out forwards; }
+@keyframes bore-fade-in { to { opacity: 0.85; } }
+@media (prefers-reduced-motion: reduce) { .bore-fade { animation: none; opacity: 0.85; } }
