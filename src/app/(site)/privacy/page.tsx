@@ -1,14 +1,11 @@
 // /privacy — 개인정보처리방침. 표준 조문 틀 + 보호책임자/시행일은 SiteContent(빈 값 → "[회사 확인 후 기재]").
 // noindex + robots.ts 차단(계약 §SEO). 수집 항목은 이 사이트의 실제 폼(문의/견적) 기준으로만 기술.
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
 
-export const metadata = pageMetadata({
-  title: "개인정보처리방침",
-  path: "/privacy",
-  noIndex: true,
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "개인정보처리방침", titleEn: "Privacy Policy", descEn: "Privacy policy of SAMICK H&P.", path: "/privacy", noIndex: true });
 
 const PENDING = { ko: "[회사 확인 후 기재]", en: "[To be confirmed by the company]" };
 

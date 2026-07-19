@@ -1,14 +1,11 @@
 // 사업분야 인덱스 — 실린더 10계열 원장(카드 그리드 금지).
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import SeriesLedger from "@/components/home/SeriesLedger";
 
-export const metadata = pageMetadata({
-  title: "사업분야",
-  description: "삼익유공압주식회사 사업분야 — 표준보급형부터 대형 램형까지 유압 8계열·공압 2계열.",
-  path: "/business",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "사업분야", titleEn: "Business", descKo: "삼익유공압주식회사 사업분야 — 표준보급형부터 대형 램형까지 유압 8계열·공압 2계열.", descEn: "Ten cylinder series - standard, lead-switch, position control, MILL type, vehicle, telescopic, ram and pneumatic.", path: "/business" });
 
 export default async function BusinessIndexPage() {
   const lang = await getLang();

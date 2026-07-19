@@ -106,3 +106,40 @@ export function pageMetadata(input: PageMetaInput): Metadata {
     },
   };
 }
+
+/* ── 언어 인식 메타데이터(쿠키 i18n) — EN 페이지에 한국어 title/desc가 남지 않게 ──
+   정적 페이지: export const generateMetadata = () => pageMetadataI18n({...})
+   동적 페이지: generateMetadata 안에서 호출(titleKo/titleEn에 DB *En 값 전달) */
+import { getLang } from "@/lib/lang";
+
+const SITE_DESC_EN =
+  "SAMICK H&P — hydraulic & pneumatic cylinder manufacturer since 1987 (spun off 1998). Bore Ø40–Ø800, stroke up to 2,000 mm, from standard to steel-mill and vehicle cylinders.";
+const SUFFIX = { ko: "삼익유공압주식회사", en: "SAMICK H&P" } as const;
+
+export async function pageMetadataI18n(input: {
+  titleKo: string;
+  titleEn: string;
+  descKo?: string;
+  descEn?: string;
+  path: string;
+  image?: string;
+  noIndex?: boolean;
+  type?: "website" | "article";
+  publishedTime?: string;
+}): Promise<Metadata> {
+  const lang = await getLang();
+  const title = lang === "en" ? input.titleEn : input.titleKo;
+  const desc = lang === "en" ? (input.descEn ?? SITE_DESC_EN) : (input.descKo ?? SITE.description);
+  const md = pageMetadata({
+    title,
+    description: desc,
+    path: input.path,
+    image: input.image,
+    noIndex: input.noIndex,
+    type: input.type,
+    publishedTime: input.publishedTime,
+  });
+  // titleTemplate(한국어 접미)을 우회 — 언어별 절대 타이틀
+  md.title = { absolute: `${title} | ${SUFFIX[lang]}` };
+  return md;
+}

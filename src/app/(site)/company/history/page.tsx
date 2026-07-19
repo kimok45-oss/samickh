@@ -1,14 +1,11 @@
 // 회사연혁 — DB History 14건 전량, 연도 원장(같은 연도는 연도를 한 번만 표기).
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { Reveal } from "@/components/motion/motion-primitives";
 
-export const metadata = pageMetadata({
-  title: "회사연혁",
-  description: "삼익유공압주식회사 연혁 — 1987년 유공압 실린더 제작 판매 개시부터의 기록.",
-  path: "/company/history",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "회사연혁", titleEn: "History", descKo: "삼익유공압주식회사 연혁 — 1987년 유공압 실린더 제작 판매 개시부터의 기록.", descEn: "Company history since 1987 - POSCO Grade-A supplier registration, plant expansions and product development.", path: "/company/history" });
 
 export default async function HistoryPage() {
   const lang = await getLang();

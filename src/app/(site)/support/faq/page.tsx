@@ -1,16 +1,13 @@
 // /support/faq — FAQ. 원문에 FAQ 없음(0건): 공개 항목 0건이면 "준비 중"이 아니라 **notFound()**.
 // (진입로 숨김은 support/layout·GNB·sitemap이 담당 — 계약 §콘텐츠 단일 소유권)
 import { notFound } from "next/navigation";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { getPublishedFaqs } from "@/lib/board";
 import FaqAccordion from "@/components/faq/FaqAccordion";
 
-export const metadata = pageMetadata({
-  title: "자주 묻는 질문",
-  description: "삼익유공압주식회사 자주 묻는 질문.",
-  path: "/support/faq",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "자주 묻는 질문", titleEn: "FAQ", descKo: "삼익유공압주식회사 자주 묻는 질문.", descEn: "Frequently asked questions.", path: "/support/faq" });
 
 export default async function FaqPage() {
   const faqs = await getPublishedFaqs();

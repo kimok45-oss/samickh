@@ -1,13 +1,10 @@
 // /terms — 이용약관(홈페이지 이용 일반 약관 — 표준 조문). noindex + robots 차단.
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { getContent } from "@/lib/content";
 
-export const metadata = pageMetadata({
-  title: "이용약관",
-  path: "/terms",
-  noIndex: true,
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "이용약관", titleEn: "Terms of Use", descEn: "Terms of use of the SAMICK H&P website.", path: "/terms", noIndex: true });
 
 export default async function TermsPage() {
   const lang = await getLang();

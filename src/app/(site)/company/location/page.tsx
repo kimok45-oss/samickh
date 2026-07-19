@@ -2,14 +2,11 @@
 // WorksiteSection: 약도 클릭 → 네이버/카카오 길찾기 딥링크(키 불필요). 좌표는 원문 부재 → 주소 검색 폴백.
 import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { WorksiteSection } from "@/components/location/WorksiteSection";
 
-export const metadata = pageMetadata({
-  title: "찾아오시는길",
-  description: "삼익유공압주식회사 오시는 길 — 대구광역시 달성군 구지면 달성2차산업단지.",
-  path: "/company/location",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "찾아오시는길", titleEn: "Location", descKo: "삼익유공압주식회사 오시는 길 — 대구광역시 달성군 구지면 달성2차산업단지.", descEn: "Directions to SAMICK H&P - Dalseong 2nd Industrial Complex, Guji-myeon, Dalseong-gun, Daegu, Korea.", path: "/company/location" });
 
 export default async function LocationPage() {
   const lang = await getLang();

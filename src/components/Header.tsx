@@ -97,21 +97,21 @@ export default function Header({ lang }: { lang: Lang }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg/92 backdrop-blur-md">
-      <div className="mx-auto grid h-16 max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-4 px-5 md:px-8">
+      <div className="mx-auto grid h-[68px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-4 px-5 md:px-8">
         {/* 좌: 로고(원본 CI 이미지 이식 — samickh.co.kr /images/common/logo.gif) */}
         <Link href="/" className="flex items-center" aria-label={lang === "ko" ? "삼익유공압주식회사 홈" : "SAMICK H&P home"}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/uploads/orig/brand/logo.png"
             alt={lang === "ko" ? "삼익유공압주식회사 SAMICK H&P" : "SAMICK H&P"}
-            width={243}
-            height={67}
-            className="h-9 w-auto sm:h-10"
+            width={231}
+            height={47}
+            className="h-10 w-auto sm:h-11"
           />
         </Link>
 
         {/* 중앙: GNB (데스크톱) */}
-        <nav aria-label={lang === "ko" ? "주요 메뉴" : "Main menu"} className="hidden justify-center lg:flex">
+        <nav aria-label={lang === "ko" ? "주요 메뉴" : "Main menu"} className="hidden justify-center md:flex">
           <ul className="flex items-center">
             {NAV.map((g) => (
               <li key={g.href} className="group relative">
@@ -152,10 +152,10 @@ export default function Header({ lang }: { lang: Lang }) {
             ))}
           </ul>
         </nav>
-        <div className="lg:hidden" />
+        <div className="md:hidden" />
 
         {/* 우: 유틸 — 언어 토글 + 견적요청 CTA(레드 배경 = CTA 전용 허용) */}
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center justify-end gap-3 sm:gap-4">
           <LangToggle lang={lang} />
           <Link
             href="/support/quote"
@@ -166,7 +166,7 @@ export default function Header({ lang }: { lang: Lang }) {
           {/* 모바일 햄버거 */}
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center"
             aria-expanded={open}
             aria-controls="mobile-drawer"
             aria-label={lang === "ko" ? (open ? "메뉴 닫기" : "메뉴 열기") : open ? "Close menu" : "Open menu"}

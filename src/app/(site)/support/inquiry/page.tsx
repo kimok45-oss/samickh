@@ -1,15 +1,12 @@
 // /support/inquiry — 온라인문의(원문은 폼 미구성 빈 페이지 → 표준 문의폼으로 구성, 계약 §8).
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
 import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonld";
 import InquiryForm from "@/components/inquiry/InquiryForm";
 
-export const metadata = pageMetadata({
-  title: "온라인문의",
-  description: "삼익유공압주식회사 온라인문의 — 유압·공압 실린더 관련 문의를 접수합니다.",
-  path: "/support/inquiry",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "온라인문의", titleEn: "Inquiry", descKo: "삼익유공압주식회사 온라인문의 — 유압·공압 실린더 관련 문의를 접수합니다.", descEn: "Online inquiry to SAMICK H&P.", path: "/support/inquiry" });
 
 export default async function InquiryPage() {
   const lang = await getLang();

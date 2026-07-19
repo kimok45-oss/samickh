@@ -2,14 +2,11 @@
 // 원문 본문은 로고 이미지 뒤에 "는 …"으로 이어지던 문장 — 렌더 시 회사명을 앞에 복원한다(원문 불변).
 import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { Reveal } from "@/components/motion/motion-primitives";
 
-export const metadata = pageMetadata({
-  title: "인사말",
-  description: "삼익유공압주식회사 인사말 — 1998년 설립 이후 유공압 실린더 분야의 연구개발.",
-  path: "/company/greeting",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "인사말", titleEn: "Greeting", descKo: "삼익유공압주식회사 인사말 — 1998년 설립 이후 유공압 실린더 분야의 연구개발.", descEn: "CEO greeting from SAMICK H&P, a hydraulic & pneumatic cylinder manufacturer since 1998.", path: "/company/greeting" });
 
 export default async function GreetingPage() {
   const lang = await getLang();

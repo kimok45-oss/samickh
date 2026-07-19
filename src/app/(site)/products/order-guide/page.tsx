@@ -3,16 +3,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { Reveal } from "@/components/motion/motion-primitives";
 import MountingIcon from "@/components/home/MountingIcon";
 import OrderStation from "@/components/configurator/OrderStation";
 
-export const metadata = pageMetadata({
-  title: "실린더 주문방법",
-  description: "삼익유공압 실린더 주문방법 — 형번 10슬롯(패킹재질·지지부형식·내경·롯드계열·스트로크·쿠션 외) 도해.",
-  path: "/products/order-guide",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "실린더 주문방법", titleEn: "How to Order", descKo: "삼익유공압 실린더 주문방법 — 형번 10슬롯(패킹재질·지지부형식·내경·롯드계열·스트로크·쿠션 외) 도해.", descEn: "Cylinder ordering method - model code with packing, mounting, bore, rod series, stroke and cushion options.", path: "/products/order-guide" });
 
 const SERIES_STACK = ["SS 70H", "SS 70HL", "SS 140H", "SS 140HL"];
 

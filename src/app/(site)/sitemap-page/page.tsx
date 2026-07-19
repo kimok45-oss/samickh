@@ -1,14 +1,11 @@
 // /sitemap-page — HTML 사이트맵(원본 유틸 sitemap.php 대응). FAQ는 공개 1건 이상일 때만 노출.
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { prisma } from "@/lib/db";
 
-export const metadata = pageMetadata({
-  title: "사이트맵",
-  description: "삼익유공압주식회사 홈페이지 전체 메뉴.",
-  path: "/sitemap-page",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "사이트맵", titleEn: "Sitemap", descKo: "삼익유공압주식회사 홈페이지 전체 메뉴.", descEn: "All menus of the SAMICK H&P website.", path: "/sitemap-page" });
 
 export default async function SitemapPage() {
   const lang = await getLang();

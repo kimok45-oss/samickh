@@ -1,14 +1,11 @@
 // /support/quote — 견적요청(원문 estimate.php 필드 구성 그대로).
 // `?code=` 쿼리로 형번 프리필(주문방법/제품에서 진입) — 허용 문자만 통과시켜 삽입.
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import QuoteForm from "@/components/inquiry/QuoteForm";
 
-export const metadata = pageMetadata({
-  title: "견적요청",
-  description: "삼익유공압주식회사 견적요청 — 형번·사양·도면을 첨부해 견적을 요청하세요.",
-  path: "/support/quote",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "견적요청", titleEn: "Request a Quote", descKo: "삼익유공압주식회사 견적요청 — 형번·사양·도면을 첨부해 견적을 요청하세요.", descEn: "Request a quote - bore, stroke, mounting and model code.", path: "/support/quote" });
 
 /** `?code=` 정화 — 형번에 쓰이는 문자만 허용(XSS/조작 차단), 그 외는 무시 */
 function safeCode(raw: string | undefined): string {

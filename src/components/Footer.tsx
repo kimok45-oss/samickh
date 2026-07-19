@@ -55,9 +55,9 @@ export default function Footer({ lang, info }: { lang: Lang; info: FooterInfo })
             <img
               src="/uploads/orig/brand/logo.png"
               alt={lang === "ko" ? "삼익유공압주식회사 SAMICK H&P" : "SAMICK H&P"}
-              width={243}
-              height={67}
-              className="h-9 w-auto"
+              width={231}
+              height={47}
+              className="h-10 w-auto"
             />
             <div className="mt-3 text-[13px] text-ink-dim">
               {lang === "en" && info.companyNameEn ? info.companyNameEn : info.companyName}

@@ -2,14 +2,11 @@
 // 원문: company_img11 판독(대표이사 — 감사 / 4팀).
 import { getLang } from "@/lib/lang";
 import { getContent } from "@/lib/content";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { Reveal } from "@/components/motion/motion-primitives";
 
-export const metadata = pageMetadata({
-  title: "조직현황",
-  description: "삼익유공압주식회사 조직현황 — 대표이사·감사·4팀 체제.",
-  path: "/company/organization",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "조직현황", titleEn: "Organization", descKo: "삼익유공압주식회사 조직현황 — 대표이사·감사·4팀 체제.", descEn: "Organization of SAMICK H&P - technical sales, design engineering, production and quality management teams.", path: "/company/organization" });
 
 // 팀명 영문(UI 라벨 번역 — DB 원문은 ko)
 const TEAM_EN: Record<string, string> = {

@@ -4,17 +4,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { LegacyPlate, extractSpecTable } from "@/components/LegacyHtml";
 import { Reveal } from "@/components/motion/motion-primitives";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const s = await prisma.series.findUnique({ where: { slug }, select: { name: true, seriesCode: true } });
-  if (!s) return pageMetadata({ title: "사업분야", path: `/business/${slug}`, noIndex: true });
-  return pageMetadata({
-    title: `${s.name} (${s.seriesCode})`,
-    description: `삼익유공압 ${s.name} — ${s.seriesCode} 시리즈 구조·특수사양·기본사양.`,
+  const s = await prisma.series.findUnique({ where: { slug }, select: { name: true, nameEn: true, seriesCode: true } });
+  if (!s) return pageMetadataI18n({ titleKo: "사업분야", titleEn: "Business", path: `/business/${slug}`, noIndex: true });
+  return pageMetadataI18n({
+    titleKo: `${s.name} (${s.seriesCode})`,
+    titleEn: `${s.nameEn ?? s.name} (${s.seriesCode})`,
+    descEn: `${s.nameEn ?? s.name} - ${s.seriesCode} series structure, options and specifications.`,
+    descKo: `삼익유공압 ${s.name} — ${s.seriesCode} 시리즈 구조·특수사양·기본사양.`,
     path: `/business/${slug}`,
   });
 }
@@ -56,6 +58,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
   const chart = s.images.find((i) => i.sortOrder === 2)?.path ?? null; // _3: 장착/도식
 
   const L = (ko: string, en: string) => (lang === "en" ? en : ko);
+  const dispName = lang === "en" && s.nameEn ? s.nameEn : s.name;
 
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-24 md:px-8 md:pb-32">
@@ -85,7 +88,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
           <figure className="hidden sm:block">
             <div className="h-24 w-40 overflow-hidden border border-line bg-bg-panel">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={banner} alt={s.name} className="h-full w-full object-cover object-right" />
+              <img src={banner} alt={dispName} className="h-full w-full object-cover object-right" />
             </div>
             <figcaption className="mt-1.5 font-mono text-[9.5px] text-ink-faint">{L("원본 자산", "Original asset")}</figcaption>
           </figure>
@@ -102,7 +105,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
           <figure className="mt-8">
             <div className="overflow-x-auto border border-line bg-paper p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={drawing} alt={`${s.name} — ${L("외형 도면", "outline drawing")}`} className="mx-auto max-w-none sm:max-w-full" />
+              <img src={drawing} alt={`${dispName} — ${L("외형 도면", "outline drawing")}`} className="mx-auto max-w-none sm:max-w-full" />
             </div>
             <figcaption className="mt-2 font-mono text-[10.5px] text-ink-faint">
               {L("외형 도면 — 원본 자산", "Outline drawing — original asset")}
@@ -145,7 +148,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
           <figure className="mt-4">
             <div className="overflow-x-auto border border-line bg-paper p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={chart} alt={`${s.name} — ${L("도식", "diagram")}`} className="mx-auto max-w-none sm:max-w-full" />
+              <img src={chart} alt={`${dispName} — ${L("도식", "diagram")}`} className="mx-auto max-w-none sm:max-w-full" />
             </div>
             <figcaption className="mt-2 font-mono text-[10.5px] text-ink-faint">
               {L("원본 도식 자산", "Original diagram asset")}

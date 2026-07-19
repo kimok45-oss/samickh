@@ -3,14 +3,11 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { LegacyPlate } from "@/components/LegacyHtml";
 
-export const metadata = pageMetadata({
-  title: "제품소개",
-  description: "삼익유공압 제품소개 — SS70H/SS140H 사양과 장착형식별 외형치수표, 제철용 강력 실린더.",
-  path: "/products",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "제품소개", titleEn: "Products", descKo: "삼익유공압 제품소개 — SS70H/SS140H 사양과 장착형식별 외형치수표, 제철용 강력 실린더.", descEn: "Dimension tables and specifications - SS70H/SS140H series and steel-mill cylinders.", path: "/products" });
 
 // 원문 카테고리 명칭
 const CATS: { id: number; ko: string; en: string }[] = [

@@ -8,13 +8,10 @@ import { fmtDate } from "@/lib/date";
 import { Reveal } from "@/components/motion/motion-primitives";
 import SeriesLedger from "@/components/home/SeriesLedger";
 import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 
-export const metadata = pageMetadata({
-  title: "유압·공압 실린더 제조",
-  description: "유압·공압 실린더 전문 제조 — 보어 Ø40~Ø800, 행정 2,000mm. 표준부터 제철용·차량용까지 10계열.",
-  path: "/",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "유압·공압 실린더 제조", titleEn: "Hydraulic & Pneumatic Cylinder Manufacturer", descKo: "유압·공압 실린더 전문 제조 — 보어 Ø40~Ø800, 행정 2,000mm. 표준부터 제철용·차량용까지 10계열.", descEn: "Hydraulic and pneumatic cylinders - bore O40-O800, stroke up to 2,000 mm. Ten series from standard to steel-mill and vehicle types.", path: "/" });
 
 const T = {
   ko: {

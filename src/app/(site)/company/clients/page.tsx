@@ -1,14 +1,11 @@
 // 주요거래업체 — DB Client 4그룹 20사. 그룹 라벨은 원문 명칭(company_img10 "SAMICK H&P 주요거래업체").
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { Reveal } from "@/components/motion/motion-primitives";
 
-export const metadata = pageMetadata({
-  title: "주요거래업체",
-  description: "삼익유공압주식회사 주요거래업체 — POSCO 관련·제철설비·공작기계·건설 중장비 4개 분야.",
-  path: "/company/clients",
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "주요거래업체", titleEn: "Clients", descKo: "삼익유공압주식회사 주요거래업체 — POSCO 관련·제철설비·공작기계·건설 중장비 4개 분야.", descEn: "Major clients across POSCO, steel-plant equipment, machine tools and construction equipment.", path: "/company/clients" });
 
 // 원문 그룹 명칭 그대로(순서 포함)
 const GROUPS: { key: string; ko: string; en: string }[] = [

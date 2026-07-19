@@ -1,13 +1,10 @@
 // /email-policy — 이메일무단수집거부(정보통신망법 제50조의2 표준 고지). noindex + robots 차단.
-import { pageMetadata } from "@/lib/seo/metadata";
+import { pageMetadataI18n } from "@/lib/seo/metadata";
 import { getLang } from "@/lib/lang";
 import { getContent } from "@/lib/content";
 
-export const metadata = pageMetadata({
-  title: "이메일무단수집거부",
-  path: "/email-policy",
-  noIndex: true,
-});
+export const generateMetadata = () =>
+  pageMetadataI18n({ titleKo: "이메일무단수집거부", titleEn: "Email Collection Policy", descEn: "Rejection of unauthorized email address collection.", path: "/email-policy", noIndex: true });
 
 export default async function EmailPolicyPage() {
   const lang = await getLang();
