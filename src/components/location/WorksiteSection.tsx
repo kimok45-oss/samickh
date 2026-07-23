@@ -38,7 +38,24 @@ export function WorksiteSection({
       </h2>
 
       {multi && (
-        <div role="tablist" aria-label={heading} className="mt-7 flex flex-wrap gap-2">
+        <div
+          role="tablist"
+          aria-label={heading}
+          className="mt-7 flex flex-wrap gap-2"
+          onKeyDown={(e) => {
+            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") return;
+            e.preventDefault();
+            const last = sites.length - 1;
+            let next = active;
+            if (e.key === "ArrowRight") next = active === last ? 0 : active + 1;
+            else if (e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
+            else if (e.key === "Home") next = 0;
+            else if (e.key === "End") next = last;
+            setActive(next);
+            const el = e.currentTarget.querySelector<HTMLButtonElement>(`#ws-tab-${sites[next].key}`);
+            el?.focus();
+          }}
+        >
           {sites.map((s, i) => (
             <button
               key={s.key}
@@ -46,6 +63,7 @@ export function WorksiteSection({
               id={`ws-tab-${s.key}`}
               aria-selected={i === active}
               aria-controls={`ws-panel-${s.key}`}
+              tabIndex={i === active ? 0 : -1}
               onClick={() => setActive(i)}
               className="rounded-full border px-4 py-1.5 text-[13px] font-medium transition-colors"
               style={

@@ -54,7 +54,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
             activeCat === 0 ? "border-ink bg-ink text-bg" : "border-line text-ink-dim hover:border-ink-faint hover:text-ink"
           }`}
         >
-          {lang === "en" ? "All" : "전체"} <span className="tnum font-mono text-[11px] opacity-70">{all.length}</span>
+          {lang === "en" ? "All" : "전체"} <span className="tnum font-mono text-[11px]">{all.length}</span>
         </Link>
         {cats.map((c) => (
           <Link
@@ -67,7 +67,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                 : "border-line text-ink-dim hover:border-ink-faint hover:text-ink"
             }`}
           >
-            {lang === "en" ? c.en : c.ko} <span className="tnum font-mono text-[11px] opacity-70">{c.count}</span>
+            {lang === "en" ? c.en : c.ko} <span className="tnum font-mono text-[11px]">{c.count}</span>
           </Link>
         ))}
       </div>

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
  * window.lenis 가 있으면 lenis로, 없으면 네이티브 smooth로 상단 이동.
  * 출처: 문배철강 ScrollTopButton.tsx.
  */
-export default function ScrollTopButton({ threshold = 600 }: { threshold?: number }) {
+export default function ScrollTopButton({ threshold = 600, lang = "ko" }: { threshold?: number; lang?: "ko" | "en" }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ScrollTopButton({ threshold = 600 }: { threshold?: numbe
   return (
     <button
       type="button"
-      aria-label="맨 위로"
+      aria-label={lang === "en" ? "Back to top" : "맨 위로"}
       onClick={toTop}
       className={`fixed bottom-5 right-5 z-40 flex size-11 items-center justify-center rounded-full border border-[var(--mk-line)] bg-[var(--mk-ink)] text-[var(--mk-ink-fg)] backdrop-blur transition-[opacity,transform] duration-300 ease-out md:bottom-7 md:right-7 ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"

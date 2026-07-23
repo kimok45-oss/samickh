@@ -7,14 +7,13 @@ import { getContents } from "@/lib/content";
 export const generateMetadata = () =>
   pageMetadataI18n({ titleKo: "개인정보처리방침", titleEn: "Privacy Policy", descEn: "Privacy policy of SAMICK H&P.", path: "/privacy", noIndex: true });
 
-const PENDING = { ko: "[회사 확인 후 기재]", en: "[To be confirmed by the company]" };
-
 export default async function PrivacyPage() {
   const lang = await getLang();
   const c = await getContents(["company_name", "privacy_officer", "privacy_date", "tel", "fax"], lang);
   const company = c.company_name || "삼익유공압주식회사";
-  const officer = c.privacy_officer || PENDING[lang];
-  const effective = c.privacy_date || PENDING[lang];
+  // 회사 확인 필요값: 비면 화면에 플레이스홀더를 노출하지 않고 해당 줄 자체를 숨긴다.
+  const officer = c.privacy_officer || "";
+  const effective = c.privacy_date || "";
 
   const ko = (
     <>
@@ -69,7 +68,7 @@ export default async function PrivacyPage() {
 
       <h2>8. 개인정보 보호책임자</h2>
       <ul>
-        <li>개인정보 보호책임자: {officer}</li>
+        {officer && <li>개인정보 보호책임자: {officer}</li>}
         {c.tel && <li>전화: {c.tel}</li>}
         {c.fax && <li>팩스: {c.fax}</li>}
       </ul>
@@ -79,7 +78,7 @@ export default async function PrivacyPage() {
         본 방침의 내용 추가·삭제·수정이 있을 경우 시행 전에 홈페이지를 통해 공지합니다.
       </p>
 
-      <p className="policy-date">시행일: {effective}</p>
+      {effective && <p className="policy-date">시행일: {effective}</p>}
     </>
   );
 
@@ -136,7 +135,7 @@ export default async function PrivacyPage() {
 
       <h2>8. Privacy Officer</h2>
       <ul>
-        <li>Privacy Officer: {officer}</li>
+        {officer && <li>Privacy Officer: {officer}</li>}
         {c.tel && <li>Tel: {c.tel}</li>}
         {c.fax && <li>Fax: {c.fax}</li>}
       </ul>
@@ -144,7 +143,7 @@ export default async function PrivacyPage() {
       <h2>9. Notification</h2>
       <p>Changes to this policy will be announced on this website before taking effect.</p>
 
-      <p className="policy-date">Effective date: {effective}</p>
+      {effective && <p className="policy-date">Effective date: {effective}</p>}
     </>
   );
 

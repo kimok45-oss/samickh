@@ -176,7 +176,7 @@ export default function OrderStation({
               <span aria-hidden className="acc-plus text-[14px] leading-none text-ink-faint transition-transform">+</span>
             </summary>
             <div className="mt-3 space-y-4">
-              <div role="radiogroup" aria-label={L("쿠션유무", "Cushion")}>
+              <div role="group" aria-label={L("쿠션유무", "Cushion")}>
                 <div className="text-[12px] text-ink-dim">{L("⑥ 쿠션유무", "⑥ Cushion")}</div>
                 <div className="mt-1.5 grid grid-cols-2 gap-1.5">
                   {(Object.keys(CUSHION_LABELS) as Cushion[]).map((c) => (
@@ -186,7 +186,7 @@ export default function OrderStation({
                   ))}
                 </div>
               </div>
-              <div role="radiogroup" aria-label={L("패킹재질", "Packing material")}>
+              <div role="group" aria-label={L("패킹재질", "Packing material")}>
                 <div className="text-[12px] text-ink-dim">{L("① 패킹재질", "① Packing material")}</div>
                 <div className="mt-1.5 grid gap-1.5">
                   {(Object.keys(PACKING_LABELS) as Packing[]).map((p) => (

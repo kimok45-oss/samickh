@@ -90,7 +90,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={banner} alt={dispName} className="h-full w-full object-cover object-right" />
             </div>
-            <figcaption className="mt-1.5 font-mono text-[9.5px] text-ink-faint">{L("원본 자산", "Original asset")}</figcaption>
+            <figcaption className="mt-1.5 font-mono text-[12px] text-ink-faint">{L("원본 자산", "Original asset")}</figcaption>
           </figure>
         )}
       </div>
@@ -107,7 +107,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={drawing} alt={`${dispName} — ${L("외형 도면", "outline drawing")}`} className="mx-auto max-w-none sm:max-w-full" />
             </div>
-            <figcaption className="mt-2 font-mono text-[10.5px] text-ink-faint">
+            <figcaption className="mt-2 font-mono text-[12px] text-ink-faint">
               {L("외형 도면 — 원본 자산", "Outline drawing — original asset")}
             </figcaption>
           </figure>
@@ -150,7 +150,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={chart} alt={`${dispName} — ${L("도식", "diagram")}`} className="mx-auto max-w-none sm:max-w-full" />
             </div>
-            <figcaption className="mt-2 font-mono text-[10.5px] text-ink-faint">
+            <figcaption className="mt-2 font-mono text-[12px] text-ink-faint">
               {L("원본 도식 자산", "Original diagram asset")}
             </figcaption>
           </figure>
@@ -161,7 +161,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
       <nav className="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2" aria-label={L("계열 이동", "Series navigation")}>
         {prev ? (
           <Link href={`/business/${prev.slug}`} className="group min-w-0 bg-bg p-5 transition-colors hover:bg-bg-raised">
-            <span className="font-mono text-[10.5px] tracking-[0.14em] text-ink-faint">← {L("이전 계열", "PREV")}</span>
+            <span className="font-mono text-[11.5px] tracking-[0.14em] text-ink-faint">← {L("이전 계열", "PREV")}</span>
             <span className="mt-1.5 block truncate text-[14px] text-ink-dim group-hover:text-ink">
               <span className="tnum font-mono">{prev.seriesCode}</span> · {lang === "en" && prev.nameEn ? prev.nameEn : prev.name}
             </span>
@@ -171,7 +171,7 @@ export default async function SeriesDetailPage({ params }: { params: Promise<{ s
         )}
         {next ? (
           <Link href={`/business/${next.slug}`} className="group min-w-0 bg-bg p-5 text-right transition-colors hover:bg-bg-raised">
-            <span className="font-mono text-[10.5px] tracking-[0.14em] text-ink-faint">{L("다음 계열", "NEXT")} →</span>
+            <span className="font-mono text-[11.5px] tracking-[0.14em] text-ink-faint">{L("다음 계열", "NEXT")} →</span>
             <span className="mt-1.5 block truncate text-[14px] text-ink-dim group-hover:text-ink">
               <span className="tnum font-mono">{next.seriesCode}</span> · {lang === "en" && next.nameEn ? next.nameEn : next.name}
             </span>
