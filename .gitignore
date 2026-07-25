@@ -25,3 +25,6 @@ next-env.d.ts
 # OS
 .DS_Store
 Thumbs.db
+
+# DB 백업(guard-reset FORCE 시 생성) — 고객 데이터 포함, 절대 커밋 금지
+var/backups/
