@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Lang } from "@/lib/lang";
 import { LangToggle } from "@/components/LangToggle";
 
@@ -78,7 +79,11 @@ function topOf(pathname: string): string {
 export default function Header({ lang }: { lang: Lang }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const activeTop = topOf(pathname);
+
+  // SSR/하이드레이션 안전 — 드로어 portal은 클라이언트 마운트 후에만
+  useEffect(() => setMounted(true), []);
 
   // 라우트가 바뀌면 모바일 드로어 닫기
   useEffect(() => {
@@ -185,8 +190,10 @@ export default function Header({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      {/* 모바일 드로어 — lenis는 휠만 가로채므로 data-lenis-prevent 필수 */}
-      {open && (
+      {/* 모바일 드로어 — lenis는 휠만 가로채므로 data-lenis-prevent 필수.
+          헤더의 backdrop-blur가 fixed 자식의 컨테이닝 블록을 가로채(top-16/bottom-0가
+          뷰포트가 아닌 헤더 박스 기준이 됨) 드로어가 찌그러지므로 body로 portal 한다. */}
+      {open && mounted && createPortal(
         <div
           id="mobile-drawer"
           data-lenis-prevent
@@ -221,7 +228,8 @@ export default function Header({ lang }: { lang: Lang }) {
               {lang === "ko" ? "견적요청" : "Request a Quote"}
             </Link>
           </nav>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );
