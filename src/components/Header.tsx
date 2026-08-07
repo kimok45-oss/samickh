@@ -5,7 +5,7 @@
 // 자유게시판·QNA·FAQ는 메뉴에 넣지 않는다(빈 게시판 — BUILD-CONTRACT).
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Lang } from "@/lib/lang";
 import { LangToggle } from "@/components/LangToggle";
@@ -81,6 +81,8 @@ export default function Header({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const activeTop = topOf(pathname);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // SSR/하이드레이션 안전 — 드로어 portal은 클라이언트 마운트 후에만
   useEffect(() => setMounted(true), []);
@@ -90,13 +92,47 @@ export default function Header({ lang }: { lang: Lang }) {
     setOpen(false);
   }, [pathname]);
 
-  // 드로어 열림 동안 body 스크롤 잠금
+  // 드로어 열림 동안: 배경 스크롤 잠금 + Esc 닫기 + 초점 가둠(다른 리뉴얼과 통일)
+  // ⚠ Lenis 사이트라 body overflow:hidden 만으론 배경이 밀린다(Lenis 가 rAF 로 스크롤을 굴림).
+  //    딤 없는 top-16 패널이라 헤더 영역도 노출되므로, 위치 무관하게 lenis.stop() 으로 전면 차단.
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis;
+    lenis?.stop();
+
+    const drawer = drawerRef.current;
+    const focusables = () =>
+      Array.from(drawer?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []);
+    focusables()[0]?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || !drawer?.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+
     return () => {
+      document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      lenis?.start();
+      buttonRef.current?.focus();
     };
   }, [open]);
 
@@ -170,6 +206,7 @@ export default function Header({ lang }: { lang: Lang }) {
           </Link>
           {/* 모바일 햄버거 */}
           <button
+            ref={buttonRef}
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center"
             aria-expanded={open}
@@ -196,6 +233,10 @@ export default function Header({ lang }: { lang: Lang }) {
       {open && mounted && createPortal(
         <div
           id="mobile-drawer"
+          ref={drawerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lang === "ko" ? "메뉴" : "Menu"}
           data-lenis-prevent
           className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-line bg-bg lg:hidden"
         >
