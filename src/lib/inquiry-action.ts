@@ -12,6 +12,7 @@ import { createHash } from "node:crypto";
 import { prisma } from "@/lib/db";
 import { rateLimited } from "@/lib/auth";
 import { sendNotifyMail } from "@/lib/mailer";
+import { browserOf, osOf } from "@/lib/analytics";
 
 export type InquiryState = { ok: boolean; message: string };
 
@@ -89,6 +90,23 @@ export async function submitInquiry(
       },
     });
     revalidatePath("/admin/inquiries");
+
+    // 전환 기록 — 방문자 분석에 "문의 제출" 1건(kind="event"). 실패해도 접수는 성공 처리.
+    try {
+      const ua = (await headers()).get("user-agent") ?? "";
+      await prisma.pageView.create({
+        data: {
+          path: "/support/inquiry",
+          kind: "event",
+          eventName: "inquiry",
+          browser: browserOf(ua),
+          os: osOf(ua),
+        },
+      });
+    } catch {
+      /* 집계 실패는 무시 */
+    }
+
     await sendNotifyMail({
       subject: `[삼익유공압] 온라인문의 접수 — ${name}`,
       text: `성명: ${name}\n연락처: ${phone || "-"}\n이메일: ${email || "-"}\n\n${message}`,

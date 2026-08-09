@@ -180,8 +180,12 @@ model PageView {
   path      String
   referrer  String?
   device    String? // mobile | desktop
+  browser   String? // Chrome | Safari | Edge | Firefox | Opera | Samsung Internet | Whale
+  os        String? // Windows | macOS | Android | iOS | Linux
   lang      String?
   visitorId String? // 일별 솔티드 해시
+  kind      String   @default("view") // view = 페이지뷰 | event = 전환 이벤트
+  eventName String? // kind="event"일 때만 — 예: inquiry
   createdAt DateTime @default(now())
 
   @@index([createdAt])

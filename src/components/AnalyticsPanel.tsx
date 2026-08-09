@@ -110,11 +110,15 @@ export default function AnalyticsPanel({
         </div>
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className={`mt-4 grid gap-3 sm:grid-cols-2 ${totals.conversions > 0 ? "xl:grid-cols-5" : "xl:grid-cols-4"}`}>
         <Kpi label="오늘 방문자" value={totals.todayVisitors} sub="KST 기준" />
         <Kpi label={`방문자 (${range}일)`} value={totals.visitors} sub="일별 순방문 합" />
         <Kpi label={`페이지뷰 (${range}일)`} value={totals.pageviews} sub={`방문자당 ${totals.avgPerVisitor}p`} />
         <Kpi label="누적 페이지뷰" value={totals.allTime} sub="전체 기간" />
+        {/* 문의 전환 — 접수 건이 있을 때만 노출 */}
+        {totals.conversions > 0 && (
+          <Kpi label={`문의 전환 (${range}일)`} value={totals.conversions} sub="문의 제출 완료" />
+        )}
       </div>
 
       <div className="mt-3 rounded-lg border border-line bg-bg-raised p-4">
@@ -141,6 +145,14 @@ export default function AnalyticsPanel({
         <BarList title="디바이스" items={data.devices} labels={DEVICE_LABEL} />
         <BarList title="인기 페이지" items={data.pages} />
       </div>
+
+      {/* 브라우저 · OS — 수집된 데이터가 있을 때만 노출 */}
+      {(data.browsers.length > 0 || data.oses.length > 0) && (
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          {data.browsers.length > 0 && <BarList title="브라우저" items={data.browsers} />}
+          {data.oses.length > 0 && <BarList title="OS" items={data.oses} />}
+        </div>
+      )}
 
       {data.recent.length > 0 && (
         <div className="mt-3 rounded-lg border border-line bg-bg-raised p-4">

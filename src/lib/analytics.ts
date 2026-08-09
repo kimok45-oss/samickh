@@ -22,6 +22,35 @@ export function deviceOf(ua: string, width?: number): string {
   return "desktop";
 }
 
+/* UA → 브라우저·OS 라벨. UA 원문은 저장하지 않고 이 라벨만 남긴다(준식별자 방지).
+ * ⚠ 판별 순서가 정확도다 — 크로뮴 계열은 UA에 "Chrome"·"Safari"를 함께 달고 있어
+ *   Edge·삼성·오페라·웨일을 Chrome보다 먼저 걸러야 하고, OS는 Android를 Linux보다 먼저 본다. */
+const UA_MAX = 32;
+
+export function browserOf(ua: string | null | undefined): string | null {
+  const u = ua ?? "";
+  let b: string | null = null;
+  if (/Edg[ea]?\//i.test(u)) b = "Edge";
+  else if (/SamsungBrowser/i.test(u)) b = "Samsung Internet";
+  else if (/OPR\/|Opera/i.test(u)) b = "Opera";
+  else if (/Whale/i.test(u)) b = "Whale";
+  else if (/Firefox|FxiOS/i.test(u)) b = "Firefox";
+  else if (/Chrome|CriOS|Chromium/i.test(u)) b = "Chrome";
+  else if (/Safari/i.test(u)) b = "Safari";
+  return b ? b.slice(0, UA_MAX) : null;
+}
+
+export function osOf(ua: string | null | undefined): string | null {
+  const u = ua ?? "";
+  let o: string | null = null;
+  if (/Windows/i.test(u)) o = "Windows";
+  else if (/Android/i.test(u)) o = "Android";
+  else if (/iPhone|iPad|iPod|iOS/i.test(u)) o = "iOS";
+  else if (/Mac OS X|Macintosh/i.test(u)) o = "macOS";
+  else if (/Linux|X11/i.test(u)) o = "Linux";
+  return o ? o.slice(0, UA_MAX) : null;
+}
+
 /** 명백한 봇/크롤러/헤드리스 UA — true면 수집 제외 */
 export function isBotUA(ua: string): boolean {
   if (!ua) return true;
@@ -105,10 +134,14 @@ export type AnalyticsData = {
     todayVisitors: number;
     avgPerVisitor: number;
     allTime: number;
+    /** kind="event" / eventName="inquiry" — 기간 내 문의 제출 건수 */
+    conversions: number;
   };
   daily: { date: string; label: string; visitors: number; views: number }[];
   sources: Stat[];
   devices: Stat[];
+  browsers: Stat[];
+  oses: Stat[];
   pages: Stat[];
   recent: { path: string; source: string; device: string; time: string }[];
 };
@@ -125,19 +158,26 @@ export async function getAnalytics(days: number): Promise<AnalyticsData> {
     path: string;
     referrer: string | null;
     device: string | null;
+    browser: string | null;
+    os: string | null;
     visitorId: string | null;
     createdAt: Date;
   }[] = [];
   let allTime = 0;
+  let conversions = 0;
   try {
-    [rows, allTime] = await Promise.all([
+    // kind:"view" — 전환 이벤트(kind:"event")가 방문 집계에 섞이면 방문 수가 부풀려진다.
+    [rows, allTime, conversions] = await Promise.all([
       prisma.pageView.findMany({
-        where: { createdAt: { gte: new Date(baseUTC) } },
+        where: { kind: "view", createdAt: { gte: new Date(baseUTC) } },
         orderBy: { id: "desc" },
         take: 50000,
-        select: { path: true, referrer: true, device: true, visitorId: true, createdAt: true },
+        select: { path: true, referrer: true, device: true, browser: true, os: true, visitorId: true, createdAt: true },
       }),
-      prisma.pageView.count(),
+      prisma.pageView.count({ where: { kind: "view" } }),
+      prisma.pageView.count({
+        where: { kind: "event", eventName: "inquiry", createdAt: { gte: new Date(baseUTC) } },
+      }),
     ]);
   } catch {
     // 조회 실패 시 빈 데이터 폴백
@@ -192,6 +232,12 @@ export async function getAnalytics(days: number): Promise<AnalyticsData> {
   const devKeys = rows.map((r) => r.device || "desktop");
   const devices = rank(group(devKeys), devKeys.length);
 
+  const browserKeys = rows.map((r) => r.browser).filter((v): v is string => Boolean(v));
+  const browsers = rank(group(browserKeys), browserKeys.length).slice(0, 5);
+
+  const osKeys = rows.map((r) => r.os).filter((v): v is string => Boolean(v));
+  const oses = rank(group(osKeys), osKeys.length).slice(0, 5);
+
   const pages = rank(group(rows.map((r) => r.path)), pageviews).slice(0, 8);
 
   const recent = rows.slice(0, 8).map((r) => ({
@@ -215,10 +261,13 @@ export async function getAnalytics(days: number): Promise<AnalyticsData> {
       todayVisitors,
       avgPerVisitor: visitors ? Math.round((pageviews / visitors) * 10) / 10 : 0,
       allTime,
+      conversions,
     },
     daily,
     sources,
     devices,
+    browsers,
+    oses,
     pages,
     recent,
   };
