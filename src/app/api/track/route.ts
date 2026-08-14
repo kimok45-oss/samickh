@@ -3,11 +3,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { browserOf, cleanReferrer, dailyVisitorId, deviceOf, ipFrom, isBotUA, osOf } from "@/lib/analytics";
+import { rateLimited } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
     const ua = req.headers.get("user-agent") ?? "";
     if (isBotUA(ua)) return new NextResponse(null, { status: 204 });
+
+    // 무인증 쓰기 라우트 — IP당 1분 120건(정상 탐색보다 넉넉, 대량 삽입은 차단).
+    if (rateLimited(`track:${ipFrom(req.headers)}`, 120, 60 * 1000)) {
+      return new NextResponse(null, { status: 429 });
+    }
 
     const body = (await req.json().catch(() => null)) as
       | { path?: unknown; referrer?: unknown; width?: unknown; kind?: unknown; eventName?: unknown }

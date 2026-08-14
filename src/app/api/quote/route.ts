@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { prisma } from "@/lib/db";
 import { rateLimited } from "@/lib/auth";
-import { ipFrom } from "@/lib/analytics";
+import { browserOf, ipFrom, osOf } from "@/lib/analytics";
 import { storeQuoteFile, MAX_FILE_MB } from "@/lib/uploads";
 import { sendNotifyMail } from "@/lib/mailer";
 
@@ -97,6 +97,24 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     console.error("quote create failed", e);
     return json(false, msg("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.", "A temporary error occurred. Please try again later."), 500);
+  }
+
+  // 전환 기록 — 방문자 분석에 접수 1건(kind="event"). 실패해도 접수는 성공 처리.
+  // ⚠ eventName 은 집계 쿼리(lib/analytics.ts: kind="event", eventName="inquiry")와 같은 값이어야
+  //    대시보드 "문의 전환"에 잡힌다 — 견적요청도 같은 전환으로 센다.
+  try {
+    const ua = req.headers.get("user-agent") ?? "";
+    await prisma.pageView.create({
+      data: {
+        path: "/support/quote",
+        kind: "event",
+        eventName: "inquiry",
+        browser: browserOf(ua),
+        os: osOf(ua),
+      },
+    });
+  } catch {
+    /* 집계 실패는 무시 */
   }
 
   await sendNotifyMail({

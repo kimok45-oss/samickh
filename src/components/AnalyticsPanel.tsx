@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { AnalyticsData } from "@/lib/analytics";
 import VisitTrendChart from "@/components/VisitTrendChart";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { clearAllVisits } from "@/lib/analytics-actions";
 
 const RANGES = [
@@ -172,7 +173,7 @@ export default function AnalyticsPanel({
         </div>
       )}
 
-      {/* 위험 작업 — details 2단 확인 뒤에만 노출 */}
+      {/* 위험 작업 — details 로 감춘 뒤, 버튼도 2단 확인(한 번 더 눌러야 실제 제출) */}
       <details className="mt-3">
         <summary className="cursor-pointer text-[12px] font-semibold text-ink-faint hover:text-ink-dim">
           데이터 관리(초기화)
@@ -181,12 +182,15 @@ export default function AnalyticsPanel({
           <p className="text-[12.5px] text-ink-dim">
             방문 데이터 전체를 삭제합니다. 되돌릴 수 없습니다.
           </p>
-          <button
-            type="submit"
-            className="ml-auto rounded border border-line px-3 py-1.5 text-xs font-bold text-ink-dim hover:border-red-live hover:text-ink"
-          >
-            전체 삭제
-          </button>
+          <span className="ml-auto">
+            <ConfirmSubmit
+              className="rounded border border-line px-3 py-1.5 text-xs font-bold text-ink-dim hover:border-red-live hover:text-ink"
+              confirmLabel="정말 전체 삭제"
+              confirmClassName="rounded border border-red-live px-3 py-1.5 text-xs font-bold text-ink hover:opacity-90"
+            >
+              전체 삭제
+            </ConfirmSubmit>
+          </span>
         </form>
       </details>
     </section>
