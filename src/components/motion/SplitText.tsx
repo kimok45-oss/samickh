@@ -81,7 +81,9 @@ export function SplitText({
             aria-hidden
             className="inline-block overflow-hidden align-bottom"
           >
-            <motion.span className="inline-block" variants={piece}>
+            {/* reveal-rescue: 조각이 마스크 밖(y 110%)에 멈춘 채 영구히 안 보이는 사고 방지.
+                하이드레이션 성공 시 html[data-hydrated] 가 꺼서 슬라이드업이 보존된다. */}
+            <motion.span className="reveal-rescue inline-block" variants={piece}>
               {tok === " " ? " " : tok}
             </motion.span>
           </span>

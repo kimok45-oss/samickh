@@ -57,7 +57,9 @@ export function Reveal({
     <MotionTag
       ref={ref as never}
       id={id}
-      className={className}
+      // reveal-rescue: JS 청크 실패로 하이드레이션이 죽어도 2.5초 뒤 CSS가 강제로 드러낸다.
+      // 하이드레이션 성공 시 html[data-hydrated] 규칙이 꺼서 아래 연출이 그대로 보존된다.
+      className={cn(className, "reveal-rescue")}
       initial={hidden}
       animate={inView ? show : undefined}
       transition={{ duration: p.duration, ease: p.ease, delay }}
@@ -124,7 +126,8 @@ Stagger.Item = function StaggerItem({
     },
   };
   return (
-    <motion.div className={className} variants={child}>
+    // reveal-rescue: 위 Reveal 과 같은 fail-open 폴백(globals.css).
+    <motion.div className={cn(className, "reveal-rescue")} variants={child}>
       {children}
     </motion.div>
   );

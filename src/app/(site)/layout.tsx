@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/motion/MotionProvider";
 import SmoothScroll from "@/components/motion/SmoothScroll";
+import HydratedFlag from "@/components/motion/HydratedFlag";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const lang = await getLang();
@@ -15,6 +16,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <MotionProvider preset="subtle">
       <SmoothScroll />
+      {/* 하이드레이션 성공 신호 — 성공하면 .reveal-rescue(2.5s CSS 폴백)를 끈다 */}
+      <HydratedFlag />
       <div className="flex min-h-dvh flex-col bg-bg text-ink">
         <Header lang={lang} />
         {/* .lang-fade — LangToggle의 언어 전환 페이드 대상(globals 하단 CSS) */}
