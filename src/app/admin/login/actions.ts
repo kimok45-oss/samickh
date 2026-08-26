@@ -9,6 +9,7 @@ import {
   ADMIN_COOKIE,
   SESSION_MAX_AGE_SEC,
   createSessionToken,
+  rateLimitReset,
   rateLimited,
   verifyPassword,
 } from "@/lib/auth";
@@ -36,6 +37,10 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     await logAudit("login-fail", "Admin", null, "비밀번호 불일치");
     return { error: "비밀번호가 일치하지 않습니다." };
   }
+
+  // 비번이 맞았으니 이 IP 의 실패 카운터를 비운다(위 rateLimited 호출과 같은 키).
+  // 여기 제한이 5회/10분으로 형제 중 가장 빡빡해 리셋이 없으면 본인 잠김 위험이 가장 크다.
+  rateLimitReset(`login:${ip}`);
 
   const token = createSessionToken();
   if (!token) {

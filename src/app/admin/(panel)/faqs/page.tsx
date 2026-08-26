@@ -2,6 +2,7 @@
 import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteFaq, saveFaq } from "@/lib/admin-actions";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 export default async function AdminFaqsPage() {
@@ -88,7 +89,9 @@ export default async function AdminFaqsPage() {
             </form>
             <form action={deleteFaq} className="mt-2 text-right">
               <input type="hidden" name="id" value={f.id} />
-              <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+              <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                삭제
+              </ConfirmSubmit>
             </form>
           </div>
         ))}

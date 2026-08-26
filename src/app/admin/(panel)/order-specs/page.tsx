@@ -7,6 +7,7 @@ import {
   saveBoreRod,
   saveMounting,
 } from "@/lib/admin-actions";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 export default async function AdminOrderSpecsPage() {
@@ -41,7 +42,9 @@ export default async function AdminOrderSpecsPage() {
               </form>
               <form action={deleteBoreRod}>
                 <input type="hidden" name="id" value={b.id} />
-                <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                  삭제
+                </ConfirmSubmit>
               </form>
             </div>
           ))}
@@ -78,7 +81,9 @@ export default async function AdminOrderSpecsPage() {
               </form>
               <form action={deleteMounting}>
                 <input type="hidden" name="id" value={m.id} />
-                <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                  삭제
+                </ConfirmSubmit>
               </form>
             </div>
           ))}

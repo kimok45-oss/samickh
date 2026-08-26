@@ -5,6 +5,7 @@ import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteSeriesImage } from "@/lib/admin-actions";
 import SeriesForm from "../SeriesForm";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../../ui";
 
 const ERR_LABEL: Record<string, string> = {
@@ -69,7 +70,9 @@ export default async function AdminSeriesEditPage({
                   <span className="truncate text-[11px] text-ink-faint">{img.alt ?? "-"}</span>
                   <form action={deleteSeriesImage}>
                     <input type="hidden" name="id" value={img.id} />
-                    <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                    <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                      삭제
+                    </ConfirmSubmit>
                   </form>
                 </div>
               </li>

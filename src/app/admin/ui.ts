@@ -21,6 +21,11 @@ export const ui = {
     "inline-flex items-center justify-center rounded border border-line px-2.5 py-1 text-xs font-bold text-ink-dim transition-colors hover:border-ink-dim hover:text-ink",
   btnSmallDanger:
     "inline-flex items-center justify-center rounded border border-line px-2.5 py-1 text-xs font-bold text-ink-dim transition-colors hover:border-red-live hover:text-ink",
+  // ConfirmSubmit 2단계(무장) 상태 — 확인 버튼만 레드 테두리로 올린다(AnalyticsPanel 전체삭제와 같은 톤).
+  btnSmallDangerArmed:
+    "inline-flex items-center justify-center rounded border border-red-live px-2.5 py-1 text-xs font-bold text-ink transition-opacity hover:opacity-90",
+  btnGhostArmed:
+    "inline-flex items-center justify-center gap-1.5 rounded border border-red-live px-4 py-2 text-sm font-bold text-ink transition-opacity hover:opacity-90",
   tab: (active: boolean) =>
     "inline-flex items-center rounded px-3 py-1.5 text-[13px] font-bold transition-colors " +
     (active ? "bg-bg-panel text-ink border border-line" : "text-ink-dim hover:text-ink"),

@@ -5,6 +5,7 @@ import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteInquiry } from "@/lib/admin-actions";
 import { fmtDateTime } from "@/lib/date";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../../ui";
 
 export default async function AdminInquiryDetailPage({
@@ -41,7 +42,15 @@ export default async function AdminInquiryDetailPage({
         <Link href="/admin/inquiries" className={ui.btnGhost}>목록으로</Link>
         <form action={deleteInquiry} className="ml-auto">
           <input type="hidden" name="id" value={q.id} />
-          <button type="submit" className={ui.btnGhost}>삭제(PII 파기)</button>
+          {/* 개인정보 파기 경로 — 오클릭 1번에 첨부 실파일까지 사라지므로 2단 확인을 건다. */}
+          <ConfirmSubmit
+            className={ui.btnGhost}
+            confirmLabel="정말 파기"
+            confirmClassName={ui.btnGhostArmed}
+            cancelClassName={ui.btnGhost}
+          >
+            삭제(PII 파기)
+          </ConfirmSubmit>
         </form>
       </div>
 

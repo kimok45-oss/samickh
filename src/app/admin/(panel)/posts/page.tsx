@@ -5,6 +5,7 @@ import { guardAdminPage } from "@/lib/auth-server";
 import { BOARDS, BOARD_KEYS, getPostsPaged, isBoardKey, type BoardKey } from "@/lib/board";
 import { togglePostPublished, deletePost } from "@/lib/admin-actions";
 import { fmtDate } from "@/lib/date";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 export default async function AdminPostsPage({
@@ -98,9 +99,9 @@ export default async function AdminPostsPage({
                     </Link>
                     <form action={deletePost}>
                       <input type="hidden" name="id" value={p.id} />
-                      <button type="submit" className={ui.btnSmallDanger}>
+                      <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
                         삭제
-                      </button>
+                      </ConfirmSubmit>
                     </form>
                   </div>
                 </td>

@@ -2,6 +2,7 @@
 import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteClient, saveClient } from "@/lib/admin-actions";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 const GROUPS: { v: string; label: string }[] = [
@@ -74,7 +75,9 @@ export default async function AdminClientsPage() {
                   </form>
                   <form action={deleteClient}>
                     <input type="hidden" name="id" value={c.id} />
-                    <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                    <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                      삭제
+                    </ConfirmSubmit>
                   </form>
                 </div>
               ))}

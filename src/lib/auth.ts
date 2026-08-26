@@ -95,3 +95,9 @@ export function rateLimited(key: string, max: number, windowMs: number): boolean
   }
   return recent.length > max;
 }
+
+/** 성공 처리 후 카운터 리셋(예: 로그인 성공 — 몇 번 틀린 본인이 정답을 넣고도 계속 잠기는 것 방지).
+ *  ⚠ rateLimited() 에 넘긴 키와 **문자열이 완전히 같아야** 지워진다. */
+export function rateLimitReset(key: string): void {
+  buckets.delete(key);
+}

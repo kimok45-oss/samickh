@@ -3,6 +3,7 @@ import Link from "next/link";
 import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteProduct } from "@/lib/admin-actions";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 const CATS: Record<number, string> = {
@@ -76,7 +77,9 @@ export default async function AdminProductsPage({
                     <Link href={`/admin/products/${p.id}`} className={ui.btnSmall}>수정</Link>
                     <form action={deleteProduct}>
                       <input type="hidden" name="id" value={p.id} />
-                      <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                      <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                        삭제
+                      </ConfirmSubmit>
                     </form>
                   </div>
                 </td>

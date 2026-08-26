@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { deleteAttachment } from "@/lib/admin-actions";
 import { isBoardKey, type BoardKey } from "@/lib/board";
 import PostForm from "../PostForm";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../../ui";
 
 const ERR_LABEL: Record<string, string> = {
@@ -103,7 +104,9 @@ export default async function AdminPostEditPage({
                 )}
                 <form action={deleteAttachment} className="ml-auto">
                   <input type="hidden" name="id" value={a.id} />
-                  <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                  <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                    삭제
+                  </ConfirmSubmit>
                 </form>
               </li>
             ))}

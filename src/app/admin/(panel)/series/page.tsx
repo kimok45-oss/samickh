@@ -3,6 +3,7 @@ import Link from "next/link";
 import { guardAdminPage } from "@/lib/auth-server";
 import { prisma } from "@/lib/db";
 import { deleteSeries } from "@/lib/admin-actions";
+import ConfirmSubmit from "@/components/ConfirmSubmit";
 import { ui } from "../../ui";
 
 export default async function AdminSeriesPage({
@@ -58,7 +59,9 @@ export default async function AdminSeriesPage({
                     <Link href={`/admin/series/${s.id}`} className={ui.btnSmall}>수정</Link>
                     <form action={deleteSeries}>
                       <input type="hidden" name="id" value={s.id} />
-                      <button type="submit" className={ui.btnSmallDanger}>삭제</button>
+                      <ConfirmSubmit className={ui.btnSmallDanger} confirmClassName={ui.btnSmallDangerArmed} cancelClassName={ui.btnSmall}>
+                        삭제
+                      </ConfirmSubmit>
                     </form>
                   </div>
                 </td>
