@@ -156,6 +156,60 @@ export function resolvePublicUploadPath(storeName: string): string | null {
   return abs;
 }
 
+/* ── 런타임 업로드 서빙(/uploads/[...path] 라우트용) ───────────────────────
+ * 2026-10-11 오너 '1번부터'(전체점검 공통 고장 B): `next start` 는 서버를 켤 때 public/ 에 있던 파일만
+ * 정적 서빙한다. 관리자가 실행 중에 올린 파일(storePublicFile)은 재시작 전까지 404 였다(dev 에선 보여서
+ * 화면 검수로 안 잡힘). 정본 = C:\Github\cardex\src\app\uploads\[...path]\route.ts.
+ * 빌드 때 있던 원본 회수분(/uploads/orig·/uploads/attach/board1 등)은 지금처럼 정적 서빙이 먼저 먹는다.
+ * 견적 첨부(PII 가능)는 var/uploads 라 이 경로로는 절대 나가지 않는다. */
+
+/** 라우트가 내보내는 하위 경로 — storePublicFile 호출부 3곳(첨부·제품·계열 이미지)과 일치시킨다. */
+export const RUNTIME_UPLOAD_PREFIXES = ["attach/admin/", "products/", "series/"] as const;
+
+/** 서빙 허용 확장자 → MIME·다운로드 강제 여부. 업로드 허용(ALLOWED_EXT) 범위 안만 연다.
+ *  CAD·압축(zip·dwg·dwf)은 브라우저가 해석하지 않게 octet-stream + attachment. */
+export const SERVE_TYPES: Record<string, { mime: string; download: boolean }> = {
+  jpg: { mime: "image/jpeg", download: false },
+  jpeg: { mime: "image/jpeg", download: false },
+  png: { mime: "image/png", download: false },
+  webp: { mime: "image/webp", download: false },
+  gif: { mime: "image/gif", download: false },
+  pdf: { mime: "application/pdf", download: false },
+  zip: { mime: "application/octet-stream", download: true },
+  dwg: { mime: "application/octet-stream", download: true },
+  dwf: { mime: "application/octet-stream", download: true },
+};
+
+/** storePublicFile 이 만드는 난수 파일명(hex 16자 이상) — 내용이 바뀌지 않으므로 immutable 캐시 가능. */
+export const RANDOM_UPLOAD_NAME = /^[0-9a-f]{16,}\.[a-z0-9]+$/;
+
+/**
+ * URL 경로 조각 → public/uploads 안의 절대경로. 실패하면 null(라우트는 404).
+ * 조각마다 decodeURIComponent → 빈 값·`.`·`..`·구분자(/ \)·NUL·`:`(윈도 드라이브/ADS) 거부 →
+ * 허용 하위 경로·확장자 확인 → resolvePublicUploadPath 로 public/uploads 안에 못 박는다.
+ */
+export function resolveRuntimeUploadPath(segments: string[]): { abs: string; ext: string } | null {
+  if (!Array.isArray(segments) || segments.length === 0) return null;
+  const parts: string[] = [];
+  for (const raw of segments) {
+    let seg: string;
+    try {
+      seg = decodeURIComponent(raw);
+    } catch {
+      return null;
+    }
+    if (!seg || seg === "." || seg === ".." || /[\\/\x00:]/.test(seg)) return null;
+    parts.push(seg);
+  }
+  const rel = parts.join("/");
+  if (!RUNTIME_UPLOAD_PREFIXES.some((p) => rel.startsWith(p))) return null;
+  const ext = extOf(parts[parts.length - 1]);
+  if (!Object.hasOwn(SERVE_TYPES, ext)) return null;
+  const abs = resolvePublicUploadPath(`/uploads/${rel}`);
+  if (!abs) return null;
+  return { abs, ext };
+}
+
 /** 디스크 파일 삭제(있으면). 실패는 조용히 무시. */
 export async function removeStoredFile(abs: string | null): Promise<void> {
   if (abs) await unlink(abs).catch(() => {});

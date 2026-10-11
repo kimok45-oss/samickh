@@ -59,16 +59,10 @@ export function isBotUA(ua: string): boolean {
   );
 }
 
-/** 라우트 핸들러용 클라 IP 추출 — x-forwarded-for에서 TRUSTED_PROXY_HOPS(기본 1)만큼 뒤에서. */
-export function ipFrom(h: Headers): string {
-  const fwd = h.get("x-forwarded-for");
-  if (fwd) {
-    const list = fwd.split(",").map((s) => s.trim()).filter(Boolean);
-    const hops = Math.max(1, Math.trunc(Number(process.env.TRUSTED_PROXY_HOPS ?? "1")) || 1);
-    return list[Math.max(0, list.length - hops)] ?? list[0] ?? "unknown";
-  }
-  return h.get("x-real-ip")?.trim() || "unknown";
-}
+/** 라우트 핸들러용 클라 IP 추출 — 구현은 lib/request.ts(clientIpFrom) 한 곳.
+ *  2026-10-11 오너 '1번부터'(전체점검 공통 고장 A): 기본 홉 1·맨 왼쪽 폴백·홉 무관 x-real-ip 채택 변형을
+ *  걷어내고 정본으로 통일. 호출부(로그인·hit·track·quote)는 이름 그대로 쓴다. */
+export { clientIpFrom as ipFrom } from "@/lib/request";
 
 /* ── 일별 솔티드 visitorId ────────────────────────────────────────────── */
 

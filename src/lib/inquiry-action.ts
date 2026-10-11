@@ -13,23 +13,16 @@ import { prisma } from "@/lib/db";
 import { rateLimited } from "@/lib/auth";
 import { sendNotifyMail } from "@/lib/mailer";
 import { browserOf, osOf } from "@/lib/analytics";
+import { clientIp } from "@/lib/request";
 
 export type InquiryState = { ok: boolean; message: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** x-forwarded-for에서 신뢰 홉 수(TRUSTED_PROXY_HOPS, 기본 1)만큼 뒤에서 세어 클라 IP 추출.
- *  내부 헬퍼 — "use server" 파일에서 export하면 불필요한 공개 액션으로 등록되므로 비-export. */
-async function clientIp(): Promise<string> {
-  const h = await headers();
-  const fwd = h.get("x-forwarded-for");
-  if (fwd) {
-    const list = fwd.split(",").map((s) => s.trim()).filter(Boolean);
-    const hops = Math.max(1, Math.trunc(Number(process.env.TRUSTED_PROXY_HOPS ?? "1")) || 1);
-    return list[Math.max(0, list.length - hops)] ?? list[0] ?? "unknown";
-  }
-  return h.get("x-real-ip")?.trim() || "unknown";
-}
+// 클라 IP는 lib/request.ts(clientIp) 한 곳에서만 계산한다.
+// 2026-10-11 오너 '1번부터'(전체점검 공통 고장 A): 여기 있던 중복 변형(기본 홉 1·맨 왼쪽 폴백·
+// 홉 무관 x-real-ip 채택)을 지우고 정본을 import. ⚠ "use server" 파일이라 re-export 하지 않는다
+// (export 하면 불필요한 공개 액션으로 등록됨).
 
 function ipHash(ip: string): string {
   return createHash("sha256").update(`samickh:${ip}`).digest("hex").slice(0, 32);

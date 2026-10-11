@@ -24,7 +24,7 @@
 | `NEXT_PUBLIC_SITE_URL` | https://www.samickh.co.kr | 실배포 도메인 확정 시 확인 |
 | `ADMIN_PASSWORD_HASH` | dev용 해시(비번 `samickh-dev-5700!`) | **반드시 교체** — `node scripts/admin-hash.mjs '<새 비번>'` |
 | `ADMIN_SESSION_SECRET` | dev용 난수 | **반드시 교체** — `openssl rand -hex 32` |
-| `TRUSTED_PROXY_HOPS` | 1 | 리버스 프록시 단수에 맞춤 |
+| `TRUSTED_PROXY_HOPS` | 미설정(=0, IP 헤더 불신) | **반드시 설정** — 리버스 프록시 단수(nginx 1단=1). 0이면 전 방문자가 'unknown' 한 버킷이라 한 명이 막히면 모두 막힘. 2026-10-11 오너 '1번부터'(전체점검 공통 고장 A)로 기본값 1→0 변경(정본 `src/lib/request.ts`) |
 | `SMTP_HOST/PORT/USER/PASS/FROM`·`INQUIRY_NOTIFY_TO` | 미설정(알림 무동작) | 문의 메일 알림 원하면 설정 |
 
 ## 3. 배포 전 체크리스트
