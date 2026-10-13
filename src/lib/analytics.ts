@@ -11,6 +11,7 @@
 import { createHash } from "node:crypto";
 import { randomBytes } from "node:crypto";
 import { prisma } from "@/lib/db";
+import { SITE_URL } from "@/lib/seo/site.config";
 
 /* ── UA 파싱/판별 ─────────────────────────────────────────────────────── */
 
@@ -100,6 +101,53 @@ export function cleanReferrer(ref: string | null | undefined): string | null {
 
 export type SourceKey = "direct" | "internal" | "search" | "social" | "referral";
 
+/** 루프백/개발 호스트(localhost·*.localhost·127.x·::1·0.0.0.0) — 포트가 붙어 있어도 된다. */
+export function isLocalHost(host: string | null | undefined): boolean {
+  const h = siteHostKey(host);
+  if (!h) return false;
+  return (
+    h === "localhost" ||
+    h.endsWith(".localhost") ||
+    h === "[::1]" ||
+    h === "::1" ||
+    h === "0.0.0.0" ||
+    /^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(h)
+  );
+}
+
+/**
+ * 호스트 비교용 키 — 소문자 · 포트 제거 · 끝 점 제거 · 앞 "www." 제거.
+ * 2026-10-12 오너 '함께 발견한 거 고쳐 줘'(ITEM 1): www.samickh.co.kr 와 samickh.co.kr 는 같은 사이트로 본다.
+ */
+export function siteHostKey(host: string | null | undefined): string {
+  if (!host) return "";
+  let h = host.trim().toLowerCase();
+  // 포트만 뗀다(IPv6 대괄호 표기 `[::1]:5700` 은 괄호 유지)
+  const m = h.match(/^(\[[^\]]*\]|[^:]*)(?::\d+)?$/);
+  if (m) h = m[1];
+  h = h.replace(/\.$/, "");
+  return h.startsWith("www.") ? h.slice(4) : h;
+}
+
+/**
+ * 대시보드(읽기 시점) 집계의 "우리 사이트" 호스트 — NEXT_PUBLIC_SITE_URL(site.config SITE_URL)의 호스트.
+ * 2026-10-12 오너 '함께 발견한 거 고쳐 줘'(ITEM 1): 집계가 classifySource(referrer) 를 selfHost 없이 불러
+ *   자기 사이트 안에서 페이지를 옮겨 다닌 방문이 '외부 링크(referral)' 로 잡혔다.
+ * ⚠ localhost 류는 운영의 자기 호스트로 보지 않는다(null) — env 미설정 폴백(localhost:5700)이 집계 기준이 되지 않게.
+ *   (PageView 엔 source 컬럼이 없어 유입 분류는 읽기 시점에만 한다 — 기록 시점 요청 호스트는 쓸 자리가 없다.)
+ */
+export function siteSelfHost(siteUrl: string = SITE_URL): string | null {
+  let host = "";
+  try {
+    host = new URL(siteUrl).host;
+  } catch {
+    return null;
+  }
+  const key = siteHostKey(host);
+  if (!key || isLocalHost(key)) return null;
+  return host.toLowerCase();
+}
+
 export function classifySource(referrer: string | null, selfHost?: string | null): SourceKey {
   if (!referrer) return "direct";
   let host = "";
@@ -109,7 +157,8 @@ export function classifySource(referrer: string | null, selfHost?: string | null
     return "direct";
   }
   if (!host) return "direct";
-  if (selfHost && host === selfHost.toLowerCase()) return "internal";
+  // 2026-10-12 오너 '함께 발견한 거 고쳐 줘'(ITEM 1): www/맨 도메인·포트 차이는 같은 사이트로 비교
+  if (selfHost && siteHostKey(selfHost) && siteHostKey(host) === siteHostKey(selfHost)) return "internal";
   if (/(^|\.)(google|bing|yahoo|naver|daum|duckduckgo|baidu|yandex|nate|zum)\./.test(host)) return "search";
   if (/(^|\.)(facebook|instagram|youtube|youtu\.be|twitter|t\.co|x\.com|linkedin|kakao|tiktok|threads|band\.us|line)/.test(host))
     return "social";
@@ -119,6 +168,27 @@ export function classifySource(referrer: string | null, selfHost?: string | null
 /* ── 집계 ─────────────────────────────────────────────────────────────── */
 
 export type Stat = { key: string; count: number; pct: number };
+
+function rankStats(m: Map<string, number>, base: number): Stat[] {
+  return [...m.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, count]) => ({ key, count, pct: base ? Math.round((count / base) * 100) : 0 }));
+}
+
+function countBy(arr: string[]): Map<string, number> {
+  const m = new Map<string, number>();
+  for (const k of arr) m.set(k, (m.get(k) ?? 0) + 1);
+  return m;
+}
+
+/**
+ * 진입 채널 분포 — '내부 이동(internal)' 은 진입 채널이 아니므로 뺀 뒤 비율을 낸다.
+ * 2026-10-12 오너 '함께 발견한 거 고쳐 줘'(ITEM 1): getAnalytics 에서 떼어 내 selfHost 를 받게 함(표본 행으로 검증 가능).
+ */
+export function sourceStats(rows: { referrer: string | null }[], selfHost: string | null): Stat[] {
+  const keys = rows.map((r) => classifySource(r.referrer, selfHost)).filter((s) => s !== "internal");
+  return rankStats(countBy(keys), keys.length);
+}
 
 export type AnalyticsData = {
   range: number;
@@ -210,18 +280,12 @@ export async function getAnalytics(days: number): Promise<AnalyticsData> {
     d.visitors = daySets.get(d.date)?.size ?? 0;
   }
 
-  const rank = (m: Map<string, number>, base: number): Stat[] =>
-    [...m.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([key, count]) => ({ key, count, pct: base ? Math.round((count / base) * 100) : 0 }));
-  const group = (arr: string[]) => {
-    const m = new Map<string, number>();
-    for (const k of arr) m.set(k, (m.get(k) ?? 0) + 1);
-    return m;
-  };
+  const rank = rankStats;
+  const group = countBy;
 
-  const sourceKeys = rows.map((r) => classifySource(r.referrer)).filter((s) => s !== "internal");
-  const sources = rank(group(sourceKeys), sourceKeys.length);
+  // 2026-10-12 오너 '함께 발견한 거 고쳐 줘'(ITEM 1): 자기 사이트 호스트(SITE_URL)를 넘겨 내부 이동을 알아보게 함
+  const selfHost = siteSelfHost();
+  const sources = sourceStats(rows, selfHost);
 
   const devKeys = rows.map((r) => r.device || "desktop");
   const devices = rank(group(devKeys), devKeys.length);
@@ -236,7 +300,7 @@ export async function getAnalytics(days: number): Promise<AnalyticsData> {
 
   const recent = rows.slice(0, 8).map((r) => ({
     path: r.path,
-    source: classifySource(r.referrer),
+    source: classifySource(r.referrer, selfHost),
     device: r.device || "desktop",
     time: r.createdAt.toLocaleString("ko-KR", {
       timeZone: "Asia/Seoul",
