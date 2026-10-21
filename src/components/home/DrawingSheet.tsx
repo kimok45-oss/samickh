@@ -22,6 +22,8 @@ const T = {
       { href: "/support/resources", token: "PDF", name: "유공압자료", desc: "표준유압·공압·MILL TYPE 카탈로그 PDF", unit: "건" },
       { href: "/support/cad", token: "DWG · DWF", name: "DWG/DWF DATA", desc: "실린더 도면 데이터 자료실", unit: "건" },
     ],
+    // 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): 받을 수 있는 도면 파일이 0개일 때 건수 대신 쓰는 문구
+    cadPending: { desc: "실린더 도면 데이터 자료실 · 파일 준비 중", request: "도면 요청", to: "→ 견적요청" },
   },
   en: {
     head: "Drawings & Catalogs",
@@ -33,6 +35,7 @@ const T = {
       { href: "/support/resources", token: "PDF", name: "Technical Data", desc: "Hydraulic, pneumatic and MILL TYPE catalogs", unit: "files" },
       { href: "/support/cad", token: "DWG · DWF", name: "DWG/DWF DATA", desc: "Cylinder drawing data library", unit: "files" },
     ],
+    cadPending: { desc: "Cylinder drawing data library · files in preparation", request: "Request drawings", to: "→ Quote" },
   },
 };
 
@@ -204,7 +207,38 @@ export default function DrawingSheet({ lang, techCount, cadCount }: { lang: Lang
 
           {/* 자료실 두 입구 — 시트 하단 칸. 형식 토큰과 건수를 대형 활자로 */}
           <div>
-            {t.rows.map((r, i) => (
+            {t.rows.map((r, i) =>
+              // 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): 받을 수 있는 도면이 0개면 '3건'처럼 보이지 않게
+              // 건수 자리를 '도면 요청 → 견적요청' 링크로 바꾼다. 줄 전체는 그대로 자료실(/support/cad)로 가고(이름 링크를
+              // after: 로 줄 전체에 펼침), 오른쪽 요청 링크만 위로 올려(z-10) 견적요청으로 보낸다 — a 안에 a 를 넣지 않기 위함.
+              r.href === "/support/cad" && counts[i] === 0 ? (
+                <div
+                  key={r.href}
+                  className={`group relative grid grid-cols-[1fr_auto] items-center gap-x-5 gap-y-2 px-5 py-6 transition-colors hover:bg-bg sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:px-8 ${
+                    i > 0 ? "border-t border-line" : ""
+                  }`}
+                >
+                  <span className="order-1 font-mono text-[clamp(1.35rem,2.8vw,2.1rem)] font-bold leading-none tracking-tight text-ink-faint transition-colors group-hover:text-ink">
+                    {r.token}
+                  </span>
+                  <span className="order-3 sm:order-2">
+                    <Link
+                      href={r.href}
+                      className="block text-[16.5px] font-semibold text-ink after:absolute after:inset-0 hover:underline hover:underline-offset-4"
+                    >
+                      {r.name}
+                    </Link>
+                    <span className="mt-0.5 block text-[13px] text-ink-dim">{t.cadPending.desc}</span>
+                  </span>
+                  <Link
+                    href="/support/quote"
+                    className="relative z-10 order-2 shrink-0 self-baseline text-right underline-offset-4 hover:underline sm:order-3"
+                  >
+                    <span className="text-[15px] font-semibold text-ink">{t.cadPending.request}</span>
+                    <span className="block font-mono text-[12px] text-ink-faint sm:ml-1.5 sm:inline">{t.cadPending.to}</span>
+                  </Link>
+                </div>
+              ) : (
               <Link
                 key={r.href}
                 href={r.href}
@@ -228,7 +262,8 @@ export default function DrawingSheet({ lang, techCount, cadCount }: { lang: Lang
                   <span className="ml-1 font-mono text-[12px] text-ink-faint">{r.unit}</span>
                 </span>
               </Link>
-            ))}
+              ),
+            )}
           </div>
         </div>
       </div>

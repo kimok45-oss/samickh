@@ -143,7 +143,12 @@ export default async function HomePage() {
       select: { slug: true, title: true, titleEn: true, origDate: true },
     }),
     prisma.post.count({ where: { board: "tech", published: true } }),
-    prisma.post.count({ where: { board: "cad", published: true } }),
+    // 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): 글 수(3건)가 아니라 「받을 수 있는 도면 파일이 1개라도 있는 글」 수.
+    // 원본 CAD zip 5건이 전부 소실(missing)이라 지금은 0 → DrawingSheet 가 건수 대신 '도면 요청 → 견적요청'을 보인다.
+    // 관리자가 실파일을 올리면(missing=false·storeName 있음) 자동으로 건수 표시로 돌아간다.
+    prisma.post.count({
+      where: { board: "cad", published: true, attachments: { some: { missing: false, storeName: { not: "" } } } },
+    }),
     getContents(["slogan_en"], lang),
   ]);
 

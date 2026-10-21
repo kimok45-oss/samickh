@@ -104,6 +104,19 @@ export default function PostDetail({
               </li>
             ))}
           </ul>
+          {/* 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): 도면 파일이 아직 없을 때 막다른 길이 되지 않게
+              견적요청으로 가는 길 한 줄(DWG/DWF DATA 게시판만). */}
+          {post.board === "cad" && post.attachments.some((a) => a.missing || !a.storeName) && (
+            <p className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[13.5px] text-ink-dim">
+              <span>{t.cadRequest}</span>
+              <Link
+                href="/support/quote"
+                className="font-semibold text-ink underline underline-offset-4 hover:decoration-2"
+              >
+                {t.cadRequestCta}
+              </Link>
+            </p>
+          )}
         </section>
       )}
 

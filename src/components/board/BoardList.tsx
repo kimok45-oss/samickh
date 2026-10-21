@@ -67,7 +67,10 @@ export default function BoardList({
             const no = total - (page - 1) * 10 - i;
             const title = lang === "en" && n.titleEn ? n.titleEn : n.title;
             const hasAtt = n.attachments.length > 0;
-            const hasMissing = n.attachments.some((a) => a.missing);
+            // 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): '첨부 4 · 일부 소실'은 일부는 받을 수 있는 것처럼 읽힌다.
+            // 받을 수 있는 파일 수(ready)와 준비 중인 수(pending)를 나눠, 전부 없으면 '파일 준비 중'만 보인다.
+            const pending = n.attachments.filter((a) => a.missing).length;
+            const ready = n.attachments.length - pending;
             return (
               <li key={n.id} className="border-b border-line-soft">
                 <Link
@@ -83,8 +86,14 @@ export default function BoardList({
                     </span>
                     {hasAtt && (
                       <span className="mt-1 inline-flex items-center gap-1 font-mono text-[11px] text-ink-faint">
-                        [{lang === "ko" ? "첨부" : "FILE"} {n.attachments.length}
-                        {hasMissing && (lang === "ko" ? " · 일부 소실" : " · pending")}]
+                        [
+                        {ready === 0
+                          ? lang === "ko" ? "파일 준비 중" : "FILE IN PREPARATION"
+                          : <>
+                              {lang === "ko" ? "첨부" : "FILE"} {ready}
+                              {pending > 0 && (lang === "ko" ? ` · ${pending}건 준비 중` : ` · ${pending} in preparation`)}
+                            </>}
+                        ]
                       </span>
                     )}
                   </span>
