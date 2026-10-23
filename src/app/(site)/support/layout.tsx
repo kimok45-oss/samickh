@@ -35,7 +35,8 @@ export default async function SupportLayout({ children }: { children: React.Reac
   return (
     <div className="mx-auto max-w-[1280px] px-5 md:px-8">
       <div className="pt-8">
-        <div className="font-mono text-[11px] tracking-[0.16em] text-ink-faint">
+        {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글 머리말은 본문 글꼴·자간 없음, 영문은 예전 그대로 */}
+        <div className={lang === "ko" ? "text-[12.5px] font-medium text-ink-faint" : "font-mono text-[11px] tracking-[0.16em] text-ink-faint"}>
           {lang === "ko" ? "고객지원" : "SUPPORT"}
         </div>
         <div className="mt-3">

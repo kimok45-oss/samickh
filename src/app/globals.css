@@ -197,3 +197,29 @@ html[data-hydrated] .reveal-rescue { animation: none; }
   .dwg-draw { animation: none; stroke-dashoffset: 0; }
   .dwg-ink, .dwg-fill { animation: none; opacity: 1; }
 }
+
+/* 2026-10-22 오너 '나머지 다 진행'(전체점검-2026-10-19 SMK-23): 도면 1회 드로잉을 화면에 들어올 때 시작.
+   DrawOnView(components/motion/DrawOnView.tsx)가 화면 밖이면 data-dwg="wait", 들어오면 "play".
+   멈춤은 하이드레이션이 끝난 뒤(html[data-hydrated])에만 — JS 가 죽으면 예전처럼 바로 그려져 최종 모양에 닿는다(fail-open). */
+html[data-hydrated] [data-dwg="wait"] :is(.dwg-draw, .dwg-ink, .dwg-fill) { animation-play-state: paused; }
+
+/* 2026-10-22 오너 '나머지 다 진행'(5-1-3 · SMK-08): 폰(640px 미만)에서 홈 도해를 가로 밀기 없이 화면 폭에 맞춘다.
+   폭에 맞추면 도해 속 글자가 3~9px로 줄어 못 읽으므로 폰에서만 숨기고, 같은 내용은 도해 아래 세로 목록이 보여 준다.
+   데스크톱(640px 이상)은 그대로. */
+@media (max-width: 639.98px) {
+  .dwg-fit-phone svg text { display: none; }
+}
+
+/* 2026-10-22 오너 '나머지 다 진행'(5-1-3 폰에서 잘리는 표는 폰에서만 세로 목록): 사업분야 10계열 '기본사양' 표(원본 2칸 conA,
+   첫 칸 300px 고정)가 폰에서 값 칸이 한 글자 폭으로 짓눌려 세로로 한 글자씩 읽히던 것 → 폰에서만 '항목 / 값' 세로 목록.
+   원본 표 HTML·내용은 그대로이고 데스크톱(640px 이상)은 예전 표 그대로다. */
+@media (max-width: 639.98px) {
+  .legacy-plate table.conA,
+  .legacy-plate table.conA > tbody,
+  .legacy-plate table.conA > tbody > tr,
+  .legacy-plate table.conA > tbody > tr > td { display: block; width: auto !important; }
+  .legacy-plate table.conA > colgroup { display: none; }
+  .legacy-plate table.conA > tbody > tr > td { text-align: left; }
+  .legacy-plate table.conA > tbody > tr > td.bg_01 { border-bottom: 0; padding-bottom: 3px; }
+  .legacy-plate table.conA > tbody > tr > td:not(.bg_01) { padding-top: 3px; padding-bottom: 9px; }
+}

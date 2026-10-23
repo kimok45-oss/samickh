@@ -27,10 +27,11 @@ export default async function OrganizationPage() {
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "조직현황" : "Organization"}
       </h1>
-      <p className="tnum mt-3 font-mono text-[12.5px] text-ink-faint">
+      <p className="tnum mt-3 text-[13px] text-ink-faint">
         {lang === "ko" ? `${teams.length}팀 체제` : `${teams.length} teams`}
       </p>
 

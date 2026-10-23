@@ -8,7 +8,8 @@ import type { Lang } from "@/lib/lang";
 
 const field =
   "w-full rounded border border-line bg-bg-raised px-4 py-3 text-[14.5px] text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-ink-dim";
-const labelCls = "mb-1.5 block font-mono text-[12px] font-bold text-ink-dim";
+// 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글 칸 이름·버튼을 본문 글꼴로
+const labelCls = "mb-1.5 block text-[13px] font-semibold text-ink-dim";
 
 const T = {
   ko: {
@@ -52,18 +53,23 @@ const T = {
 export default function QuoteForm({
   lang = "ko",
   prefillCode = "",
+  prefillProduct = "",
 }: {
   lang?: Lang;
   /** `?code=` 쿼리로 넘어온 형번 — 내용 상단에 프리필(영문/숫자/기호만 서버에서 재검증) */
   prefillCode?: string;
+  /** 2026-10-22 오너 '나머지 다 진행'(5-1-1 ④): `?series=` 로 넘어온 계열 — 서버가 DB 에서 찾은 "계열명 (시리즈코드)" */
+  prefillProduct?: string;
 }) {
   const t = T[lang];
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
 
-  const prefill = prefillCode
-    ? (lang === "ko" ? `형번: ${prefillCode}\n\n` : `Model code: ${prefillCode}\n\n`)
-    : "";
+  const lines = [
+    prefillProduct ? (lang === "ko" ? `제품: ${prefillProduct}` : `Product: ${prefillProduct}`) : "",
+    prefillCode ? (lang === "ko" ? `형번: ${prefillCode}` : `Model code: ${prefillCode}`) : "",
+  ].filter(Boolean);
+  const prefill = lines.length ? `${lines.join("\n")}\n\n` : "";
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -87,7 +93,7 @@ export default function QuoteForm({
   if (result?.ok) {
     return (
       <div role="status" className="border border-line bg-bg-raised px-6 py-14 text-center">
-        <p className="font-mono text-[13px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+        <p className={lang === "ko" ? "text-[14px] font-bold text-ink-faint" : "font-mono text-[13px] font-bold uppercase tracking-[0.16em] text-ink-faint"}>
           {t.done}
         </p>
         <p className="mt-3 text-[15px] font-semibold text-ink">{result.message}</p>
@@ -151,7 +157,7 @@ export default function QuoteForm({
           name="file"
           type="file"
           accept=".pdf,.zip,.jpg,.jpeg,.png,.gif,.dwg,.dwf"
-          className="block w-full text-[13px] text-ink-dim file:mr-3 file:cursor-pointer file:rounded file:border file:border-line file:bg-bg-raised file:px-4 file:py-2 file:font-mono file:text-[12px] file:font-bold file:text-ink-dim"
+          className="block w-full text-[13px] text-ink-dim file:mr-3 file:cursor-pointer file:rounded file:border file:border-line file:bg-bg-raised file:px-4 file:py-2 file:text-[12.5px] file:font-semibold file:text-ink-dim"
         />
         <p className="mt-1.5 text-[12px] text-ink-faint">{t.fileHint}</p>
       </div>
@@ -176,7 +182,7 @@ export default function QuoteForm({
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center justify-center gap-2 bg-red px-8 py-3.5 font-mono text-[14px] font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 bg-red px-8 py-3.5 text-[14.5px] font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? t.sending : t.submit}
         </button>

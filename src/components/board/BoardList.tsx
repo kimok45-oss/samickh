@@ -49,7 +49,8 @@ export default function BoardList({
 
   return (
     <div>
-      <p className="tnum font-mono text-[12.5px] text-ink-faint">
+      {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글이 든 줄이라 본문 글꼴로 */}
+      <p className="tnum text-[13px] text-ink-faint">
         {lang === "ko" ? (
           <>총 <span className="text-ink-dim">{total}</span>건 · {page}/{totalPages} 페이지</>
         ) : (

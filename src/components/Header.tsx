@@ -138,21 +138,25 @@ export default function Header({ lang }: { lang: Lang }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg/92 backdrop-blur-md">
-      <div className="mx-auto grid h-[68px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-4 px-5 md:px-8">
+      {/* 2026-10-22 오너 '나머지 다 진행'(5-1-1 ②): 폰 '문의' 버튼이 들어가며 폰에서만 칸 간격·로고 높이를 조금 줄임(데스크톱 그대로) */}
+      <div className="mx-auto grid h-[68px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-2 px-5 sm:gap-4 md:px-8">
         {/* 좌: 로고(원본 CI 이미지 이식 — samickh.co.kr /images/common/logo.gif) */}
-        <Link href="/" className="flex items-center" aria-label={lang === "ko" ? "삼익유공압주식회사 홈" : "SAMICK H&P home"}>
+        {/* 2026-10-22 오너 '나머지 다 진행'(함께 발견한 고장): 좁은 폭에서 로고가 가로로 찌그러지던 것 — 비율 유지(object-contain) */}
+        <Link href="/" className="flex min-w-0 items-center" aria-label={lang === "ko" ? "삼익유공압주식회사 홈" : "SAMICK H&P home"}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/uploads/orig/brand/logo.png"
             alt={lang === "ko" ? "삼익유공압주식회사 SAMICK H&P" : "SAMICK H&P"}
             width={231}
             height={47}
-            className="h-10 w-auto sm:h-11"
+            className="h-9 w-auto max-w-full object-contain object-left min-[390px]:h-10 sm:h-11"
           />
         </Link>
 
-        {/* 중앙: GNB (데스크톱) */}
-        <nav aria-label={lang === "ko" ? "주요 메뉴" : "Main menu"} className="hidden justify-center md:flex">
+        {/* 중앙: GNB (데스크톱)
+            2026-10-22 오너 '나머지 다 진행'(함께 발견한 고장): 768~1023px 에서 GNB 5메뉴가 들어오며 로고가 0~155px 로
+            눌려 사라졌다 → GNB 는 1024px 이상(lg)에서만, 그 아래는 햄버거 메뉴(드로어가 원래 lg 미만 전용). */}
+        <nav aria-label={lang === "ko" ? "주요 메뉴" : "Main menu"} className="hidden justify-center lg:flex">
           <ul className="flex items-center">
             {NAV.map((g) => (
               <li key={g.href} className="group relative">
@@ -193,11 +197,19 @@ export default function Header({ lang }: { lang: Lang }) {
             ))}
           </ul>
         </nav>
-        <div className="md:hidden" />
+        <div className="lg:hidden" />
 
         {/* 우: 유틸 — 언어 토글 + 견적요청 CTA(레드 배경 = CTA 전용 허용) */}
-        <div className="flex items-center justify-end gap-3 sm:gap-4">
+        <div className="flex items-center justify-end gap-2 min-[390px]:gap-3 sm:gap-4">
           <LangToggle lang={lang} />
+          {/* 2026-10-22 오너 '나머지 다 진행'(5-1-1 ② 폰 머리 '문의' 버튼): 폰(640px 미만)에서는 아래 견적요청 버튼이 숨어
+              메뉴를 펼쳐야만 견적·문의로 갈 수 있었다 — 같은 레드 CTA 를 작게(높이 32px) 햄버거 옆에. 데스크톱 머리는 그대로. */}
+          <Link
+            href="/support/quote"
+            className="inline-flex h-8 items-center bg-red px-3 text-[12.5px] font-semibold text-white transition-colors hover:bg-red-live sm:hidden"
+          >
+            {lang === "ko" ? "문의" : "Quote"}
+          </Link>
           <Link
             href="/support/quote"
             className="hidden h-9 items-center bg-red px-4 text-[13px] font-semibold text-white transition-colors hover:bg-red-live sm:inline-flex"
@@ -208,7 +220,9 @@ export default function Header({ lang }: { lang: Lang }) {
           <button
             ref={buttonRef}
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center"
+            // 2026-10-22(함께 발견한 고장): 드로어는 lg 미만 전용인데 버튼은 데스크톱에도 보여, 누르면 아무것도 안 뜬 채
+            // 스크롤만 잠겼다(body overflow hidden + lenis.stop) → 버튼도 lg 미만에서만.
+            className="inline-flex h-10 w-10 items-center justify-center lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-drawer"
             aria-label={lang === "ko" ? (open ? "메뉴 닫기" : "메뉴 열기") : open ? "Close menu" : "Open menu"}

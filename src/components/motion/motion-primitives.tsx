@@ -7,130 +7,73 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
-  type Variants,
 } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useMotionPreset } from "./MotionProvider";
 import type { PresetName } from "@/lib/motion-presets";
 
 /**
- * 스크롤 진입 등장 부품 모음. 출처: scd-renewal motion-primitives + hangang119 Reveal.
- * 모든 부품은 MotionProvider의 프리셋(subtle/bold)을 소비하며, `preset` prop으로
- * 개별 오버라이드 가능. blur는 bold 프리셋에서만 적용된다.
+ * 모션 부품 모음. 출처: scd-renewal motion-primitives + hangang119 Reveal.
+ * 2026-10-22 부터 Reveal·Stagger 는 정지(아래 주석). Counter·TiltCard 는 그대로다(지금 이 리포에서 쓰는 곳 없음).
  */
 
-/** 스크롤 진입 시 아래에서 페이드업(+옵션 blur). 1회만. */
+/**
+ * 2026-10-22 오너 '나머지 다 진행'(1-3-2 본문 페이드업 걷어내기 · 전체점검-2026-10-19 SMK-18):
+ * 본문은 정지가 기본이다. Reveal·Stagger 는 이제 연출 없이 그 자리에 그대로 그린다
+ * (SSR HTML 에 opacity:0 을 심지 않으므로 JS 가 늦거나 죽어도 글이 늦게 뜨지 않는다).
+ * 호출부(홈·사업분야·회사소개·주문방법 약 24곳)를 건드리지 않으려고 이름·props(delay·y·preset)는 그대로 받고 무시한다
+ * — 되돌릴 때는 이 파일만 바꾸면 된다.
+ * fail-open 체계(HydratedFlag + globals.css .reveal-rescue)는 그대로 둔다. 이제 숨겼다가 보여 줄 것이 없어
+ * 안전망이 할 일은 없지만, 다시 연출을 켜는 부품이 생겨도 안전망이 남는다.
+ * 홈 도면 1회 드로잉(.bore-draw·.dwg-*)은 시그니처 연출이라 그대로다(CSS 전용).
+ */
 export function Reveal({
   children,
   className,
-  delay = 0,
-  y,
   as = "div",
   id,
-  preset,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** 2026-10-22 이후 무시(정지) — 호출부 호환용 */
   delay?: number;
-  /** 기본은 프리셋 distance. 지정 시 우선. */
+  /** 2026-10-22 이후 무시(정지) — 호출부 호환용 */
   y?: number;
   as?: "div" | "section" | "li" | "span" | "h2" | "p";
   id?: string;
+  /** 2026-10-22 이후 무시(정지) — 호출부 호환용 */
   preset?: PresetName;
 }) {
-  const p = useMotionPreset(preset);
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -12% 0px" });
-  const MotionTag = motion[as] as typeof motion.div;
-  const dist = y ?? p.distance;
-  const hidden = {
-    opacity: 0,
-    y: dist,
-    ...(p.blur ? { filter: `blur(${p.blur}px)` } : {}),
-  };
-  const show = {
-    opacity: 1,
-    y: 0,
-    ...(p.blur ? { filter: "blur(0px)" } : {}),
-  };
+  const Tag = as;
   return (
-    <MotionTag
-      ref={ref as never}
-      id={id}
-      // reveal-rescue: JS 청크 실패로 하이드레이션이 죽어도 2.5초 뒤 CSS가 강제로 드러낸다.
-      // 하이드레이션 성공 시 html[data-hydrated] 규칙이 꺼서 아래 연출이 그대로 보존된다.
-      className={cn(className, "reveal-rescue")}
-      initial={hidden}
-      animate={inView ? show : undefined}
-      transition={{ duration: p.duration, ease: p.ease, delay }}
-    >
+    <Tag id={id} className={className}>
       {children}
-    </MotionTag>
+    </Tag>
   );
 }
 
-/** 자식을 순차 등장시키는 컨테이너. 자식은 <Stagger.Item> 또는 variants 상속. */
+/** 자식 묶음 컨테이너 — 2026-10-22 이후 순차 등장 없이 정지(1-3-2). */
 export function Stagger({
   children,
   className,
-  preset,
 }: {
   children: React.ReactNode;
   className?: string;
   preset?: PresetName;
 }) {
-  const p = useMotionPreset(preset);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const parent: Variants = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: p.stagger, delayChildren: p.delayChildren },
-    },
-  };
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      variants={parent}
-      initial="hidden"
-      animate={inView ? "show" : "hidden"}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }
 
-/** Stagger의 자식 1칸. 부모의 stagger 타이밍을 따라 등장. */
+/** Stagger의 자식 1칸 — 2026-10-22 이후 정지(1-3-2). */
 Stagger.Item = function StaggerItem({
   children,
   className,
-  preset,
 }: {
   children: React.ReactNode;
   className?: string;
   preset?: PresetName;
 }) {
-  const p = useMotionPreset(preset);
-  const child: Variants = {
-    hidden: {
-      opacity: 0,
-      y: p.distance,
-      ...(p.blur ? { filter: `blur(${p.blur}px)` } : {}),
-    },
-    show: {
-      opacity: 1,
-      y: 0,
-      ...(p.blur ? { filter: "blur(0px)" } : {}),
-      transition: { duration: p.duration, ease: p.ease },
-    },
-  };
-  return (
-    // reveal-rescue: 위 Reveal 과 같은 fail-open 폴백(globals.css).
-    <motion.div className={cn(className, "reveal-rescue")} variants={child}>
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 };
 
 /**

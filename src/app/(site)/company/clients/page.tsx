@@ -21,10 +21,11 @@ export default async function ClientsPage() {
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "주요거래업체" : "Clients"}
       </h1>
-      <p className="tnum mt-3 font-mono text-[12.5px] text-ink-faint">
+      <p className="tnum mt-3 text-[13px] text-ink-faint">
         {lang === "ko" ? `4개 분야 · ${clients.length}사` : `4 fields · ${clients.length} companies`}
       </p>
 
@@ -35,10 +36,12 @@ export default async function ClientsPage() {
           return (
             <Reveal key={g.key}>
               <h2 className="text-[16px] font-semibold text-ink sm:text-[17px]">{lang === "en" ? g.en : g.ko}</h2>
-              <ul className="mt-4 grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3 lg:grid-cols-5">
+              {/* 2026-10-22 오너 '나머지 다 진행'(SMK-12): 이름 한 줄짜리 상자 20칸(높이 74px)이 비어 보이던 것을
+                  괘선 원장(계열 원장과 같은 말투)으로 — 내용·순서·그룹은 그대로 */}
+              <ul className="mt-3 grid grid-cols-2 gap-x-6 border-t border-line sm:grid-cols-3 lg:grid-cols-5">
                 {list.map((c) => (
-                  <li key={c.id} className="flex min-h-[74px] items-center bg-bg px-4 py-4">
-                    <span className="text-[13.5px] leading-snug text-ink-dim">
+                  <li key={c.id} className="flex items-center border-b border-line py-3">
+                    <span className="text-[14px] leading-snug text-ink-dim">
                       {lang === "en" && c.nameEn ? c.nameEn : c.name}
                     </span>
                   </li>

@@ -58,6 +58,9 @@ export default function OrderStation({
   const mountRow = mounts.find((m) => m.code === mounting);
 
   const L = (ko: string, en: string) => (lang === "en" ? en : ko);
+  // 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 패널 라벨의 한글이 모노 넓은 자간으로 '시 리 즈'처럼 벌어지던 것 —
+  // 한글 화면은 본문 글꼴·자간 없음, 영문 화면은 예전 모노 그대로. 칩·형번·숫자(모노)는 그대로다.
+  const lab = lang === "en" ? "font-mono text-[11px] tracking-[0.14em] text-ink-faint" : "text-[12.5px] font-medium text-ink-faint";
   if (!bore || !force) return null;
 
   const chip = (active: boolean) =>
@@ -74,7 +77,7 @@ export default function OrderStation({
         <aside className="border-b border-line bg-bg-panel p-5 sm:p-6 lg:border-b-0 lg:border-r">
           {/* 시리즈 + ⑩리드스위치 */}
           <fieldset>
-            <legend className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <legend className={lab}>
               {L("시리즈 · SS 70H / SS 140H", "SERIES · SS 70H / SS 140H")}
             </legend>
             <div className="mt-2 grid grid-cols-2 gap-1.5">
@@ -98,7 +101,7 @@ export default function OrderStation({
 
           {/* ③ 내경(보어) 13단 */}
           <fieldset className="mt-6">
-            <legend className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <legend className={lab}>
               {L("③ 실린더내경(호칭경) · 13단", "③ CYLINDER BORE · 13 SIZES")}
             </legend>
             <div className="mt-2 grid grid-cols-5 gap-1.5" role="group" aria-label={L("내경 선택", "Select bore")}>
@@ -115,7 +118,7 @@ export default function OrderStation({
 
           {/* ④ 롯드계열 B/C */}
           <fieldset className="mt-6">
-            <legend className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <legend className={lab}>
               {L("④ 롯드계열 · B / C", "④ ROD SERIES · B / C")}
             </legend>
             <div className="mt-2 grid grid-cols-2 gap-1.5">
@@ -129,7 +132,7 @@ export default function OrderStation({
 
           {/* ② 지지부형식 10코드 */}
           <fieldset className="mt-6">
-            <legend className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <legend className={lab}>
               {L("② 지지부형식 · 10코드", "② MOUNTING · 10 CODES")}
             </legend>
             <div className="mt-2 grid grid-cols-5 gap-1.5" role="group" aria-label={L("지지부형식 선택", "Select mounting")}>
@@ -148,7 +151,7 @@ export default function OrderStation({
 
           {/* ⑤ 스트로크 */}
           <fieldset className="mt-6">
-            <legend className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <legend className={lab}>
               {L("⑤ 스트로크 · 0–2,000mm", "⑤ STROKE · 0–2,000mm")}
             </legend>
             <div className="mt-2 flex items-center gap-3">
@@ -171,7 +174,7 @@ export default function OrderStation({
 
           {/* 고급 옵션(접이식): ⑥쿠션 · ①패킹재질 */}
           <details className="acc mt-6 border-t border-line pt-4">
-            <summary className="flex cursor-pointer items-center justify-between font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <summary className={`flex cursor-pointer items-center justify-between ${lab}`}>
               {L("고급 옵션 — ⑥쿠션 · ①패킹재질", "OPTIONS — ⑥ CUSHION · ① PACKING")}
               <span aria-hidden className="acc-plus text-[14px] leading-none text-ink-faint transition-transform">+</span>
             </summary>
@@ -214,7 +217,7 @@ export default function OrderStation({
 
           {/* 이론 출력 — "이론 출력(계산식)" 라벨 필수 */}
           <div className="mt-4 border-t border-line pt-4">
-            <div className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
+            <div className={lab}>
               {L("이론 출력(계산식)", "THEORETICAL OUTPUT (CALCULATED)")}
             </div>
             <div className="mt-2 grid gap-3 sm:grid-cols-2">
@@ -245,8 +248,9 @@ export default function OrderStation({
 
       {/* ── 하단: 형번 스트립(원문 주문방법 슬롯 순서) + CTA ── */}
       <div className="border-t border-line bg-bg-panel/60 px-5 py-6 sm:px-6 lg:px-8">
-        <div className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">
-          {L("형번 — 실린더 주문방법(카탈로그 p.11)", "MODEL CODE — HOW TO ORDER (CATALOG p.11)")}
+        {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 제작 메모): '(카탈로그 p.11)' 출처 메모를 화면에서 뺐다(페이지 부제와 맞춤) */}
+        <div className={lab}>
+          {L("형번 — 실린더 주문방법", "MODEL CODE — HOW TO ORDER")}
         </div>
         <p className="mt-3 flex flex-wrap items-end gap-x-1 gap-y-4" aria-label={L(`형번 ${code}`, `Model code ${code}`)}>
           {slots.map((s, i) => (

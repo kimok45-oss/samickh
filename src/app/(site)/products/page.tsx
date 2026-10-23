@@ -37,12 +37,20 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "제품소개" : "Products"}
       </h1>
-      {/* 형번 스트립 헤드 — 대표 시리즈·치수표 구성(원문 총계) */}
-      <p className="tnum mt-3 font-mono text-[12.5px] text-ink-faint">
+      {/* 형번 스트립 헤드 — 대표 시리즈·치수표 구성(원문 총계).
+          2026-10-22 오너 '나머지 다 진행'(1-3-3): 한글이 섞인 줄이라 본문 글꼴로.
+          (SMK-03): 이 목록은 SS 70H/140H 한 계열의 치수표라, 10계열 전체로 가는 길을 한 줄 둔다. */}
+      <p className="tnum mt-3 text-[13px] text-ink-faint">
         SS 70H / SS 140H — {lang === "ko" ? `사양 1건 · 외형치수표 11종 · 제철용 1건` : `1 spec · 11 dimension tables · 1 steel-mill unit`}
+      </p>
+      <p className="mt-2 text-[13.5px]">
+        <Link href="/business" className="font-semibold text-ink underline underline-offset-4 hover:decoration-2">
+          {lang === "ko" ? "실린더 10계열 전체 보기" : "View all 10 cylinder series"}
+        </Link>
       </p>
 
       {/* 카테고리 필터 */}
@@ -81,10 +89,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
             <li key={p.slug} className="border-b border-line">
               <details className="acc prod-acc group">
                 <summary className="flex cursor-pointer items-center justify-between gap-4 py-4 transition-colors hover:bg-bg-raised sm:py-5">
+                  {/* 2026-10-22 오너 '나머지 다 진행'(SMK-13): 제목 앞 'DIM-LB' 같은 코드는 원문에 없는 내부 주소(slug)라 뺐다 */}
                   <span className="flex min-w-0 items-baseline gap-4">
-                    <span className="tnum shrink-0 font-mono text-[12px] uppercase tracking-[0.06em] text-ink-faint">
-                      {p.slug}
-                    </span>
                     <span className="truncate text-[15px] text-ink sm:text-[16px]">{title}</span>
                   </span>
                   <span aria-hidden className="acc-plus shrink-0 font-mono text-[18px] leading-none text-ink-faint transition-transform">

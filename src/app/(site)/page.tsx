@@ -1,6 +1,8 @@
 // 홈(/) — 직관형 악보(오너 피드백 2026-07-19 반영: 조작 패널은 /products/order-guide로 이동):
 // S1 히어로(회사가 뭘 하는지 3초) → S2 계열 10 → S3 형번 주문 → S4 제작 범위 → S5 실린더가 들어간 곳
-// → S6 도면과 카탈로그 → S7 견적·공지
+// → S6 도면과 카탈로그 → S7 견적·문의
+// 2026-10-22 오너 '나머지 다 진행'(5-1-2 · 전체점검-2026-10-19 SMK-02): 홈 끝 공지 목록(최신 2009년)을 뺐다 —
+//   원본에 최근 소식이 없어 지어내지 않고 견적·문의로 끝낸다. 공지 게시판(/news/notice)은 그대로.
 // 섹션 개선 적용(오너 채택 2026-08-30): S4 신설(RangeBand) · 구 S4 납품 기록 → RecordBand(잉크 밴드)
 // · 구 S5 자료실 텍스트 상자 2개 → DrawingSheet(도면 시트). 잘된 섹션(계열 원장·형번 스테이션·견적 밴드)은 그대로.
 //
@@ -10,7 +12,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
-import { fmtDate } from "@/lib/date";
+import { telHref } from "@/lib/tel";
 import { Reveal } from "@/components/motion/motion-primitives";
 import SeriesLedger from "@/components/home/SeriesLedger";
 import RangeBand from "@/components/home/RangeBand";
@@ -20,15 +22,17 @@ import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadataI18n } from "@/lib/seo/metadata";
 
 export const generateMetadata = () =>
-  pageMetadataI18n({ titleKo: "유압·공압 실린더 제조", titleEn: "Hydraulic & Pneumatic Cylinder Manufacturer", descKo: "유압·공압 실린더 전문 제조 — 보어 Ø40~Ø800, 행정 2,000mm. 표준부터 제철용·차량용까지 10계열.", descEn: "Hydraulic and pneumatic cylinders - bore O40-O800, stroke up to 2,000 mm. Ten series from standard to steel-mill and vehicle types.", path: "/" });
+  pageMetadataI18n({ titleKo: "유압·공압 실린더 제조", titleEn: "Hydraulic & Pneumatic Cylinder Manufacturer", descKo: "유압·공압 실린더 전문 제조 — 보어 Ø40~Ø800, 행정 2,000mm(그 이상 특주). 표준부터 제철용·차량용까지 10계열.", descEn: "Hydraulic and pneumatic cylinders - bore O40-O800, standard stroke limit 2,000 mm (longer on request). Ten series from standard to steel-mill and vehicle types.", path: "/" });
 
 const T = {
   ko: {
     heroHead1: "유압·공압 실린더",
     heroHead2: "전문 제조",
     heroSub: "초소형에서 초대형에 이르기까지, 고객이 원하는 용도대로 개발·제작합니다.",
-    heroFact: "보어 Ø40 – Ø800 · 행정 2,000mm · 1987년부터",
-    heroCaption: "실린더 내경 13단 Ø40–Ø250 · 특주 Ø800 — 카탈로그 실측", 
+    // 2026-10-22 오너 '나머지 다 진행'(SMK-21): 행정 2,000mm 는 표준 한계 — 원문 "스트로크 2,000mm이상(단, 좌굴강도 이하)" 특주.
+    heroFact: "보어 Ø40 – Ø800 · 행정 2,000mm(그 이상 특주) · 1987년부터",
+    // 2026-10-22 오너 '나머지 다 진행'(1-3-3 제작 메모): '— 카탈로그 실측' 출처 메모를 화면에서 뺐다.
+    heroCaption: "실린더 내경 13단 Ø40–Ø250 · 특주 Ø800",
     ctaProducts: "제품 보기",
     ctaQuote: "견적요청",
     s2Head: "실린더 10계열",
@@ -38,18 +42,19 @@ const T = {
     s3Cta: "주문방법 · 형번 조합기",
     // S4 제작 범위 · S5 실린더가 들어간 곳 · S6 도면과 카탈로그 문구는 각 컴포넌트가 소유한다(단일 소유권).
     ctaHead: "견적·문의",
-    ctaDesc: "제작 문의와 견적요청에 영업일 기준 빠르게 회신드립니다.",
+    // 2026-10-22 오너 '나머지 다 진행'(SMK-19): 근거 없는 '빠르게 회신' 약속 대신 견적요청 페이지 원문 안내(형번·사양·수량·도면 첨부).
+    ctaDesc: "형번·사양·수량을 적어 보내는 견적요청 — 도면(PDF·DWG·DWF) 첨부 가능.",
+    ctaTel: "전화",
     ctaQuoteBtn: "견적요청",
     ctaInquiry: "온라인문의",
     ctaLocation: "오시는길",
-    ctaNotice: "공지사항",
   },
   en: {
     heroHead1: "Hydraulic & Pneumatic",
     heroHead2: "Cylinder Manufacturer",
     heroSub: "From the smallest to the largest — developed and built to the customer's exact use.",
-    heroFact: "Bore Ø40 – Ø800 · Stroke 2,000mm · Since 1987",
-    heroCaption: "13 bore sizes Ø40–Ø250 · custom to Ø800 — from the catalog",
+    heroFact: "Bore Ø40 – Ø800 · Stroke 2,000mm (longer on request) · Since 1987",
+    heroCaption: "13 bore sizes Ø40–Ø250 · custom to Ø800",
     ctaProducts: "View Products",
     ctaQuote: "Request a Quote",
     s2Head: "10 Cylinder Series",
@@ -59,11 +64,11 @@ const T = {
     s3Cta: "Ordering Guide · Code Builder",
     // Copy for S4 / S5 / S6 lives in RangeBand · RecordBand · DrawingSheet (single ownership).
     ctaHead: "Quote & Inquiry",
-    ctaDesc: "We respond promptly to manufacturing inquiries and quote requests.",
+    ctaDesc: "Quote requests by model code, specification and quantity — drawings (PDF, DWG, DWF) can be attached.",
+    ctaTel: "Tel",
     ctaQuoteBtn: "Request a Quote",
     ctaInquiry: "Inquiry",
     ctaLocation: "Location",
-    ctaNotice: "Notice",
   },
 };
 
@@ -129,19 +134,13 @@ export default async function HomePage() {
   const lang = await getLang();
   const t = T[lang];
 
-  const [series, history, notices, techCount, cadCount, contents] = await Promise.all([
+  const [series, history, techCount, cadCount, contents] = await Promise.all([
     prisma.series.findMany({
       where: { published: true },
       orderBy: { sortOrder: "asc" },
       include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
     }),
     prisma.history.findMany({ orderBy: { sortOrder: "asc" } }),
-    prisma.post.findMany({
-      where: { board: "notice", published: true },
-      orderBy: [{ origDate: "desc" }, { id: "desc" }],
-      take: 3,
-      select: { slug: true, title: true, titleEn: true, origDate: true },
-    }),
     prisma.post.count({ where: { board: "tech", published: true } }),
     // 2026-10-21 오너 '수정해줘'(전체점검-2026-10-19 SMK-01): 글 수(3건)가 아니라 「받을 수 있는 도면 파일이 1개라도 있는 글」 수.
     // 원본 CAD zip 5건이 전부 소실(missing)이라 지금은 0 → DrawingSheet 가 건수 대신 '도면 요청 → 견적요청'을 보인다.
@@ -149,7 +148,7 @@ export default async function HomePage() {
     prisma.post.count({
       where: { board: "cad", published: true, attachments: { some: { missing: false, storeName: { not: "" } } } },
     }),
-    getContents(["slogan_en"], lang),
+    getContents(["slogan_en", "tel"], lang),
   ]);
 
   const records: RecordRow[] = history
@@ -177,8 +176,9 @@ export default async function HomePage() {
             )}
             <p className="tnum mt-6 font-mono text-[13px] text-ink-dim">{t.heroFact}</p>
             <div className="mt-8 flex flex-wrap gap-3">
+              {/* 2026-10-22 오너 '나머지 다 진행'(SMK-03): '제품 보기'는 한 계열 치수표(/products)가 아니라 10계열 전체(/business)로 */}
               <Link
-                href="/products"
+                href="/business"
                 className="inline-flex h-12 items-center bg-red px-6 text-[15px] font-semibold text-white transition-colors hover:bg-red-live"
               >
                 {t.ctaProducts}
@@ -194,7 +194,8 @@ export default async function HomePage() {
           <Reveal className="hidden md:block">
             <figure>
               <BoreSpectrum />
-              <figcaption className="mt-1 font-mono text-[10.5px] tracking-[0.08em] text-ink-faint">{t.heroCaption}</figcaption>
+              {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 캡션을 본문 글꼴로(넓은 자간 없음) */}
+              <figcaption className="tnum mt-1 text-[11.5px] text-ink-faint">{t.heroCaption}</figcaption>
             </figure>
           </Reveal>
         </section>
@@ -233,7 +234,8 @@ export default async function HomePage() {
               href="/products/order-guide"
               className="inline-flex h-12 items-center justify-center border border-ink-faint px-6 text-[14.5px] font-medium text-ink transition-colors hover:bg-bg-panel"
             >
-              {t.s3Cta} →
+              {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 반복 화살표): 테두리 버튼이라 화살표를 뺐다 */}
+              {t.s3Cta}
             </Link>
           </div>
         </Reveal>
@@ -248,12 +250,21 @@ export default async function HomePage() {
       {/* ── S6 도면과 카탈로그 — 자료실 두 입구를 도면 시트 한 장으로(제 컨테이너 보유) ── */}
       <DrawingSheet lang={lang} techCount={techCount} cadCount={cadCount} />
 
-      {/* ── S7 견적 CTA + 공지 ── */}
+      {/* ── S7 견적·문의 — 홈의 마지막 칸(2026-10-22 5-1-2: 옛 공지 목록 제거) ── */}
       <div className="mx-auto max-w-[1280px] px-5 md:px-8">
         <Reveal as="section" className="mb-16 md:mb-24">
           <div className="border border-line bg-bg-raised/40 p-6 sm:p-10">
             <h2 className="text-[clamp(1.4rem,2.8vw,2rem)] font-semibold tracking-tight text-ink">{t.ctaHead}</h2>
             <p className="mt-3 text-[14.5px] text-ink-dim">{t.ctaDesc}</p>
+            {/* 2026-10-22 오너 '나머지 다 진행'(SMK-20 · 5-1-1 ①): 견적 상자에 대표 전화 — 폰에서 바로 걸리게(대표 번호만) */}
+            {telHref(contents.tel) && (
+              <p className="mt-2 text-[14.5px] text-ink-dim">
+                {t.ctaTel}{" "}
+                <a href={telHref(contents.tel)} className="tnum font-semibold text-ink underline-offset-4 hover:underline">
+                  {contents.tel}
+                </a>
+              </p>
+            )}
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/support/quote"
@@ -274,22 +285,6 @@ export default async function HomePage() {
                 {t.ctaLocation}
               </Link>
             </div>
-
-            {notices.length > 0 && (
-              <div className="mt-10 border-t border-line pt-5">
-                <div className="font-mono text-[11px] tracking-[0.14em] text-ink-faint">{t.ctaNotice}</div>
-                <ul className="mt-2">
-                  {notices.map((n) => (
-                    <li key={n.slug} className="border-b border-line-soft last:border-b-0">
-                      <Link href={`/news/notice/${n.slug}`} className="flex items-baseline justify-between gap-4 py-2.5 hover:text-ink">
-                        <span className="truncate text-[13.5px] text-ink-dim">{lang === "en" && n.titleEn ? n.titleEn : n.title}</span>
-                        <span className="tnum shrink-0 font-mono text-[11.5px] text-ink-faint">{fmtDate(n.origDate, lang)}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </Reveal>
       </div>

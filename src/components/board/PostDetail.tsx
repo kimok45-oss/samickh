@@ -73,7 +73,8 @@ export default function PostDetail({
 
       {post.attachments.length > 0 && (
         <section className="border-t border-line py-5" aria-label={t.attachments}>
-          <h2 className="font-mono text-[11.5px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+          {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨) */}
+          <h2 className={lang === "ko" ? "text-[13px] font-semibold text-ink-faint" : "font-mono text-[11.5px] font-bold uppercase tracking-[0.16em] text-ink-faint"}>
             {t.attachments}
           </h2>
           <ul className="mt-3 space-y-2">
@@ -127,7 +128,7 @@ export default function PostDetail({
             href={`${basePath}/${next.slug}`}
             className="flex items-baseline gap-4 border-b border-line-soft py-3.5 text-[13.5px] transition-colors hover:bg-bg-raised sm:px-3"
           >
-            <span className="w-14 shrink-0 font-mono text-[11.5px] text-ink-faint">{t.next}</span>
+            <span className={lang === "ko" ? "w-14 shrink-0 text-[12.5px] text-ink-faint" : "w-14 shrink-0 font-mono text-[11.5px] text-ink-faint"}>{t.next}</span>
             <span className="line-clamp-1 text-ink-dim">
               {lang === "en" && next.titleEn ? next.titleEn : next.title}
             </span>
@@ -138,7 +139,7 @@ export default function PostDetail({
             href={`${basePath}/${prev.slug}`}
             className="flex items-baseline gap-4 border-b border-line-soft py-3.5 text-[13.5px] transition-colors hover:bg-bg-raised sm:px-3"
           >
-            <span className="w-14 shrink-0 font-mono text-[11.5px] text-ink-faint">{t.prev}</span>
+            <span className={lang === "ko" ? "w-14 shrink-0 text-[12.5px] text-ink-faint" : "w-14 shrink-0 font-mono text-[11.5px] text-ink-faint"}>{t.prev}</span>
             <span className="line-clamp-1 text-ink-dim">
               {lang === "en" && prev.titleEn ? prev.titleEn : prev.title}
             </span>
@@ -149,7 +150,7 @@ export default function PostDetail({
       <div className="mt-8">
         <Link
           href={basePath}
-          className="inline-flex items-center gap-2 border border-line px-5 py-2.5 font-mono text-[13px] font-semibold text-ink-dim transition-colors hover:border-ink-dim hover:text-ink"
+          className="inline-flex items-center gap-2 border border-line px-5 py-2.5 text-[13px] font-semibold text-ink-dim transition-colors hover:border-ink-dim hover:text-ink"
         >
           {t.backToList}
         </Link>

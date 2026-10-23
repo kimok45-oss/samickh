@@ -20,11 +20,13 @@ export default async function BusinessIndexPage() {
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-24 md:px-8 md:pb-32">
       <div className="pt-8">
-        <div className="font-mono text-[11px] tracking-[0.16em] text-ink-faint">{lang === "ko" ? "사업분야" : "BUSINESS"}</div>
-        <h1 className="mt-3 font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+        {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글 머리말은 본문 글꼴·자간 없음, 영문은 예전 그대로 */}
+        <div className={lang === "ko" ? "text-[12.5px] font-medium text-ink-faint" : "font-mono text-[11px] tracking-[0.16em] text-ink-faint"}>{lang === "ko" ? "사업분야" : "BUSINESS"}</div>
+        {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+        <h1 className="mt-3 text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
           {lang === "ko" ? "실린더 10계열" : "10 Cylinder Series"}
         </h1>
-        <p className="tnum mt-3 font-mono text-[12.5px] text-ink-faint">
+        <p className="tnum mt-3 text-[13px] text-ink-faint">
           {lang === "ko" ? `유압 ${hyd}계열 · 공압 ${pneu}계열` : `${hyd} hydraulic · ${pneu} pneumatic`}
         </p>
       </div>

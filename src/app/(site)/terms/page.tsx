@@ -109,10 +109,11 @@ export default async function TermsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 pb-24 pt-12 md:px-8">
-      <h1 className="font-mono text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "이용약관" : "Terms of Use"}
       </h1>
-      <div className="mt-8 space-y-4 text-[14px] leading-relaxed text-ink-dim [&_h2]:mt-8 [&_h2]:font-mono [&_h2]:text-[14px] [&_h2]:font-bold [&_h2]:text-ink [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
+      <div className="mt-8 space-y-4 text-[14px] leading-relaxed text-ink-dim [&_h2]:mt-8 [&_h2]:text-[15px] [&_h2]:font-bold [&_h2]:text-ink [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
         {lang === "ko" ? ko : en}
       </div>
     </div>

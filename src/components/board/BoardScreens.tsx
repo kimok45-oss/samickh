@@ -27,7 +27,8 @@ export async function BoardListScreen({
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? meta.ko : meta.en}
       </h1>
       <div className="mt-8">
@@ -61,7 +62,8 @@ export async function BoardDetailScreen({
 
   return (
     <div>
-      <p className="font-mono text-[11.5px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+      {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글 게시판 이름은 본문 글꼴·자간 없음 */}
+      <p className={lang === "ko" ? "text-[13px] font-semibold text-ink-faint" : "font-mono text-[11.5px] font-bold uppercase tracking-[0.16em] text-ink-faint"}>
         {lang === "ko" ? meta.ko : meta.en}
       </p>
       <div className="mt-4">

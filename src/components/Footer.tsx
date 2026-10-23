@@ -2,6 +2,7 @@
 // 이메일·사업자번호는 빈 문자열이면 렌더 생략([확인필요] 값 — 날조 금지).
 import Link from "next/link";
 import type { Lang } from "@/lib/lang";
+import { telHref } from "@/lib/tel";
 
 export type FooterInfo = {
   companyName: string;
@@ -73,7 +74,8 @@ export default function Footer({ lang, info }: { lang: Lang; info: FooterInfo })
                 <div className="flex gap-3">
                   <dt className="shrink-0">{lang === "ko" ? "전화" : "Tel"}</dt>
                   <dd className="tnum">
-                    <a href={`tel:${info.tel.split("~")[0].replace(/[^0-9+]/g, "")}`} className="hover:text-ink-dim">
+                    {/* 2026-10-22 오너 '나머지 다 진행'(5-1-1 ①): 전화 링크를 공용 telHref 로(범위 표기 "~2" 앞 대표 번호만) */}
+                    <a href={telHref(info.tel)} className="hover:text-ink-dim">
                       {info.tel}
                     </a>
                   </dd>

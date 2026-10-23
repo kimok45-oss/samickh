@@ -49,7 +49,8 @@ const CUSHION = {
 const T = {
   ko: {
     h1: "실린더 주문방법",
-    sub: "SS70H, SS140H SERIES — KS 규격 (카탈로그 p.11 원문)",
+    // 2026-10-22 오너 '나머지 다 진행'(1-3-3 제작 메모): '(카탈로그 p.11 원문)' 출처 메모를 화면에서 뺐다
+    sub: "SS70H, SS140H SERIES — KS 규격",
     slotHead: "형번 10슬롯",
     packing: "① 패킹재질",
     mounting: "② 지지부형식",
@@ -66,14 +67,15 @@ const T = {
     leadHead: "⑩ 리드스위치 부착형 실린더",
     leadNote: "리이드스위치 부착형 실린더 계열(SS 70HL / SS 140HL)을 참고하십시요.",
     leadLink: "리이드스위치 부착형 실린더 보기",
-    ctaStation: "홈 주문방법 스테이션에서 형번 만들기",
+    // 2026-10-22 오너 '나머지 다 진행': 예전 링크(/#order-station)는 홈에 없는 자리로 가던 고장 — 이 페이지 위 조합기로
+    ctaStation: "위 형번 조합기에서 형번 만들기",
     ctaQuote: "견적요청",
     port: "PORT",
     cushionValve: "CUSHION VALVE",
   },
   en: {
     h1: "How to Order",
-    sub: "SS70H, SS140H SERIES — KS standard (original catalog p.11)",
+    sub: "SS70H, SS140H SERIES — KS standard",
     slotHead: "10-Slot Model Code",
     packing: "① Packing Material",
     mounting: "② Mounting Type",
@@ -90,7 +92,7 @@ const T = {
     leadHead: "⑩ Lead Switch Type Cylinder",
     leadNote: "Refer to the lead switch mounting cylinder series (SS 70HL / SS 140HL).",
     leadLink: "View lead switch type series",
-    ctaStation: "Build a model code in the order station",
+    ctaStation: "Build a model code with the code builder above",
     ctaQuote: "Request a Quote",
     port: "PORT",
     cushionValve: "CUSHION VALVE",
@@ -143,16 +145,19 @@ export default async function OrderGuidePage() {
   ]);
 
   const th = "border-b border-line px-3 py-2 text-left text-[12px] font-medium text-ink-faint";
+  // 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글 소제목은 본문 글꼴·자간 없음, 영문은 예전 모노 그대로
+  const h2c = lang === "en" ? "font-mono text-[13px] tracking-[0.14em] text-ink-faint" : "text-[15px] font-semibold text-ink";
   const td = "border-b border-line-soft px-3 py-2 text-[13.5px] text-ink-dim";
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">{t.h1}</h1>
-      <p className="mt-3 font-mono text-[12.5px] text-ink-faint">{t.sub}</p>
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">{t.h1}</h1>
+      <p className="tnum mt-3 text-[13px] text-ink-faint">{t.sub}</p>
 
       {/* ── 온라인 형번 조합기(카탈로그 주문방법의 인터랙티브판 — 홈에서 이동, 오너 피드백) ── */}
-      <Reveal as="section" className="mt-10">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">
+      <Reveal as="section" className="mt-10 scroll-mt-24" id="code-builder">
+        <h2 className={h2c}>
           {lang === "ko" ? "온라인 형번 조합기" : "ONLINE CODE BUILDER"}
         </h2>
         <div className="mt-4">
@@ -166,8 +171,21 @@ export default async function OrderGuidePage() {
 
       {/* ── 10슬롯 도해(원문 상단 다이어그램) ── */}
       <Reveal as="section" className="mt-10">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.slotHead}</h2>
-        <div className="mt-4 overflow-x-auto border border-line bg-bg-raised/40 p-5">
+        <h2 className={h2c}>{t.slotHead}</h2>
+        {/* 2026-10-22 오너 '나머지 다 진행'(5-1-3): 폰에서 10슬롯 도해가 오른쪽으로 잘리던(가로 밀기 1,015px) 것을
+            폰에서만 같은 순서의 세로 목록으로. 데스크톱(640px 이상)은 아래 도해 그대로. */}
+        <div className="mt-4 border border-line bg-bg-raised/40 p-5 sm:hidden">
+          <p className="tnum font-mono text-[12.5px] text-ink">{SERIES_STACK.join(" · ")}</p>
+          <ol className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-3 text-[13px] text-ink-dim">
+            {SLOTS[lang].map((s, i) => (
+              <li key={s}>
+                {s}
+                {i === 9 && <span className="ml-1 font-mono text-[12px] text-ink-faint">(HL)</span>}
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="mt-4 hidden overflow-x-auto border border-line bg-bg-raised/40 p-5 sm:block">
           <div className="flex min-w-max items-center gap-3">
             {/* 시리즈 스택(원문 좌측 4박스 — ⑩리드스위치는 HL 표기로 시리즈에 포함) */}
             <div className="grid gap-1">
@@ -197,7 +215,7 @@ export default async function OrderGuidePage() {
 
       {/* ── ① 패킹재질 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.packing}</h2>
+        <h2 className={h2c}>{t.packing}</h2>
         <table className="mt-4 w-full max-w-[520px] border-t border-line">
           <tbody>
             {PACKING[lang].map(([code, name]) => (
@@ -212,7 +230,7 @@ export default async function OrderGuidePage() {
 
       {/* ── ② 지지부형식 10코드(DB Mounting) ── */}
       <Reveal as="section" className="mt-14" id="mounting">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.mounting}</h2>
+        <h2 className={h2c}>{t.mounting}</h2>
         <ul className="mt-4 grid grid-cols-1 border-b border-l border-line sm:grid-cols-2">
           {mounts.map((m) => (
             <li key={m.code} className="flex items-center gap-4 border-r border-t border-line px-4 py-3.5">
@@ -231,7 +249,7 @@ export default async function OrderGuidePage() {
 
       {/* ── ③④ 보어/롯드 13단(DB BoreRod) ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.bore}</h2>
+        <h2 className={h2c}>{t.bore}</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="tnum w-full max-w-[620px] font-mono text-[13px]">
             <thead>
@@ -259,13 +277,13 @@ export default async function OrderGuidePage() {
 
       {/* ── ⑤ 스트로크 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.strokeHead}</h2>
+        <h2 className={h2c}>{t.strokeHead}</h2>
         <p className="mt-3 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-dim">{t.strokeNote}</p>
       </Reveal>
 
       {/* ── ⑥ 쿠션유무 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.cushionHead}</h2>
+        <h2 className={h2c}>{t.cushionHead}</h2>
         <table className="mt-4 w-full max-w-[520px] border-t border-line">
           <tbody>
             {CUSHION[lang].map(([code, name]) => (
@@ -280,7 +298,7 @@ export default async function OrderGuidePage() {
 
       {/* ── ⑦⑧ 포트·쿠션밸브 위치 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.portHead}</h2>
+        <h2 className={h2c}>{t.portHead}</h2>
         <p className="mt-3 text-[13.5px] text-ink-dim">{t.portStd}</p>
         <div className="mt-5 grid items-start gap-6 sm:grid-cols-[340px_1fr]">
           <div className="border border-line bg-bg-raised/40 p-4">
@@ -292,13 +310,13 @@ export default async function OrderGuidePage() {
 
       {/* ── ⑨ 벨로우즈 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.bellowsHead}</h2>
+        <h2 className={h2c}>{t.bellowsHead}</h2>
         <p className="mt-3 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-dim">{t.bellowsNote}</p>
       </Reveal>
 
       {/* ── ⑩ 리드스위치 ── */}
       <Reveal as="section" className="mt-14">
-        <h2 className="font-mono text-[13px] tracking-[0.14em] text-ink-faint">{t.leadHead}</h2>
+        <h2 className={h2c}>{t.leadHead}</h2>
         <p className="mt-3 max-w-[70ch] text-[13.5px] leading-relaxed text-ink-dim">{t.leadNote}</p>
         <Link
           href="/business/ss-leadswitch"
@@ -311,7 +329,7 @@ export default async function OrderGuidePage() {
       {/* ── CTA ── */}
       <div className="mt-16 flex flex-wrap gap-3 border-t border-line pt-8">
         <Link
-          href="/#order-station"
+          href="#code-builder"
           className="inline-flex h-11 items-center border border-line px-5 text-[14px] font-medium text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
         >
           {t.ctaStation}

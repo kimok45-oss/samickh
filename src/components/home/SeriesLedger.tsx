@@ -89,15 +89,17 @@ export default function SeriesLedger({ items, lang }: { items: SeriesRow[]; lang
                       {p.length > 0 ? `${p.join(" / ")} kgf/㎠` : "—"}
                     </span>
 
-                    {/* 외형 도면 — 도판 크기. 음수 마진으로 행 높이를 안 키우고, 큰 도판은 위아래 괘선에 꽉 차게 */}
+                    {/* 외형 도면 — 도판 크기. 음수 마진으로 행 높이를 안 키우고, 큰 도판은 위아래 괘선에 꽉 차게.
+                        2026-10-22 오너 '나머지 다 진행'(전체점검-2026-10-19 SMK-22): 폰에서 숨기던 도면을 줄 아래 작게(높이 48px) 보인다.
+                        데스크톱(sm 이상)은 예전 그대로(sm:-my-4 가 폰용 mt-1 을 덮어 위아래 -16px — 줄 97px, 도판이 괘선에 꽉 참). */}
                     {DRAWINGS.has(s.slug) ? (
-                      <span className="relative z-[1] -my-4 hidden h-24 w-72 sm:block">
+                      <span className="relative z-[1] col-span-2 mt-1 block h-12 w-full sm:col-span-1 sm:-my-4 sm:h-24 sm:w-72">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={`/img/series/${s.slug}.png`}
                           alt=""
                           loading="lazy"
-                          className="h-full w-full object-contain object-right opacity-85 transition-opacity group-hover:opacity-100"
+                          className="h-full w-full object-contain object-left opacity-85 transition-opacity group-hover:opacity-100 sm:object-right"
                         />
                       </span>
                     ) : (

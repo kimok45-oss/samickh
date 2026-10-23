@@ -17,7 +17,8 @@ export default async function FaqPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "자주 묻는 질문" : "FAQ"}
       </h1>
       <div className="mt-8">

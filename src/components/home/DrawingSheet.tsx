@@ -8,8 +8,15 @@
 // 치수값은 넣지 않는다(그 도면의 실제 치수를 회사가 공표한 바 없으므로 지어내지 않는다).
 //
 // 문구 소유권: 이 섹션의 UI 문구는 전부 아래 T 하나가 소유한다(리포 관례 — src/lib/i18n.ts 주석 참조).
+//
+// 2026-10-22 오너 '나머지 다 진행':
+//  · 5-1-3 — 폰에서 도면이 시트 안에서 가로로 밀리며 오른쪽(상세 D)이 잘리던 것을, 폰에서만 화면 폭에 맞춰 통째로 보이게.
+//    폰에선 도면 속 작은 이름표(3~4px로 줄어 못 읽음)를 숨기고, 같은 이름표를 도면 바로 아래 세로 목록으로 보인다. 데스크톱 그대로.
+//  · 1-3-3 — 표제란의 한글 라벨을 본문 글꼴로(모노·넓은 자간 제거). 영문 화면은 예전 모노 그대로.
+//  · SMK-23 — 1회 드로잉이 화면에 들어올 때 시작(DrawOnView).
 import Link from "next/link";
 import type { Lang } from "@/lib/lang";
+import DrawOnView from "@/components/motion/DrawOnView";
 
 const T = {
   ko: {
@@ -183,11 +190,17 @@ export default function DrawingSheet({ lang, techCount, cadCount }: { lang: Lang
       {/* ── 액자: 도면 시트(이중 테두리) ── */}
       <div className="mt-6 border border-ink bg-bg-raised p-1.5">
         <div className="border border-line">
-          {/* 도판 — 좁은 화면에서는 시트 안에서만 가로 스크롤(페이지 본문은 안 밀린다) */}
-          <div className="overflow-x-auto overscroll-x-contain px-4 pb-2 pt-6 sm:overflow-visible sm:px-8">
-            <div className="min-w-[760px] sm:min-w-0">
+          {/* 도판 — 폰에서도 시트 폭에 맞춰 통째로(5-1-3). 폰 전용 이름표 목록이 도면 속 글자를 대신한다 */}
+          <div className="px-4 pb-2 pt-6 sm:px-8">
+            <DrawOnView className="dwg-fit-phone">
               <Sheet t={t} />
-            </div>
+            </DrawOnView>
+            <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12.5px] text-ink-faint sm:hidden">
+              {[t.parts.tube, t.parts.tie, t.parts.rod, t.parts.piston, t.parts.cushion].map((n) => (
+                <li key={n}>{n}</li>
+              ))}
+              <li className="basis-full">{t.detail}</li>
+            </ul>
           </div>
 
           {/* 표제란 — 도면 시트의 관례. 모노 스트립 */}
@@ -199,8 +212,8 @@ export default function DrawingSheet({ lang, techCount, cadCount }: { lang: Lang
               { k: tb.companyK, v: tb.company, hide: true },
             ].map((c, i) => (
               <div key={c.k} className={`flex items-baseline gap-2 px-4 py-2.5 ${i > 0 ? "sm:border-l sm:border-line" : ""}`}>
-                <dt className={c.hide ? "sr-only" : "font-mono tracking-[0.1em] text-ink-faint"}>{c.k}</dt>
-                <dd className="font-mono font-medium text-ink-dim">{c.v}</dd>
+                <dt className={c.hide ? "sr-only" : lang === "en" ? "font-mono tracking-[0.1em] text-ink-faint" : "text-[12px] text-ink-faint"}>{c.k}</dt>
+                <dd className={lang === "en" ? "font-mono font-medium text-ink-dim" : "tnum text-[12px] font-medium text-ink-dim"}>{c.v}</dd>
               </div>
             ))}
           </dl>

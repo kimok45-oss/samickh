@@ -4,6 +4,7 @@ import { getLang } from "@/lib/lang";
 import { getContents } from "@/lib/content";
 import { JsonLd, organizationJsonLd } from "@/lib/seo/jsonld";
 import InquiryForm from "@/components/inquiry/InquiryForm";
+import { telHref } from "@/lib/tel";
 
 export const generateMetadata = () =>
   pageMetadataI18n({ titleKo: "온라인문의", titleEn: "Inquiry", descKo: "삼익유공압주식회사 온라인문의 — 유압·공압 실린더 관련 문의를 접수합니다.", descEn: "Online inquiry to SAMICK H&P.", path: "/support/inquiry" });
@@ -15,7 +16,8 @@ export default async function InquiryPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <JsonLd data={organizationJsonLd()} />
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "온라인문의" : "Online Inquiry"}
       </h1>
       <p className="mt-3 text-[14px] leading-relaxed text-ink-dim">
@@ -25,7 +27,15 @@ export default async function InquiryPage() {
       </p>
       {(c.tel || c.fax) && (
         <p className="tnum mt-2 font-mono text-[12.5px] text-ink-faint">
-          {c.tel && `TEL ${c.tel}`}
+          {/* 2026-10-22 오너 '나머지 다 진행'(5-1-1 ①): 전화 번호를 누르면 걸리게(대표 번호만 — telHref) */}
+          {c.tel && (
+            <>
+              TEL{" "}
+              <a href={telHref(c.tel)} className="text-ink-dim underline-offset-4 hover:underline">
+                {c.tel}
+              </a>
+            </>
+          )}
           {c.tel && c.fax && " · "}
           {c.fax && `FAX ${c.fax}`}
         </p>

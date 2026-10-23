@@ -10,33 +10,47 @@
 //   10계열(유압 8 · 공압 2) — DB Series
 //
 // 문구 소유권: 이 섹션의 UI 문구는 전부 아래 T 하나가 소유한다(리포 관례 — src/lib/i18n.ts 주석 참조).
+//
+// 2026-10-22 오너 '나머지 다 진행':
+//  · SMK-21 — '최대 행정 2,000mm'는 원문과 어긋남(원문: 스트로크 한계 2,000mm, 그 이상은 특주 — 단 좌굴강도 이하).
+//    → '행정 한계 2,000mm · 그 이상 특주'로. 사실대장 "스트로크 한계 | 2,000mm (특주: 2,000mm 이상 — 좌굴강도 이하)".
+//  · 1-3-3 — 한글 라벨의 모노·넓은 자간을 본문 글꼴로, 한글 화면의 영문 병기(MAX STROKE·BORE·TUBE·ROD)를 뺌,
+//    '카탈로그 실측' 출처 메모를 화면에서 뺌.
+//  · 5-1-3 · SMK-08 — 폰에서 도해가 오른쪽으로 잘리던(가로 밀기) 것을 폰에서만 화면 폭에 맞춰 통째로 보이게.
+//    폰에선 도해 속 작은 글자(3~9px로 줄어 못 읽음)를 숨기고, 같은 수치는 바로 아래 숫자 목록(세로)이 맡는다. 데스크톱 그대로.
+//  · SMK-23 — 1회 드로잉이 화면에 들어올 때 시작(DrawOnView).
 import type { Lang } from "@/lib/lang";
+import DrawOnView from "@/components/motion/DrawOnView";
 
 const T = {
   ko: {
     head: "제작 범위",
-    sub: "카탈로그 실측 — 표준 내경 13단 Ø40–Ø250, 특주 대구경, 최대 행정 2,000mm.",
+    sub: "표준 내경 13단 Ø40–Ø250, 특주 대구경, 행정 한계 2,000mm(그 이상 특주).",
     note: "도해 · 축척 없음(NTS)",
     figCaption: "유압실린더 측면도 — 롯드 인출량이 행정(ST)",
-    svgStroke: "최대 행정 · MAX STROKE",
-    svgBore: "보어(내경) · BORE",
+    svgStroke: "행정 한계(표준)",
+    svgBore: "보어(내경)",
+    svgTube: "튜브",
+    svgRod: "롯드",
     stats: [
       { n: "Ø800", u: "mm", k: "최대 보어(특주)", d: "표준 Ø40 – Ø250 · 13단" },
-      { n: "2,000", u: "mm", k: "최대 행정", d: "롯드 인출 길이" },
+      { n: "2,000", u: "mm", k: "행정 한계", d: "그 이상 특주(좌굴강도 이하)" },
       { n: "10", u: "계열", k: "실린더 계열", d: "유압 8 · 공압 2" },
       { n: "1987", u: "", k: "제작 개시", d: "삼익 THK에서 제작·판매 시작" },
     ],
   },
   en: {
     head: "Manufacturing Range",
-    sub: "Measured from the catalog — 13 standard bores Ø40–Ø250, custom large bore, stroke up to 2,000 mm.",
+    sub: "13 standard bores Ø40–Ø250, custom large bore, standard stroke limit 2,000 mm (longer on request).",
     note: "Diagram · not to scale (NTS)",
     figCaption: "Hydraulic cylinder, side view — rod extension is the stroke (ST)",
-    svgStroke: "MAX STROKE",
+    svgStroke: "STROKE LIMIT",
     svgBore: "BORE",
+    svgTube: "TUBE",
+    svgRod: "ROD",
     stats: [
       { n: "Ø800", u: "mm", k: "Max bore (custom)", d: "Standard Ø40 – Ø250 · 13 sizes" },
-      { n: "2,000", u: "mm", k: "Max stroke", d: "Rod extension" },
+      { n: "2,000", u: "mm", k: "Stroke limit", d: "Longer on request (within buckling strength)" },
       { n: "10", u: "series", k: "Cylinder series", d: "8 hydraulic · 2 pneumatic" },
       { n: "1987", u: "", k: "Production began", d: "Started at Samick THK" },
     ],
@@ -58,8 +72,10 @@ const TIP_RETRACT = 668; // 롯드 완전 후퇴 시 팁 위치(치수 기준선
 const TIP_EXTEND = 1096; // 행정 2,000 인출 시 팁
 const DIM_Y = 252;
 
-function StrokeDiagram({ label, boreLabel }: { label: string; boreLabel: string }) {
+function StrokeDiagram({ label, boreLabel, tube, rod, ko }: { label: string; boreLabel: string; tube: string; rod: string; ko: boolean }) {
   const leader = { stroke: "var(--color-ink-faint)", strokeWidth: 1 } as const;
+  // 라벨 글꼴 — 한글은 본문 글꼴·자간 없음, 영문은 예전 모노 그대로(1-3-3)
+  const lf = ko ? { fontFamily: "var(--font-sans)" } : { fontFamily: "var(--font-mono)" };
   return (
     <svg viewBox="0 0 1200 300" className="h-auto w-full" aria-hidden>
       <defs>
@@ -125,7 +141,7 @@ function StrokeDiagram({ label, boreLabel }: { label: string; boreLabel: string 
           <text x={206} y={CY - 2} fontSize="19" fontWeight="600" fill="var(--color-ink)" fontFamily="var(--font-mono)">
             Ø40 – Ø800
           </text>
-          <text x={206} y={CY + 19} fontSize="12" letterSpacing="0.12em" fill="var(--color-ink-faint)" fontFamily="var(--font-mono)">
+          <text x={206} y={CY + 19} fontSize="12" letterSpacing={ko ? undefined : "0.12em"} fill="var(--color-ink-faint)" {...lf}>
             {boreLabel}
           </text>
         </g>
@@ -143,7 +159,7 @@ function StrokeDiagram({ label, boreLabel }: { label: string; boreLabel: string 
 
       {/* 치수값 — 잉크(채도색 금지) */}
       <g className="dwg-ink" style={{ animationDelay: "2.2s" }}>
-        <text x={(TIP_RETRACT + TIP_EXTEND + 22) / 2} y={DIM_Y - 34} textAnchor="middle" fontSize="12" letterSpacing="0.14em" fill="var(--color-ink-faint)" fontFamily="var(--font-mono)">
+        <text x={(TIP_RETRACT + TIP_EXTEND + 22) / 2} y={DIM_Y - 34} textAnchor="middle" fontSize={ko ? 13 : 12} letterSpacing={ko ? undefined : "0.14em"} fill="var(--color-ink-faint)" {...lf}>
           {label}
         </text>
         <text x={(TIP_RETRACT + TIP_EXTEND + 22) / 2} y={DIM_Y - 8} textAnchor="middle" fontSize="30" fontWeight="600" fill="var(--color-ink)" fontFamily="var(--font-mono)">
@@ -158,12 +174,12 @@ function StrokeDiagram({ label, boreLabel }: { label: string; boreLabel: string 
       {/* 부품 지시선(원본 카탈로그 도면의 구성요소만) */}
       <g className="dwg-ink" style={{ animationDelay: "1.5s" }}>
         <line x1={340} y1={BAR_T} x2={340} y2={30} {...leader} />
-        <text x={340} y={22} textAnchor="middle" fontSize="12.5" fill="var(--color-ink-faint)" fontFamily="var(--font-mono)">
-          TUBE
+        <text x={340} y={22} textAnchor="middle" fontSize="12.5" fill="var(--color-ink-faint)" {...lf}>
+          {tube}
         </text>
         <line x1={860} y1={CY - ROD_H / 2} x2={860} y2={52} {...leader} />
-        <text x={860} y={44} textAnchor="middle" fontSize="12.5" fill="var(--color-ink-faint)" fontFamily="var(--font-mono)">
-          ROD
+        <text x={860} y={44} textAnchor="middle" fontSize="12.5" fill="var(--color-ink-faint)" {...lf}>
+          {rod}
         </text>
       </g>
     </svg>
@@ -179,19 +195,17 @@ export default function RangeBand({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-[1280px] px-5 py-14 md:px-8 md:py-20">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <h2 className="text-[clamp(1.4rem,2.8vw,2rem)] font-semibold tracking-tight text-ink">{t.head}</h2>
-          <span className="font-mono text-[11.5px] tracking-[0.12em] text-ink-faint">{t.note}</span>
+          <span className="text-[12px] text-ink-faint">{t.note}</span>
         </div>
         <p className="mt-3 max-w-[62ch] text-[14.5px] leading-relaxed text-ink-dim">{t.sub}</p>
 
         <figure className="mt-8 md:mt-10">
-          {/* 도면은 가로로 길다 — 좁은 화면에서는 치수값이 읽히도록 제 컨테이너 안에서만 가로 스크롤한다.
-              (페이지 본문은 절대 가로로 밀리지 않는다) */}
-          <div className="-mx-5 overflow-x-auto overscroll-x-contain px-5 sm:mx-0 sm:overflow-visible sm:px-0">
-            <div className="min-w-[720px] sm:min-w-0">
-              <StrokeDiagram label={t.svgStroke} boreLabel={t.svgBore} />
-            </div>
-          </div>
-          <figcaption className="mt-1 font-mono text-[10.5px] tracking-[0.08em] text-ink-faint">{t.figCaption}</figcaption>
+          {/* 2026-10-22(5-1-3 · SMK-08): 예전엔 폰에서 가로 밀기(오른쪽 잘림). 이제 폰에서도 도해 전체를 화면 폭에 맞추고
+              (dwg-fit-phone — 폰에서만 도해 속 글자 숨김, globals.css), 수치는 아래 숫자 목록이 세로로 보여 준다. */}
+          <DrawOnView className="dwg-fit-phone">
+            <StrokeDiagram label={t.svgStroke} boreLabel={t.svgBore} tube={t.svgTube} rod={t.svgRod} ko={lang === "ko"} />
+          </DrawOnView>
+          <figcaption className="mt-1 text-[11.5px] text-ink-faint">{t.figCaption}</figcaption>
         </figure>
 
         {/* ── 대형 숫자 ── */}
@@ -209,7 +223,7 @@ export default function RangeBand({ lang }: { lang: Lang }) {
                   )}
                 </span>
                 <span className="mt-3.5 block text-[13.5px] font-semibold text-ink">{s.k}</span>
-                <span className="mt-1 block font-mono text-[11.5px] leading-relaxed text-ink-faint">{s.d}</span>
+                <span className="tnum mt-1 block text-[12px] leading-relaxed text-ink-faint">{s.d}</span>
               </dd>
             </div>
           ))}

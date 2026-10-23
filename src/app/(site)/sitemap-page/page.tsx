@@ -78,13 +78,15 @@ export default async function SitemapPage() {
 
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-24 pt-12 md:px-8">
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {t("사이트맵", "Sitemap")}
       </h1>
       <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((sec) => (
           <section key={sec.title}>
-            <h2 className="border-b border-line pb-2 font-mono text-[13px] font-bold uppercase tracking-[0.14em] text-ink">
+            {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨) */}
+            <h2 className="border-b border-line pb-2 text-[14px] font-bold text-ink">
               {sec.title}
             </h2>
             <ul className="mt-3 space-y-1.5">

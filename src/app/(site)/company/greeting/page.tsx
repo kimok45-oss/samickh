@@ -18,24 +18,32 @@ export default async function GreetingPage() {
 
   return (
     <div>
-      <h1 className="font-mono text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
+      {/* 2026-10-22 오너 '나머지 다 진행'(SMK-09 · 1-3-3): 한글 제목의 고정폭(모노) 글꼴을 본문 글꼴로 */}
+      <h1 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-tight text-ink">
         {lang === "ko" ? "인사말" : "Greeting"}
       </h1>
 
-      {/* 경영이념 인용 플레이트 */}
+      {/* 경영이념 인용 플레이트.
+          2026-10-22 오너 '나머지 다 진행'(SMK-11): 높은 흰 상자 4칸이 비어 보이던 것을 괘선 한 줄(4구)로 줄이고,
+          제작 메모 캡션('— 인사말 원문')은 '경영이념' 머리말 하나로(1-3-3 · SMK-10). 4구 문장은 원문 그대로. */}
       {tenets.length > 0 && (
         <Reveal className="mt-10">
-          <figure className="border border-line">
-            <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-4">
-              {tenets.map((tn) => (
-                <div key={tn} className="bg-bg-raised px-4 py-6 sm:px-5 sm:py-8">
-                  <span className="block text-[15px] font-semibold leading-snug text-ink sm:text-[16.5px]">{tn}</span>
-                </div>
-              ))}
-            </div>
-            <figcaption className="border-t border-line px-4 py-2.5 font-mono text-[10.5px] tracking-[0.12em] text-ink-faint">
-              {lang === "ko" ? "경영이념 — 인사말 원문" : "MANAGEMENT PHILOSOPHY — FROM THE ORIGINAL GREETING"}
+          <figure>
+            <figcaption className={lang === "ko" ? "text-[13px] font-medium text-ink-faint" : "font-mono text-[11px] tracking-[0.12em] text-ink-faint"}>
+              {lang === "ko" ? "경영이념" : "MANAGEMENT PHILOSOPHY"}
             </figcaption>
+            <ul className="mt-3 grid grid-cols-2 border-y border-line sm:grid-cols-4">
+              {tenets.map((tn, i) => (
+                <li
+                  key={tn}
+                  className={`py-4 text-[15px] font-semibold leading-snug text-ink sm:px-5 sm:text-[16.5px] ${
+                    i % 2 === 1 ? "pl-4 sm:pl-5" : ""
+                  } ${i > 0 ? "sm:border-l sm:border-line" : "sm:pl-0"} ${i >= 2 ? "border-t border-line sm:border-t-0" : ""}`}
+                >
+                  {tn}
+                </li>
+              ))}
+            </ul>
           </figure>
         </Reveal>
       )}
@@ -72,9 +80,8 @@ export default async function GreetingPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={f.src} alt={lang === "ko" ? f.ko : f.en} className="w-full object-cover" loading="lazy" />
               </div>
-              <figcaption className="mt-2 font-mono text-[10.5px] tracking-[0.12em] text-ink-faint">
-                {(lang === "ko" ? f.ko : f.en).toUpperCase()} — {lang === "ko" ? "원본 자산" : "ORIGINAL ASSET"}
-              </figcaption>
+              {/* 2026-10-22 오너 '나머지 다 진행'(SMK-10 · 1-3-3): 제작 메모('— 원본 자산')를 빼고 이름만 */}
+              <figcaption className="mt-2 text-[12.5px] text-ink-faint">{lang === "ko" ? f.ko : f.en}</figcaption>
             </figure>
           ))}
         </div>

@@ -1,5 +1,6 @@
 import { buildDirectionsUrl, providersForLocale, PROVIDER_LABEL, type Worksite, type Provider } from "@/lib/directions";
 import { CopyButton } from "./CopyButton";
+import { telHref } from "@/lib/tel";
 
 // 약도(이미지 또는 SVG 라인아트) + 클릭 시 길찾기 + 주소 카드.
 // 서버 컴포넌트(복사 버튼만 클라). 약도 전체가 <a>라 클릭하면 기본 제공자 길찾기가 새 탭으로 열린다.
@@ -28,12 +29,14 @@ export function WorksiteMap({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${site.name} ${PROVIDER_LABEL[primary][lang]} ${lang === "ko" ? "새 창에서 열기" : "(opens in new tab)"}`}
-        className="group relative block overflow-hidden rounded-[8px] border focus-visible:outline focus-visible:outline-2"
+        // 2026-10-22 오너 '나머지 다 진행'(SMK-17 · 5-1-4 원본보다 키우지 않음): 약도 이미지(원본 570×435)를 16:10 으로
+        // 잘라 늘리던(아래 잘림·흐림) 것을 원본 비율·원본 크기 이하로. 테두리는 이미지에 붙는다(w-fit).
+        className="group relative block w-fit max-w-full overflow-hidden rounded-[8px] border focus-visible:outline focus-visible:outline-2"
         style={{ borderColor: "var(--color-line,#e3e7ec)" }}
       >
         {mode === "image" && site.mapImage ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={site.mapImage} alt={`${site.name} ${lang === "ko" ? "약도" : "map"}`} loading="lazy" className="aspect-[16/10] w-full object-cover" />
+          <img src={site.mapImage} alt={`${site.name} ${lang === "ko" ? "약도" : "map"}`} loading="lazy" className="block h-auto w-auto max-w-full" />
         ) : (
           <SchematicMap site={site} lang={lang} />
         )}
@@ -52,8 +55,9 @@ export function WorksiteMap({
         </div>
         <dl className="mt-4 space-y-3 text-[13.5px]">
           <Row label={lang === "ko" ? "주소" : "Address"} value={site.address} copy copyLabel={lang === "ko" ? "복사" : "Copy"} />
-          {/* "053-591-9931~2" 같은 대표번호 범위 표기는 첫 번호로만 발신(~ 뒤 숫자가 붙으면 잘못된 번호가 된다) */}
-          {site.tel && <Row label={lang === "ko" ? "전화" : "Tel"} value={site.tel} href={`tel:${site.tel.split("~")[0].replace(/[^0-9+]/g, "")}`} />}
+          {/* "053-591-9931~2" 같은 대표번호 범위 표기는 첫 번호로만 발신(~ 뒤 숫자가 붙으면 잘못된 번호가 된다)
+              2026-10-22 오너 '나머지 다 진행'(5-1-1 ①): 공용 telHref 로 통일 */}
+          {site.tel && <Row label={lang === "ko" ? "전화" : "Tel"} value={site.tel} href={telHref(site.tel)} />}
           {site.fax && <Row label={lang === "ko" ? "팩스" : "Fax"} value={site.fax} />}
           {site.transit && <Row label={lang === "ko" ? "교통" : "Transit"} value={site.transit} />}
         </dl>
