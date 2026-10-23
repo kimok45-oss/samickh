@@ -50,11 +50,13 @@ export default function BoardList({
   return (
     <div>
       {/* 2026-10-22 오너 '나머지 다 진행'(1-3-3 한글 모노 라벨): 한글이 든 줄이라 본문 글꼴로 */}
+      {/* 2026-10-23 오너 '나머지 다 진행'(후속): 두 갈래의 맨 글자 배치가 달라, 브라우저 번역을 켠 채 EN/KR 을 누르면
+          번역된 맨 글자를 지우려다 튕겼다(removeChild). 갈래마다 key 다른 span 으로 통째 바꾼다 — 화면 모양은 그대로. */}
       <p className="tnum text-[13px] text-ink-faint">
         {lang === "ko" ? (
-          <>총 <span className="text-ink-dim">{total}</span>건 · {page}/{totalPages} 페이지</>
+          <span key="ko">총 <span className="text-ink-dim">{total}</span>건 · {page}/{totalPages} 페이지</span>
         ) : (
-          <>Total <span className="text-ink-dim">{total}</span> · Page {page} of {totalPages}</>
+          <span key="en">Total <span className="text-ink-dim">{total}</span> · Page {page} of {totalPages}</span>
         )}
       </p>
 
