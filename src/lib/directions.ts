@@ -16,17 +16,21 @@ export type Worksite = {
   naverPlaceUrl?: string; // 네이버 플레이스/지도 URL이 있으면 네이버는 이걸 최우선(길찾기·로드뷰·리뷰 다 딸려옴)
   mapImage?: string; // 약도 이미지 경로(/img/...) — image 모드
   landmarks?: { name: string; x: number; y: number }[]; // svg 모드용 랜드마크 위치(%, 0~100)
+  // 2026-10-24 오너 '1,2번 진행'(네이버 길찾기): 길찾기 검색에만 쓰는 주소(화면에는 address 가 그대로 보인다).
+  // 영어 화면은 영문 주소로 찾으면 네이버·구글 모두 결과가 없어, 호출부가 국문 주소를 넘긴다.
+  searchAddress?: string;
 };
 
 /** 약도/버튼 클릭 시 열 길찾기 URL. 키 불필요. */
 export function buildDirectionsUrl(provider: Provider, s: Worksite): string {
   const hasLatLng = typeof s.lat === "number" && typeof s.lng === "number";
-  const q = encodeURIComponent(`${s.name} ${s.address}`.trim());
-  const addr = encodeURIComponent(s.address);
+  const addr = encodeURIComponent(s.searchAddress || s.address);
   switch (provider) {
     case "naver":
-      // 플레이스 URL이 가장 좋다(등록돼 있으면). 없으면 통합검색 → 자동으로 장소/길찾기 노출.
-      return s.naverPlaceUrl || `https://map.naver.com/p/search/${q}`;
+      // 플레이스 URL이 가장 좋다(등록돼 있으면). 없으면 주소 검색 → 주소 패널(출발·도착)과 그 주소의 장소가 뜬다.
+      // 2026-10-24 오너 '1,2번 진행'(네이버 길찾기): '이름+주소'로 찾으면 네이버가 "조건에 맞는 업체가 없습니다"를
+      // 띄워(실크롬 확인) 주소만으로 찾는다(케이티앤이 127e5da 와 같은 방식).
+      return s.naverPlaceUrl || `https://map.naver.com/p/search/${addr}`;
     case "kakao":
       return hasLatLng
         ? `https://map.kakao.com/link/to/${encodeURIComponent(s.name)},${s.lat},${s.lng}`

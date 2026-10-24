@@ -15,6 +15,11 @@ export default async function LocationPage() {
   const lang = await getLang();
   const c = await getContents(["company_name", "company_name_en", "address", "tel", "fax"], lang);
   const name = lang === "en" && c.company_name_en ? c.company_name_en : (c.company_name ?? "");
+  // 2026-10-24 오너 '1,2번 진행'(네이버 길찾기): 영어 화면 길찾기(구글·네이버)는 영문 주소로 찾으면 둘 다 결과가 없어
+  // (실크롬 확인) DB 의 국문 주소로 찾는다. 구글은 '…산업단지 28블럭 6롯트' 꼬리가 붙으면 못 찾아서 번지(852-5)까지만 쓴다.
+  // 화면에 보이는 주소는 영문 그대로.
+  const koAddress = lang === "en" ? ((await getContents(["address"], "ko")).address ?? "") : "";
+  const searchAddress = koAddress ? upToLotNumber(koAddress) : undefined;
 
   return (
     <div>
@@ -30,6 +35,7 @@ export default async function LocationPage() {
             tel: c.tel || undefined,
             fax: c.fax || undefined,
             mapImage: "/uploads/orig/brand/location-map.png",
+            searchAddress,
           }}
           locale={lang}
           mode="image"
@@ -38,4 +44,12 @@ export default async function LocationPage() {
       </div>
     </div>
   );
+}
+
+/** '대구광역시 달성군 구지면 내리 852-5 달성2차산업단지 …' → '대구광역시 달성군 구지면 내리 852-5'.
+ *  번지(숫자 또는 숫자-숫자) 칸까지만 남긴다. 번지 칸이 없으면 주소 그대로(도로명 '…로 39' 도 그대로 남는다). */
+function upToLotNumber(address: string): string {
+  const parts = address.trim().split(/\s+/);
+  const i = parts.findIndex((p) => /^\d+(-\d+)?$/.test(p));
+  return i >= 0 ? parts.slice(0, i + 1).join(" ") : address;
 }
